@@ -5,6 +5,7 @@
 ![](https://github.com/JWang169/LintCodeJava/blob/master/static/dragonMaid.gif)
 
 <br>
+<br>
 
 | __Group Members__ | Junzhe Wang, Loughlin Claus, Chran Suresh, David Ovsiew |
 |:-----------------:|:-----|
