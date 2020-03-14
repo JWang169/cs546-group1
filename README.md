@@ -9,6 +9,6 @@
 
 | __Group Members__ | Junzhe Wang, Loughlin Claus, Chran Suresh, David Ovsiew | |
 |:-----------------:|:----------------------------------|:------------:|
-| Project Proposal | [proposal](./files/Group1.pdf)  | 02-28-2020 |
+| Project Proposal | [proposal](./files/Proposal.pdf)  | 02-28-2020 |
 |Database Proposal| [database](./files/databaseProposal.pdf)| 03-13-2020 |
 
