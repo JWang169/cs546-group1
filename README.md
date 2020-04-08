@@ -14,4 +14,6 @@
 
 
 <p><b>Tutor list example</p>
+<img src="https://github.com/JWang169/cs546-group1/blob/master/display%20page/samples/searchBar.png" width="900" height="100">
+<p><b>Tutor list example</p>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/display%20page/samples/tutorList.png" width="200" height="500">
