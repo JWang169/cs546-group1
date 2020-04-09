@@ -1,5 +1,6 @@
 import React from 'react';
-const ApprovalCard = (props) =>{
+
+const NameCard = (props) =>{
     return (
         <div className="ui card">
             <div className="content">{props.children}</div>
@@ -10,9 +11,10 @@ const ApprovalCard = (props) =>{
                 </div>
             </div>
         </div>
-        
-        
+
     )
 };
 
-export default ApprovalCard;
+export default NameCard;
+
+
