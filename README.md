@@ -11,6 +11,23 @@
 |:-----------------:|:----------------------------------|:------------:|
 | Project Proposal | [proposal](./files/Proposal.pdf)  | 02-28-2020 |
 |Database Proposal| [database](./files/databaseProposal.pdf)| 03-13-2020 |
+|Front End| Implemented in [front-end-react](./front-end-react) | 04-16-2020 |
+
+
+
+Pull [front-end-react](./front-end-react) to run Study Geek as React app 
+
+## Install
+
+```shell
+npm install 
+```
+
+## Run App
+
+```shell
+npm start
+```
 
 
 <p><b>Search Bar</p>
