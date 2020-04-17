@@ -10,24 +10,28 @@
 | __Group Members__ | Junzhe Wang, Loughlin Claus, Chran Suresh, David Ovsiew | |
 |:-----------------:|:----------------------------------|:------------:|
 | Project Proposal | [proposal](./files/Proposal.pdf)  | 02-28-2020 |
-|Database Proposal| [database](./files/databaseProposal.pdf)| 03-13-2020 |
-|Front End| Implemented in [front-end-react](./front-end-react) | 04-16-2020 |
+| Database Proposal| [database](./files/databaseProposal.pdf)| 03-13-2020 |
+| Front End React  | Implemented in [studygeekreact](./studygeekreact) | 04-16-2020 |
+| Server           | Implemented in [studygeekserver](./studygeekserver) | 04-16-2020 |
 
 
-
-Pull [front-end-react](./front-end-react) to run Study Geek as React app 
-
+Pull [studygeekreact](./studygeekreact) to run Study Geek as React app <br>
+Pull [studygeekserver](./studygeekserver) to run server
 ## Install
-
 ```shell
 npm install 
 ```
-
 ## Run App
 
 ```shell
 npm start
 ```
+## Generate test dataset 
+```shell
+cd studygeekserver
+npm run seed
+```
+This generates 'hogwarts' database in mongodb.
 
 
 <p><b>Search Bar</p>
