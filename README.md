@@ -33,6 +33,9 @@ npm run seed
 ```
 This generates 'hogwarts' database in mongodb.
 
+<p><b>Homepage and Nav Bar.</p>
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/homepage.png" width="900" height="150">
+
 
 <p><b>Search Bar</p>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/display%20page/samples/searchBar.png" width="900" height="100">
