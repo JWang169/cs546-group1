@@ -1,30 +1,30 @@
 import React from 'react';
-// import logo from '../src/img/header.jpeg';
-import '../App.css';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { Container } from 'semantic-ui-react';
+
+import 'semantic-ui-css/semantic.min.css';
+import '../App.css';
+
 import Homepage from './Homepage';
 import Navigation from './Navigation';
 import SignUp from './SignUp';
-import SignIn from './SignIn';
+import LogIn from './Login';
 import SearchStudents from './SearchStudents';
 import SearchTutors from './SearchTutors';
+import TutorInfo from './TutorInfo';
 
 
 function App() {
   return (
     <Router>
-    <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className='App-logo' alt='logo'/> */}
+      <Container>
         <Navigation />
-      </header>      
-    </div>
-    <Redirect strict from='/' to='/home' /> 
-    <Route path='/home' component={Homepage} /> 
-    <Route path='/signup' component={SignUp} /> 
-    <Route path='/signin' component={SignIn} /> 
-    <Route path='/students' component={SearchStudents} /> 
-    <Route path='/tutors' component={SearchTutors} /> 
+        <Route exact path='/' component={Homepage} />
+        <Route exact path='/signup' component={SignUp} />
+        <Route exact path='/login' component={LogIn} />
+        <Route exact path='/searchtutors' component={SearchTutors} />
+        <Route exact path='/searchstudents' component={SearchStudents} />
+      </Container>
     </Router>
   );
 }
