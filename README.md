@@ -27,16 +27,18 @@ npm install
 npm start
 ```
 ## Generate test dataset 
+To generate 'hogwarts' database in mongodb, run:
 ```shell
 cd studygeekserver
 npm run seed
 ```
-This generates 'hogwarts' database in mongodb.
+
+<p><b>Personal page.</p>
+<p>(registered) Users can edit their info on this page.</p>
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/personalPage.png" width="900" height="350">
 
 <p><b>Homepage and Nav Bar.</p>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/homepage.png" width="900" height="150">
-
-
 <p><b>Search Bar</p>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/display%20page/samples/searchBar.png" width="900" height="100">
 <p><b>Tutor list example</p>
