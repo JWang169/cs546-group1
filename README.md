@@ -39,8 +39,8 @@ In the **homepage**, visitor can choose to be either tutor or student, then the 
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/homepage.png" width="900" height="150">
 
 ### Search Student Page
-If user chooses to be a tutor, the browser goes to **search student Page**, where all students will be listed. Tutor can search students by key words in the search bar.
-Visitors(without logging in) can only see the student cards with a breif introduction about the students. 
+If user chooses to be a tutor, the browser goes to **search student Page**, where all students will be listed. Tutor can search students by key words in the search bar.<br>
+Visitors(without logging in) can only see the student cards with a breif introduction about the students. <br>
 Users(logged in) can visit students' personal pages by clicking the "detail" button on student card.
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/searchStudent.png" width="900" height="500">
 
