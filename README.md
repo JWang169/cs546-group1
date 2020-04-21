@@ -33,13 +33,17 @@ cd studygeekserver
 npm run seed
 ```
 
-<p><b>Personal page.</p>
-<p>(registered) Users can edit their info on this page.</p>
-<img src="https://github.com/JWang169/cs546-group1/blob/master/img/personalPage.png" width="900" height="350">
 
-<p><b>Homepage and Nav Bar.</p>
+### Homepage
+In the **homepage**, visitor can choose to be either tutor or student, then the page turns to be a list of students for tutor visitor, or a list of tutors for student visitor. 
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/homepage.png" width="900" height="150">
-<p><b>Search Bar</p>
-<img src="https://github.com/JWang169/cs546-group1/blob/master/display%20page/samples/searchBar.png" width="900" height="100">
-<p><b>Tutor list example</p>
-<img src="https://github.com/JWang169/cs546-group1/blob/master/display%20page/samples/tutorList.png" width="200" height="500">
+
+### Search Student Page
+If user chooses to be a tutor, the browser goes to **search student Page**, where all students will be listed. Tutor can search students by key words in the search bar.
+Visitors(without logging in) can only see the student cards with a breif introduction about the students. 
+Users(logged in) can visit students' personal pages by clicking the "detail" button on student card.
+
+### Personal page
+(registered) Users can edit their info on **Personal page**.
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/personalPage.png" width="900" height="350">
+<hr/>
