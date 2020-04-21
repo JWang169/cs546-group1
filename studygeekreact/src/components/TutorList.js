@@ -1,39 +1,33 @@
-import React, {Component} from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import TutorCard from './TutorCard';
+import { Card } from 'semantic-ui-react';
 
-class ShowList extends Component {
-    constructor(props){
-        super(props);
-        this.state = { showsData: undefined};
-    }
-
-    async getTutors(){
-        try{
-            const {data} = await axios.get('http://localhost:3008/tutors');
-            this.setState({tutorData : data});
+const TutorList =() => {
+    const [tutors, setTutors] = useState(undefined);
+    const getTutors = async() => {
+        try {
+            const { data } = await axios.get('http://localhost:3008/tutors');
+            setTutors(data);
         }catch(e){
             console.log(e);
         }
-    }
+    };
 
-    componentDidMount(){
-        this.getTutors();
-    }
+    useEffect(() => {
+        getTutors();
+    }, []);
 
-    render(){
-        return (
-            <div className='App-body'>
-                <ul>
-                    {this.state.tutorData && this.state.tutorData.map((tutor) => (
-                        <li key={tutor.id}>
-                            <Link to={`/tutors/${tutor.id}`}>{tutor.name}</Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        )
-    }
+    return (
+        <div className='App-body'>
+        <Card.Group>
+            {tutors && tutors.map((tutor) => (
+                <TutorCard tutor={tutor} />
+                ))}
+        </Card.Group>
+        </div>
+    )
 }
 
-export default ShowList;
+export default TutorList;
+
