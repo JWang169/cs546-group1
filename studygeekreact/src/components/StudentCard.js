@@ -17,7 +17,6 @@ const StudentCard = ({student}) => (
         <Card.Content>
             <div className='ui two buttons'>
             <Button basic color='green'>Contact</Button>
-            {/* href='/students/${}' */}
             <Button basic color='blue' href= {`/students/${student.name}`} >Details</Button>                    
             </div>
         </Card.Content>

@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import StudentCard from './StudentCard';
 import { Card } from 'semantic-ui-react';
 
 const StudentList =() => {
-    const [students, setStudents] = useState("");
+    const [students, setStudents] = useState(undefined);
     const getStudents = async() => {
         try {
             const { data } = await axios.get('http://localhost:3008/students');
@@ -22,8 +21,8 @@ const StudentList =() => {
     return (
         <div className='App-body'>
         <Card.Group>
-                {students && students.map((student) => (
-                <StudentCard student />
+            {students && students.map((student) => (
+                <StudentCard student={student} />
                 ))}
         </Card.Group>
         </div>

@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 
-const SearchBar = (props) => {
+const SearchBar = () => {
+    const [searchTerm, setSearchTerm] = useState('');
     const handleChange = (e) => {
-        props.searchValue(e.target.value);
+        setSearchTerm(e.target.value);
     };
     return (
-        <form method='POST' name='formName'>
-            <label>
-                Search Subject:
-                <input type='text' name='searchTerm' onChange={handleChange} />
-            </label>
+        <form className="ui form">
+            <div className="field">
+            <label>Search for Subject</label>
+            <input
+            type='text'
+            placeholder='search for subject'
+            value={searchTerm}
+            onChange={handleChange}
+            />
+            <small>We will match the best for you.</small>
+            </div>
         </form>
     )
 

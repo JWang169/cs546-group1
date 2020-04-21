@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import App from './App';
 
 const Demo = () => {
     const [subjects, setSubjects] = useState([
