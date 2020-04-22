@@ -7,7 +7,7 @@ function Tutors() {
   return (
     <Router>
     <div>
-        <h2>This is a list of all the students. </h2>
+        <h2>This is a list of all the Tutors. </h2>
         <SearchBar/>
         <hr/>
         <br/>

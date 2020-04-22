@@ -3,8 +3,6 @@ import { Menu, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 function Navigation() {
-    
-    
     // check pathname and set active in nav bar
     const pathname = window.location.pathname;
     const path = pathname ==='/' ? 'home': pathname.substr(1);

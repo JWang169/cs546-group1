@@ -8,11 +8,11 @@ const TutorCard = ({tutor}) => (
             <Image 
             floated='left'
             size='mini'
-            src={tutor.img || faker.image.cats()}
+            src={tutor.img || faker.image.avatar()}
             />
             <Card.Header>{tutor.name}</Card.Header>
-            <Card.Meta>{tutor.info}</Card.Meta>
-            <Card.Description>{tutor.subjects}</Card.Description>
+            <Card.Meta>{tutor.subjects}</Card.Meta>
+            <Card.Description>{tutor.info}</Card.Description>
         </Card.Content>   
         <Card.Content>
             <div className='ui two buttons'>

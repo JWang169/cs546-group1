@@ -25,12 +25,22 @@ const Snape = new Tutor({
     subjects: ["Potions", "Defence Against the Dark Arts"]
 })
 tutorArray.push(Snape)
+
 const Moody = new Tutor({
     name:"Alastor Moody",
     info:"Mad Eye",
     subjects: ["Defence Against the Dark Arts"]
 })
 tutorArray.push(Moody)
+
+const Lupin = new Tutor({
+    name:"Remus JohnLupin",
+    info:"Moony",
+    subjects: ["Defence Against the Dark Arts"]
+})
+tutorArray.push(Lupin)
+
+
 const Minerva = new Tutor({
     name:"Minerva McGonagall",
     info: "Head of Gryffindor",
