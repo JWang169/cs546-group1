@@ -22,8 +22,8 @@ const StudentList =() => {
         <div className='App-body'>
         <Card.Group>
             {students && students.map((student) => (
-                <StudentCard student={student} />
-                ))}
+                <StudentCard student={student} key={student._id} /> 
+                )) }
         </Card.Group>
         </div>
     )
