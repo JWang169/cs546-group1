@@ -44,13 +44,16 @@ Visitors(without logging in) can only see the student cards with a brief introdu
 Users(logged in) can visit students' personal pages by clicking the "detail" button on student card.
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/searchStudent.png" width="900" height="500">
 
-### Search Tuter Page
+### Search Tutor Page
 If user chooses to be a student, the browser goes to **search tutor Page**, where all tutors will be listed. Students can search tutors by key words in the search bar.<br>
 Visitors(without logging in) can only see the tutor cards with a brief introduction about the tutors. <br>
 Users(logged in) can visit tutors' personal pages by clicking the "detail" button on tutor card.
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/searchTutors.png" width="900" height="500">
 
-
+### Sign Up Page
+User can only sign up by a valid email. They must provide a password, and the **password** must match the **"confirm password"** <br>
+If the email has already been registered, they will be asked to log in with that email.
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/signup.png" width="900" height="420">
 
 
 ### Personal page
