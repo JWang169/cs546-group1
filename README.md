@@ -68,3 +68,13 @@ Users must provide the **email** and **password** to log in.<br/>
 (registered) Users can edit their info on **Personal page**.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/personalPage.png">
 <hr/>
+
+## Database
+### User Collections samples
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/userDB.png">
+
+
+
+
+
+
