@@ -6,9 +6,9 @@ import TutorList from './TutorList';
 function Tutors() {
   return (
     <Router>
-    <div class="container">
+    <div className="container">
       <br/>
-        <div class="row justify-content-center">
+        <div className="row justify-content-center">
           <h3>A thousand years later the magic remains. </h3>
         </div>
         

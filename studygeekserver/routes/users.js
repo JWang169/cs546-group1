@@ -16,7 +16,7 @@ router.post("/signup", async (req, res) => {
 
     try{
         const newUser = await userData.createUser(email, password, firstName, lastName);
-        res.status(200).json(newUser);
+        res.status(200).json(newUser.email);
     }catch(e){
         res.status(500).json({error: e})
     }
