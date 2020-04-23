@@ -12,9 +12,11 @@ const LogIn = () => {
           'email': email,
           'password': password
         });
+        console.log(res);
       }catch(e){
         console.log(e);
       }
+      
     }
 
     return (

@@ -20,8 +20,22 @@ router.post("/signup", async (req, res) => {
     }catch(e){
         res.status(500).json({error: e})
     }
-
-    res.status(501).send();
 });
+
+
+router.post("/login", async (req, res) => {
+    const email = req.body['email'];
+    const password = req.body['password'];
+	try {
+        const theUser = await userData.getUser(email, password);
+        res.status(200).json(theUser.email);
+	} catch (e) {
+        console.log(e)
+		res.status(500).json({error: e});
+    }
+
+});
+
+
 
 module.exports = router;

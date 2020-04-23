@@ -1,7 +1,7 @@
 const mongoCollections = require('../config/mongoCollections');
-const userData = require("./users");
+const bcrypt = require('bcryptjs');
 const users = mongoCollections.users;
-// const {ObjectId} = require('mongodb');
+const saltRounds = 16;
 
 async function getAllUsers(){
     const userCollection = await users();
@@ -14,9 +14,10 @@ async function createUser(email, password, firstName, lastName){
     // first check if the email already exists
     const matchedUser = await userCollection.findOne({email: email})
     if(matchedUser !== null) throw `User already exists`;
+    const hashed = await bcrypt.hash(password, saltRounds);
     let newUser = {
         'email': email,
-        'password': password,
+        'password': hashed,
         'firstName': firstName,
         'lastName': lastName
     }
@@ -26,4 +27,28 @@ async function createUser(email, password, firstName, lastName){
     return newUser;
 }
 
-module.exports = {getAllUsers, createUser}
+
+async function getUser(email, password){
+    const userCollection = await users();
+    // first check if the email already exists
+    const theUser = await userCollection.findOne({email: email})
+    if(theUser === null) throw `No such user`;
+
+    let matched = false;
+	try {
+		matched = await bcrypt.compare(password, theUser.password);
+	} catch (e) {
+		console.log(e)
+    }
+    
+    if(matched){
+        return theUser;
+    }else{
+        throw `Password didn't match.`
+    }
+
+}
+
+
+
+module.exports = {getAllUsers, createUser, getUser}
