@@ -43,13 +43,13 @@ tutorArray.push(Lupin)
 
 const Minerva = new Tutor({
     name:"Minerva McGonagall",
-    info: "Head of Gryffindor",
+    info: "Babbling bumbling band of baboons",
     subjects: ["Transfiguration"]
 })
 tutorArray.push(Minerva)
 const Sybill = new Tutor({
     name:"Sybill Trelawney",
-    info:"The great-great-granddaughter of the celebrated Cassandra Trelawney",
+    info:"Together we shall cast ourselves into the future",
     subjects: ["Divination"]
 })
 tutorArray.push(Sybill)
