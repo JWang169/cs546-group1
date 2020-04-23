@@ -41,10 +41,10 @@ const LogIn = () => {
       <div className="field">
         <div className='ui checkbox'>
         <input type='checkbox' tabIndex='0' />
-        <label>I solemnly swear that I am up to no good. </label>
+        <label>You're just as sane as I am. </label>
         </div>
       </div>
-      <button className='ui button' type='submit'>Sign Up</button>
+      <button className='ui button' type='submit'>Log In</button>
     </form>
     );
 }
