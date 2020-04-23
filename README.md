@@ -51,15 +51,20 @@ Users(logged in) can visit students' personal pages by clicking the "detail" but
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/studentList.png" >
 
 ### Sign Up Page
-Users can only sign up by a valid email. They must provide a password, and the **password** must match the **"confirm password"** <br>
-If the email has already been registered, they will be asked to log in with that email.
-<img src="https://github.com/JWang169/cs546-group1/blob/master/img/signup.png" >
+Users can only sign up by a valid email. <br>
+If any of the fields is empty, there will be an error prompt.<br/>
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/emptyInput.png" >
+
+The **password** must match the **"confirm password"**.<br/>
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/passwordNoMatch.png" >
+
+If the user signed up successfully, it will redirect to the log in page.<br/>
 
 ### Log In Page
-Users must provide the **email** and **password** to log in.
+Users must provide the **email** and **password** to log in.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/login.png" >
 
 ### Personal page
-(registered) Users can edit their info on **Personal page**.
+(registered) Users can edit their info on **Personal page**.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/personalPage.png">
 <hr/>
