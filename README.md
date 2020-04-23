@@ -42,7 +42,7 @@ In the **homepage**, visitor can choose to be either tutor or student, then the 
 If user chooses to be a tutor, the browser goes to **search student Page**, where all students will be listed. Tutors can search students by key words in the search bar.<br>
 Visitors(without logging in) can only see the student cards with a brief introduction about the students. <br>
 Users(logged in) can visit students' personal pages by clicking the "detail" button on student card.
-<img src="https://github.com/JWang169/cs546-group1/blob/master/img/studnetList.png" >
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/studentList.png" >
 
 ### Search Tutor Page
 If user chooses to be a student, the browser goes to **search tutor Page**, where all tutors will be listed. Students can search tutors by key words in the search bar.<br>
