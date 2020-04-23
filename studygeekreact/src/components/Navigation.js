@@ -9,8 +9,6 @@ function Navigation() {
   
     const [activeItem, setActiveItem ] = useState(path); 
     const handleItemClick = (e, { name }) => setActiveItem(name);
-    const [activeItem2, setActiveItem2] = useState('')
-    const handleItemClick2 = (e, { name }) => setActiveItem2(name);
     return (
       <div>
         <Menu pointing secondary size='massive' color='teal'>
@@ -26,7 +24,7 @@ function Navigation() {
               name='signup'
               active={activeItem === 'signup'}
               onClick={handleItemClick}
-              as={Link}
+              as={Link} 
               to='/signup'
             />
             <Menu.Item
@@ -38,28 +36,6 @@ function Navigation() {
           />
           </Menu.Menu>
         </Menu>
-        <Menu compact icon='labeled'>
-        <Menu.Item 
-          name='student'
-          active={activeItem2 === 'student'}
-          onClick={handleItemClick2}
-          as={Link}
-          to='/searchtutors'
-        >
-          <Icon name='pencil' />
-          I am a Student.
-        </Menu.Item>
-        <Menu.Item 
-          name='tutor'
-          active={activeItem2 === 'tutor'}
-          onClick={handleItemClick2}
-          as={Link}
-          to='/searchstudents'
-        >
-          <Icon name='bullhorn' />
-          I am a Tutor.
-        </Menu.Item>
-      </Menu>
       </div>
     )
     

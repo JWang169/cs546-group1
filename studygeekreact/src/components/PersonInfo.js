@@ -6,7 +6,7 @@ const PersonInfo = (props) => {
     useEffect(() => {
         async function fetchData(){
             try{
-                const {data} = await axios.get('http://localhost:3008/students/' + props.match.params.id);
+                const {data} = await axios.get('http://localhost:3003/students/' + props.match.params.id);
                 setStudent(data);
             }catch(e){
                 console.log(e);

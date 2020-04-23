@@ -7,7 +7,7 @@ const TutorList =() => {
     const [tutors, setTutors] = useState(undefined);
     const getTutors = async() => {
         try {
-            const { data } = await axios.get('http://localhost:3008/tutors');
+            const { data } = await axios.get('http://localhost:3003/tutors');
             setTutors(data);
         }catch(e){
             console.log(e);

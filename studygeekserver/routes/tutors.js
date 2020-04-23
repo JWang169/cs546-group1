@@ -4,7 +4,6 @@ const data = require("../data");
 const tutorData = data.tutors;
 
 
-
 router.get("/", async (req, res) => {
   try {
     const tutorList = await tutorData.getAlltutors();

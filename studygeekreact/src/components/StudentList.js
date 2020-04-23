@@ -7,7 +7,7 @@ const StudentList =() => {
     const [students, setStudents] = useState(undefined);
     const getStudents = async() => {
         try {
-            const { data } = await axios.get('http://localhost:3008/students');
+            const { data } = await axios.get('http://localhost:3003/students');
             setStudents(data);
         }catch(e){
             console.log(e);
