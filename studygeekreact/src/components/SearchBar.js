@@ -8,7 +8,7 @@ const SearchBar = () => {
     return (
         <form className="ui form">
             <div className="field">
-            <label>Search for Subject</label>
+            <label>Search by Subject</label>
             <input
             type='text'
             placeholder='search for subject'

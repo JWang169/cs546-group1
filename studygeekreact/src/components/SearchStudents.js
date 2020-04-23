@@ -7,8 +7,11 @@ import StudentList from './StudentList';
 function Students() {
   return (
     <Router>
-    <div>
-        <h2>This is a list of all the students. </h2>
+    <div class="container">
+      <br/>
+        <div class="row justify-content-center">
+          <h3>Student List </h3>
+        </div>
         <SearchBar/>
         <hr/>
         <br/>

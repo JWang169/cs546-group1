@@ -8,7 +8,7 @@ const StudentCard = ({student}) => (
             <Image 
             floated='left'
             size='mini'
-            src={student.img || faker.image.cats()}
+            src={student.img || faker.image.avatar()}
             />
             <Card.Header>{student.name}</Card.Header>
             <Card.Meta>{student.education}</Card.Meta>

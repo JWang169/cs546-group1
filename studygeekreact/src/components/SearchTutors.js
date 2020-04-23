@@ -6,8 +6,12 @@ import TutorList from './TutorList';
 function Tutors() {
   return (
     <Router>
-    <div>
-        <h2>This is a list of all the Tutors. </h2>
+    <div class="container">
+      <br/>
+        <div class="row justify-content-center">
+          <h3>A thousand years later the magic remains. </h3>
+        </div>
+        
         <SearchBar/>
         <hr/>
         <br/>
