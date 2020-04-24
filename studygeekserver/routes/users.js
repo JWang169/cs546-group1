@@ -27,11 +27,12 @@ router.post("/login", async (req, res) => {
     const email = req.body['email'];
     const password = req.body['password'];
 	try {
-        const theUser = await userData.getUser(email, password);
-        res.status(200).json(theUser.email);
+        const theuser = await userData.getUser(email, password);
+        res.status(200).json(theUser);
 	} catch (e) {
         console.log(e)
-		res.status(500).json({error: e});
+        const result = {error: e}
+		res.status(200).json(result);
     }
 
 });

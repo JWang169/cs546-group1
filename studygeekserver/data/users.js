@@ -46,9 +46,7 @@ async function getUser(email, password){
     }else{
         throw `Password didn't match.`
     }
-
 }
-
 
 
 module.exports = {getAllUsers, createUser, getUser}
