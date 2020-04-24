@@ -1,52 +1,25 @@
 import React, {useState} from 'react';
-import axios from 'axios';
 
-const LogIn = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+const LogOut = () => {
+    const [loggedout, setLoggedout] = useState(false);
 
     const submitInfo = async(event) =>{
       event.preventDefault();
-      try {
-        const res = await axios.post('http://localhost:3003/login',{
-          'email': email,
-          'password': password
-        });
-      }catch(e){
-        console.log(e);
-      }
+      setLoggedout(true)
+      localStorage.clear("token");
+
     }
 
     return (
     <form className="ui form" onSubmit={submitInfo}>
-      <div className="field">
-        <label>Email</label>
-        <input 
-        type='email' 
-        name='email' 
-        placeholder='triddle@slytherin.edu' 
-        value={email} 
-        onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="field">
-        <label>Password</label>
-        <input 
-        type='password' 
-        name='password'  
-        value={password} 
-        onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div className="field">
-        <div className='ui checkbox'>
-        <input type='checkbox' tabIndex='0' />
-        <label>Which came first, the phoenix or the flame </label>
-        </div>
-      </div>
-      <button className='ui button' type='submit'>Log In </button>
+      <button className='ui button' type='submit'>Log Out </button>
+      
+      { loggedout && <p>
+          Dobby is free.
+          </p>}
     </form>
+
     );
 }
 
-export default LogIn;
+export default LogOut;

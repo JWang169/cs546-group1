@@ -1,55 +1,81 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+
 
 const LogIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const history = useHistory();
 
     const submitInfo = async(event) =>{
       event.preventDefault();
       try {
-        const result = await axios.post('http://localhost:3003/login',{
+        const token = await axios.post('http://localhost:3003/login',{
           'email': email,
           'password': password
         });
         // login succeed
-        console.dir(result)
-        const obj = JSON.stringify(result)
-        console.log(obj)
-         // login fail 
-        if(result.data.error === "Password didn't match"){
-          // console.dir(result.data.error);
-          console.log("tell user to enter the password again")
-        }else{
-          console.dir(result.email)
-        }
-
+        console.log(token);
+        localStorage.setItem("token", token.data);
+        history.push('/')
       }catch(e){
-        console.log(e)
-      }
-      
+        const jsonResponse = e.response;
+        if(jsonResponse.data.error === 'No such user'){
+          setEmailError("User Email doesn't exist.");
+        }else{
+          setErrorMessage(jsonResponse.data.error);
+        }
+      }  
     }
 
     return (
     <form className="ui form" onSubmit={submitInfo}>
       <div className="field">
         <label>Email</label>
+        { emailError && <div
+            className="ui pointing below prompt label"
+            id="form-input-control-error-email-error-message"
+            role="alert"
+            aria-atomic="true"
+          >
+            {emailError}
+          </div>}
         <input 
         type='email' 
         name='email' 
         placeholder='triddle@slytherin.edu' 
         value={email} 
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => {
+          setEmail(e.target.value)
+          setEmailError("");  
+        }
+        }
         required
         />
       </div>
       <div className="field">
         <label>Password</label>
+        { errorMessage && <div
+            className="ui pointing below prompt label"
+            id="form-input-control-error-email-error-message"
+            role="alert"
+            aria-atomic="true"
+          >
+            {errorMessage}
+          </div>}
         <input 
         type='password' 
         name='password'  
         value={password} 
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => {
+            setPassword(e.target.value);
+            setErrorMessage("");
+            localStorage.clear("token");
+          }
+        }
         required
         />
       </div>

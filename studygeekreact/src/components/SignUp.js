@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
+
 const SignUp = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -37,8 +38,7 @@ const SignUp = () => {
           // user already exists.
           setError(jsonResponse.data.error);
         }
-      }
-      
+      }  
     }
 
     return (
@@ -51,7 +51,7 @@ const SignUp = () => {
             role="alert"
             aria-atomic="true"
           >
-            {error}.
+            {error}
           </div>}
           <input 
           className='form-control is-invalid'
@@ -59,7 +59,11 @@ const SignUp = () => {
           name='email' 
           placeholder='triddle@slytherin.edu' 
           value={email} 
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError("");
+            }
+          }
           required
           />
         </div>

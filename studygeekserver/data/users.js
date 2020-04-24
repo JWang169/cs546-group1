@@ -1,7 +1,9 @@
+const jwt = require("jsonwebtoken");
 const mongoCollections = require('../config/mongoCollections');
 const bcrypt = require('bcryptjs');
 const users = mongoCollections.users;
 const saltRounds = 16;
+
 
 async function getAllUsers(){
     const userCollection = await users();
@@ -22,7 +24,7 @@ async function createUser(email, password, firstName, lastName){
         'lastName': lastName
     }
     const insertInfo = await userCollection.insertOne(newUser);
-    if (insertInfo.insertedCount === 0) throw `Could not add band`;
+    if (insertInfo.insertedCount === 0) throw `Could not add new user`;
     // const newId = insertInfo.insertedId;
     return newUser;
 }
@@ -42,9 +44,21 @@ async function getUser(email, password){
     }
     
     if(matched){
-        return theUser;
+        const token = jwt.sign(
+            {
+                userId: theUser._id,
+                email: theUser.email,
+                firstName: theUser.firstName,
+                lastName: theUser.lastName
+            },
+            "Flibbertigibbet",
+            {
+                expiresIn: "365d"
+            }
+        )
+        return token;
     }else{
-        throw `Password didn't match.`
+        throw `Password doesn't match.`
     }
 }
 
