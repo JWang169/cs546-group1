@@ -13,12 +13,11 @@ router.post("/signup", async (req, res) => {
     const password = req.body['password'];
     const lastName = req.body['lastName'];
     const firstName = req.body['firstName'];
-
     try{
         const newUser = await userData.createUser(email, password, firstName, lastName);
         res.status(200).json(newUser.email);
     }catch(e){
-        res.status(500).json({error: e})
+        res.status(409).json({error: e})
     }
 });
 
@@ -34,9 +33,7 @@ router.post("/login", async (req, res) => {
         const result = {error: e}
 		res.status(200).json(result);
     }
-
 });
-
 
 
 module.exports = router;

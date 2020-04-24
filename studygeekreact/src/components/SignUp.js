@@ -10,6 +10,7 @@ const SignUp = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [noMatch, setNoMatch] = useState(false);
     const history = useHistory();
+    const [error, setError] = useState("");
 
     const submitInfo = async(event) =>{
       event.preventDefault();
@@ -17,7 +18,10 @@ const SignUp = () => {
           setConfirmPassword("");
           setNoMatch(true);
           return 
+      }else{
+        setNoMatch(false);
       }
+
       try {
         const result = await axios.post('http://localhost:3003/signup',{
           'firstName': firstName,
@@ -25,16 +29,15 @@ const SignUp = () => {
           'email': email,
           'password': password
         });
-        if(result){
-          console.log('succeed')
-          history.push('/login')
-        }else{
-          console.log('failed')
-        }
+        history.push('/login');
       }catch(e){
-        console.log(e);
+        const jsonResponse = e.response;
+        if (jsonResponse.status === 409){
+          // console.log('we had a 409')
+          // user already exists.
+          setError(jsonResponse.data.error);
+        }
       }
-      
       
     }
 
@@ -42,6 +45,14 @@ const SignUp = () => {
       <form className="ui form" onSubmit={submitInfo}>
         <div className="field">
           <label>Email</label>
+          { error && <div
+            className="ui pointing below prompt label"
+            id="form-input-control-error-email-error-message"
+            role="alert"
+            aria-atomic="true"
+          >
+            {error}.
+          </div>}
           <input 
           className='form-control is-invalid'
           type='email' 
