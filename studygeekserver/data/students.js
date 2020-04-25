@@ -15,8 +15,7 @@ async function getStudent(id){
     }
     const theStudent = await studentCollection.findOne({ "_id": id });
     if (theStudent === null) throw 'No student with that id';
-    s = [theStudent.name, theStudent.info, theStudent.subjects];
-    return s;
+    return theStudent;
 }
 
 async function createStudent(email, firstName, lastName){

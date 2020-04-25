@@ -22,11 +22,10 @@ router.post("/", async (req, res) => {
 
 //GET /tutors/{id}
 router.get("/:id", async (req, res) => {
-  console.log('in get tutors')
   try {
-    console.log('in get tutors')
+    // console.log('in get tutors')
     const tutor = await tutorData.getTutor(req.params.id);
-    console.log(tutor)
+    // console.log(tutor)
     res.status(200).send(tutor);
   } catch (e) {
     console.log(e)
