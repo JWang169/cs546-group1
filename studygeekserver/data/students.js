@@ -19,4 +19,19 @@ async function getStudent(id){
     return s;
 }
 
-module.exports = {getAllstudents, getStudent}
+async function createStudent(newUser_id, email, firstName, lastName){
+    const studentCollection = await students();
+    let newStudent = {
+        'userId': newUser_id,
+        'email': email,
+        'firstName': firstName,
+        'lastName': lastName,
+    }
+    const insertInfo = await studentCollection.insertOne(newStudent);
+    if (insertInfo.insertedCount === 0) throw `Could not add new student`;
+    // const newId = insertInfo.insertedId;
+    return newStudent;
+}
+
+
+module.exports = {getAllstudents, getStudent, createStudent}

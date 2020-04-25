@@ -11,7 +11,7 @@ async function getAllUsers(){
     return allUsers;
 }
 
-async function createUser(email, password, firstName, lastName){
+async function createUser(email, password, status, firstName, lastName){
     const userCollection = await users();
     // first check if the email already exists
     const matchedUser = await userCollection.findOne({email: email})
@@ -20,8 +20,9 @@ async function createUser(email, password, firstName, lastName){
     let newUser = {
         'email': email,
         'password': hashed,
+        'status': status,
         'firstName': firstName,
-        'lastName': lastName
+        'lastName': lastName,
     }
     const insertInfo = await userCollection.insertOne(newUser);
     if (insertInfo.insertedCount === 0) throw `Could not add new user`;
@@ -47,6 +48,7 @@ async function getUser(email, password){
         const token = jwt.sign(
             {
                 userId: theUser._id,
+                status: theUser.status,
                 email: theUser.email,
                 firstName: theUser.firstName,
                 lastName: theUser.lastName

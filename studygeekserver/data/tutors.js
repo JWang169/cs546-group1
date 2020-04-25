@@ -8,4 +8,18 @@ async function getAlltutors(){
     return tutorList;
 }
 
-module.exports = {getAlltutors}
+async function createTutor(newUser_id, email, firstName, lastName){
+    const tutorCollection = await tutors();
+    let newTutor = {
+        'userId': newUser_id,
+        'email': email,
+        'firstName': firstName,
+        'lastName': lastName,
+    }
+    const insertInfo = await tutorCollection.insertOne(newTutor);
+    if (insertInfo.insertedCount === 0) throw `Could not add new student`;
+    // const newId = insertInfo.insertedId;
+    return newTutor;
+}
+
+module.exports = {getAlltutors, createTutor}

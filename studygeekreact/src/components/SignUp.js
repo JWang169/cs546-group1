@@ -12,6 +12,8 @@ const SignUp = () => {
     const [noMatch, setNoMatch] = useState(false);
     const history = useHistory();
     const [error, setError] = useState("");
+    const [status, setStatus] = useState("students");
+
 
     const submitInfo = async(event) =>{
       event.preventDefault();
@@ -27,6 +29,7 @@ const SignUp = () => {
         const result = await axios.post('http://localhost:3003/signup',{
           'firstName': firstName,
           'lastName': lastName,
+          'status': status,
           'email': email,
           'password': password
         });
@@ -125,6 +128,21 @@ const SignUp = () => {
         </div>
 
         <div className="field">
+          <div className="ui radio checkbox">
+            <input
+              type="checkbox"
+              name="checkboxRadioGroup"
+              readOnly=""
+              tabIndex="0"
+              value="tutor"
+              onChange={(e) => setStatus("tutors")}
+            />
+            <label>I am a tutor.</label>
+          </div>
+        </div>
+
+
+        <div className="field">
           <div className='ui checkbox'>
           <input type='checkbox' tabIndex='0' required/>
           <label>I solemnly swear that I am up to no good. </label>
@@ -136,3 +154,5 @@ const SignUp = () => {
 }
 
 export default SignUp;
+
+

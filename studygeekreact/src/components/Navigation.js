@@ -3,26 +3,32 @@ import { Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
 
-function Navigation() {
+function Navigation(props) {
     // check pathname and set active in nav bar
     const pathname = window.location.pathname;
     const path = pathname ==='/' ? 'home': pathname.substr(1);
     const [activeItem, setActiveItem ] = useState(path); 
     const [visitor, setVisitor] = useState(true)
+    const [token, setToken] = useState(props.token);
+    const [userUrl, setUserUrl] = useState("");
     const handleItemClick = (e, { name }) => setActiveItem(name);
 
     useEffect(() => {
-      const token = localStorage.getItem("token");
       if (token){
-        console.log('find token')
         setVisitor(false);
-        // const tokenInfo = jwt_decode(localStorage.getItem("token"));
-        // if(tokenInfo){
-        //   setVisitor(false);
-        //   console.log('im in nav, and visitor is false now ');
-        // }
+        const tokenInfo = jwt_decode(localStorage.getItem("token"));
+        if(tokenInfo){
+          setVisitor(false);
+          const userEmail = tokenInfo.email;
+          const userId = tokenInfo.userId;
+          const status = tokenInfo.status;
+          const url = `/${status}/${userEmail}`
+          setUserUrl(url); 
+          console.log(userUrl);
+          // console.log(`im in nav, and user email is ${userEmail}`);
+        }
       }
-    });
+    },[token, userUrl]);
 
     return (
       <div>
@@ -40,8 +46,8 @@ function Navigation() {
                 name='mypage'
                 active={activeItem === 'mypage'}
                 onClick={handleItemClick}
-                as={Link} 
-                to='/demo'
+                as={Link}
+                to={userUrl}
               />
               <Menu.Item
               name='logout'
