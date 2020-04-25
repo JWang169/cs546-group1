@@ -11,23 +11,22 @@ async function getAllUsers(){
     return allUsers;
 }
 
-async function createUser(email, password, status, firstName, lastName){
+async function createUser(userId, email, password, status){
     const userCollection = await users();
     // first check if the email already exists
     const matchedUser = await userCollection.findOne({email: email})
     if(matchedUser !== null) throw `The email already exists`;
     const hashed = await bcrypt.hash(password, saltRounds);
     let newUser = {
+        'statusId': userId,
         'email': email,
         'password': hashed,
-        'status': status,
-        'firstName': firstName,
-        'lastName': lastName,
+        'status': status
     }
     const insertInfo = await userCollection.insertOne(newUser);
     if (insertInfo.insertedCount === 0) throw `Could not add new user`;
     // const newId = insertInfo.insertedId;
-    return newUser;
+    return insertInfo.insertedId;
 }
 
 
@@ -47,11 +46,9 @@ async function getUser(email, password){
     if(matched){
         const token = jwt.sign(
             {
-                userId: theUser._id,
-                status: theUser.status,
+                statusId: theUser.statusId,
                 email: theUser.email,
-                firstName: theUser.firstName,
-                lastName: theUser.lastName
+                status: theUser.status
             },
             "Flibbertigibbet",
             {

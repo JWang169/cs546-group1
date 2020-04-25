@@ -19,4 +19,19 @@ router.post("/", async (req, res) => {
   res.status(501).send();
 });
 
+
+//GET /tutors/{id}
+router.get("/:id", async (req, res) => {
+  console.log('in get tutors')
+  try {
+    console.log('in get tutors')
+    const tutor = await tutorData.getTutor(req.params.id);
+    console.log(tutor)
+    res.status(200).send(tutor);
+  } catch (e) {
+    console.log(e)
+    res.status(404).json({ message: "Tutor not found!" });
+  }
+});
+
 module.exports = router;

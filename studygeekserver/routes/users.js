@@ -17,30 +17,29 @@ router.post("/signup", async (req, res) => {
     const firstName = req.body['firstName'];
     const status = req.body['status'];
     let userId = undefined;
-    try{
-        const newUser = await userData.createUser(email, password, status, firstName, lastName);
-        userId = newUser._id;
-        console.log('Im in the newUser');
-    }catch(e){
-        res.status(409).json({error: e})
-    }
 
     if(status === 'students'){
         try{
-            const newStudent = await studentData.createStudent(userId, email, firstName, lastName)
-            res.status(200).json(newStudent._id);
+            const insertId = await studentData.createStudent(email, firstName, lastName)
+            userId = insertId;
         }catch(e){
             res.status(409).json({error: e});
         }
     }else{
         try{
-            const newTutor = await tutorData.createTutor(userId, email, firstName, lastName)
-            res.status(200).json(newTutor._id);
+            const insertId = await tutorData.createTutor(email, firstName, lastName)
+            userId = insertId;
         }catch(e){
             res.status(409).json({error: e});
         }          
     }
-    
+    // console.log("this is userId from routes/user.js"+ userId)
+    try{
+        const statusId = await userData.createUser(userId, email, password, status);
+        res.status(200).json(statusId);
+    }catch(e){
+        res.status(409).json({error: e})
+    }
 });
 
 

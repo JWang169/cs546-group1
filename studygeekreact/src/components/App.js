@@ -14,6 +14,7 @@ import SearchStudents from './SearchStudents';
 import SearchTutors from './SearchTutors';
 import Demo from './Demo';
 import PersonInfo from './PersonInfo';
+import MyAccount from './MyAccount';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route exact path='/searchtutors' component={SearchTutors} />
         <Route exact path='/searchstudents' component={SearchStudents} />
         <Route exact path='/students/:id' component={PersonInfo} />
+        <Route exact path='/myaccount' component={MyAccount} />
       </Container>
     </Router>
   );

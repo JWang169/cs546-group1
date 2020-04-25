@@ -19,10 +19,9 @@ async function getStudent(id){
     return s;
 }
 
-async function createStudent(newUser_id, email, firstName, lastName){
+async function createStudent(email, firstName, lastName){
     const studentCollection = await students();
     let newStudent = {
-        'userId': newUser_id,
         'email': email,
         'firstName': firstName,
         'lastName': lastName,
@@ -30,7 +29,7 @@ async function createStudent(newUser_id, email, firstName, lastName){
     const insertInfo = await studentCollection.insertOne(newStudent);
     if (insertInfo.insertedCount === 0) throw `Could not add new student`;
     // const newId = insertInfo.insertedId;
-    return newStudent;
+    return insertInfo.insertedId;
 }
 
 

@@ -19,10 +19,9 @@ function Navigation(props) {
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
         if(tokenInfo){
           setVisitor(false);
-          const userEmail = tokenInfo.email;
-          const userId = tokenInfo.userId;
+          const statusId = tokenInfo.statusId;
           const status = tokenInfo.status;
-          const url = `/${status}/${userEmail}`
+          const url = `/${status}/${statusId}`
           setUserUrl(url); 
           console.log(userUrl);
           // console.log(`im in nav, and user email is ${userEmail}`);
@@ -43,11 +42,11 @@ function Navigation(props) {
           { 
             !visitor && <Menu.Menu position='right'>
               <Menu.Item
-                name='mypage'
-                active={activeItem === 'mypage'}
+                name='My Page'
+                active={activeItem === 'My Page'}
                 onClick={handleItemClick}
                 as={Link}
-                to={userUrl}
+                to='/myaccount'
               />
               <Menu.Item
               name='logout'
