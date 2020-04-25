@@ -32,58 +32,58 @@ To generate 'hogwarts' database in mongodb, run:
 cd studygeekserver
 npm run seed
 ```
-<hr/>
-### Homepage
+
+## Homepage
 In the **homepage**, visitor can choose to be either tutor or student, then the page turns to be a list of students for tutor visitor, or a list of tutors for student visitor. <br>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/homepage.png">
-<hr/>
 
-### Search Tutor Page
+
+## Search Tutor Page
 If user chooses to be a student, the browser goes to **search tutor Page**, where all tutors will be listed. Students can search tutors by key words in the search bar.<br>
 Visitors(without logging in) can only see the tutor cards with a brief introduction about the tutors. <br>
 Users(logged in) can visit tutors' personal pages by clicking the "detail" button on tutor card.
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/tutorList.png" >
-<hr/>
 
-### Search Student Page
+
+## Search Student Page
 If user chooses to be a tutor, the browser goes to **search student Page**, where all students will be listed. Tutors can search students by key words in the search bar.<br>
 Visitors(without logging in) can only see the student cards with a brief introduction about the students. <br>
 Users(logged in) can visit students' personal pages by clicking the "detail" button on student card.
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/studentList.png" >
-<hr/>
 
-### Sign Up Page
+
+## Sign Up Page
 Users can only sign up by a valid email. <br>
 If any of the fields is empty, there will be an error prompt.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/emptyInput.png" >
-<hr/>
+
 
 The **password** must match the **"confirm password"**.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/passwordNoMatch.png" >
 If the user signed up successfully, it will redirect to the log in page.<br/>
-<hr/>
 
-### Log In Page
+
+## Log In Page
 Users must provide the **email** and **password** to log in.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/login.png" >
-<hr/>
 
-### Log Out Page
+
+## Log Out Page
 After the user logs out, the token will be removed from the localStorage.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/logout.png" >
-<hr/>
 
-### My Account
+
+## My Account
 Users' information will be posted on their **account page**. The **information** will be retrieved from the **students collection** or the **tutor collection** by their **statusId** which is saved in the token in localStorage.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/myAccount.png">
-<hr/>
+
 
 Users can also edit their info on **account page**.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/personalPage.png">
-<hr/>
+
 
 ## Database
-### User Collections samples
+## User Collections samples
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/userDB.png">
 
 
