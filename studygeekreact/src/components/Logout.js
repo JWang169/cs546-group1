@@ -13,9 +13,10 @@ const LogOut = () => {
     <form className="ui form" onSubmit={submitInfo}>
       <button className='ui button' type='submit'>Log Out </button>
       
-      { loggedout && <p>
+      { loggedout && <h2>
           Dobby is free.
-          </p>}
+          </h2>
+      }
     </form>
 
     );
