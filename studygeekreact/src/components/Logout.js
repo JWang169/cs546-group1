@@ -7,7 +7,6 @@ const LogOut = () => {
       event.preventDefault();
       setLoggedout(true)
       localStorage.clear("token");
-
     }
 
     return (

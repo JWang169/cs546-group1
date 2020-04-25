@@ -18,7 +18,7 @@ const LogIn = () => {
           'password': password
         });
         // login succeed
-        console.log(token);
+        // console.log(token);
         localStorage.setItem("token", token.data);
         history.push('/')
       }catch(e){

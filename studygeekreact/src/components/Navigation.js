@@ -13,18 +13,16 @@ function Navigation() {
 
     useEffect(() => {
       const token = localStorage.getItem("token");
-      console.log(token)
       if (token){
-        const tokenInfo = jwt_decode(localStorage.getItem("token"));
-        console.log('token not working')
-        console.log(tokenInfo.expiresIn);
-        if(tokenInfo.expiresIn > Date.now() / 1000){
-          setVisitor(false);
-          console.log('im in nav, and visitor is false now ');
-
-        }
+        console.log('find token')
+        setVisitor(false);
+        // const tokenInfo = jwt_decode(localStorage.getItem("token"));
+        // if(tokenInfo){
+        //   setVisitor(false);
+        //   console.log('im in nav, and visitor is false now ');
+        // }
       }
-    },[]);
+    });
 
     return (
       <div>
