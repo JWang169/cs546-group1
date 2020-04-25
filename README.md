@@ -64,8 +64,16 @@ If the user signed up successfully, it will redirect to the log in page.<br/>
 Users must provide the **email** and **password** to log in.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/login.png" >
 
-### Personal page
-(registered) Users can edit their info on **Personal page**.<br/>
+### Log Out Page
+After the user logs out, the token will be removed from the localStorage.<br/>
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/logout.png" >
+
+### My Account
+Users' information will be posted on their **account page**. The **information** will be retrieved from the **students collection** or the **tutor collection** by their **statusId** which is saved in the token in localStorage.<br/>
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/myAccount.png">
+<br/>
+
+Users can also edit their info on **account page**.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/personalPage.png">
 <hr/>
 
