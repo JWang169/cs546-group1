@@ -140,8 +140,6 @@ const SignUp = () => {
             <label>I am a tutor.</label>
           </div>
         </div>
-
-
         <div className="field">
           <div className='ui checkbox'>
           <input type='checkbox' tabIndex='0' required/>

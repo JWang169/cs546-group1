@@ -5,7 +5,8 @@ import jwt_decode from "jwt-decode";
 
 const MyAccount =() => {
     const [email, setEmail] = useState("");
-    const [edit, setEdit] = useState(true);
+    const [edit, setEdit] = useState(false);
+    const [newSubject, setNewSubject] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [subjects, setSubjects] = useState(undefined);
@@ -26,6 +27,17 @@ const MyAccount =() => {
         }
     };
 
+    const submitInfo = async(event) =>{
+        event.preventDefault();
+        // add subject to database
+        setEdit(false)
+    }
+
+    const onClickFunc = () =>{
+        setEdit(true);
+    }
+
+
     useEffect(() => {
         getAccount()
     }, []);
@@ -33,38 +45,54 @@ const MyAccount =() => {
     return (
         <div className="container">
             <h1>{firstName}'s Page.</h1>
+            <br/>
+            <hr/>
+            <div className="container">
+                
+            </div>
             <div className="row">
                 <div className="col">
                     <h2>Subjects: </h2>
-                    <hr/>
                     {subjects && subjects.map(s => (
                         <div key={Math.random() * 100000}>
                             <p>{s}</p>
                         </div>
-                    ))}
+                    ))}               
                 </div>
                 <div className="col">
                     <h2>My Account: </h2>
                     <div className="form-group">First name: {firstName}</div>
                     <div className="form-group">Last name: {lastName}</div>
                     <div className="form-group">Email: {email}</div>
-                    
                 </div>
                 <div className="col">
                     <h2>About Me: </h2>
-                    <hr/>
-                    <p>{ info }</p>
-                    
-                    {edit && <div>
-                        <form className="ui form">
-                            <textarea placeholder="Tell us more" rows="3"></textarea>
-                        </form>
-                        <button>Submit</button>
-                    </div>}
-                    
-                </div>
-            </div>
 
+                    <p>{ info }</p>                  
+                </div>
+            </div>            
+     
+            {edit && <form className="ui form" onSubmit={submitInfo}>
+                <div className="field">
+                    <label>Add a subject</label>
+                    <input
+                    type="text"
+                    name="subject"
+                    value={newSubject}
+                    onChange={(e) => setNewSubject(e.target.value)}
+                    />
+           
+                </div>
+                
+                    <div className="field">
+                    <label>Add About Me</label>
+                    <textarea placeholder="Tell us more about you..." rows="3"></textarea>
+                    </div>
+    
+                <br/>
+                <button className='ui button' type='submit'>Update My Account</button>
+            </form>}
+            {!edit && <button className='ui button' onClick={onClickFunc}>Edit My Account</button>}
         </div>
     )
 }
