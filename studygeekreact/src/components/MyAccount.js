@@ -13,6 +13,7 @@ const MyAccount =() => {
     const [info, setInfo] = useState("");
     const getAccount = async() =>{
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
+        console.log(tokenInfo)
         const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}`;
         try{
             const { data } = await axios.get(urlString);

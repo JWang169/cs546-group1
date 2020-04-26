@@ -14,8 +14,11 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/:id", async (req, res) => {
   // Not implemented
+  // try{
+  //   const 
+  // }
   res.status(501).send();
 });
 
