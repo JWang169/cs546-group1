@@ -78,7 +78,7 @@ Users' information will be posted on their **account page**. The **information**
 
 
 Users can also edit their info on **account page**.<br/>
-<img src="https://github.com/JWang169/cs546-group1/blob/master/img/personalPage.png">
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/editAccount.png">
 
 
 ## Database
