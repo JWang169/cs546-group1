@@ -14,12 +14,27 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/:id", async (req, res) => {
-  // Not implemented
-  // try{
-  //   const 
-  // }
-  res.status(501).send();
+// update tutor info 
+router.put("/:id", async (req, res) => {
+  const info = req.body['info'];
+  const subjects = req.body['subjects'];
+  if(!info){
+    res.status(400).json({error: "No Tutor info provided."})
+    return 
+  }
+  if(!subjects){
+    res.status(400).json({error: "No Tutor subjects provided."})
+    return 
+  }
+  console.log(req.params.id)
+  console.log(info)
+  try{
+    const updatedTutor = await tutorData.updateTutor(req.params.id, info, subjects);
+    res.status(200).json(updatedTutor);
+  }catch(e){
+    console.log(e)
+    res.status(500).json({error: e});
+  }
 });
 
 

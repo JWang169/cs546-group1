@@ -7,13 +7,15 @@ const MyAccount =() => {
     const [email, setEmail] = useState("");
     const [edit, setEdit] = useState(false);
     const [newSubject, setNewSubject] = useState("");
+    // const [allSubjects, setAllSubjects] = useState([]);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [subjects, setSubjects] = useState(undefined);
+    const [subjects, setSubjects] = useState([]);
     const [info, setInfo] = useState("");
+    const [newInfo, setNewInfo] = useState("");
     const getAccount = async() =>{
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
-        console.log(tokenInfo)
+        // console.log(tokenInfo)
         const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}`;
         try{
             const { data } = await axios.get(urlString);
@@ -21,20 +23,46 @@ const MyAccount =() => {
             setFirstName(data.firstName);
             setLastName(data.lastName);
             setSubjects(data.subjects);
-            console.log(data.subjects)
             setInfo(data.info);
         }catch(e){
             console.log(e)
         }
     };
 
-    const submitInfo = async(event) =>{
+    const submitInfo = async(event) => {
         event.preventDefault();
-        // add subject to database
+        // add about me to database
+        const tokenInfo = jwt_decode(localStorage.getItem("token"));
+        // console.log(tokenInfo)
+        console.log('im in submitInfo func')
+        if(newInfo.length === 0){
+            setNewInfo(info);
+        }
+        const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}`;
+        try{
+            const { data } = await axios.put(urlString, {
+                'info': newInfo,
+                'subjects': subjects
+            });
+            console.log(data);
+        }catch(e){
+            console.log(e)
+        }
+
         setEdit(false)
     }
 
-    const onClickFunc = () =>{
+    const addSubject = (event) => {
+        event.preventDefault();
+        setSubjects([...subjects, newSubject]);
+    }
+
+    const addInfo = (event) => {
+        event.preventDefault();
+        setInfo(newInfo);
+    }
+
+    const onClickFunc = () => {
         setEdit(true);
     }
 
@@ -48,9 +76,6 @@ const MyAccount =() => {
             <h1>{firstName}'s Page.</h1>
             <br/>
             <hr/>
-            <div className="container">
-                
-            </div>
             <div className="row">
                 <div className="col">
                     <h2>Subjects: </h2>
@@ -68,10 +93,10 @@ const MyAccount =() => {
                 </div>
                 <div className="col">
                     <h2>About Me: </h2>
-
                     <p>{ info }</p>                  
                 </div>
-            </div>            
+            </div>    
+            {!edit && <button className='ui button' onClick={onClickFunc}>Edit My Account</button>}        
      
             {edit && <form className="ui form" onSubmit={submitInfo}>
                 <div className="field">
@@ -82,18 +107,23 @@ const MyAccount =() => {
                     value={newSubject}
                     onChange={(e) => setNewSubject(e.target.value)}
                     />
-           
+                <button className='ui button' onClick={addSubject}>Update Subject</button>
                 </div>
                 
-                    <div className="field">
+                <div className="field">
                     <label>Add About Me</label>
-                    <textarea placeholder="Tell us more about you..." rows="3"></textarea>
-                    </div>
-    
-                <br/>
-                <button className='ui button' type='submit'>Update My Account</button>
+                    <textarea 
+                    rows="3"
+                    placeholder="Say something about you." 
+                    value={newInfo}
+                    onChange={(e) => setNewInfo(e.target.value)} 
+                    />
+                    <button className='ui button' onClick={addInfo}>Update About Me </button>
+                </div>
+                           
+
+            <div className="col"><button className='ui button' type='submit' style={{position: 'absolute', right: 50}}>Save Change </button></div>
             </form>}
-            {!edit && <button className='ui button' onClick={onClickFunc}>Edit My Account</button>}
         </div>
     )
 }
