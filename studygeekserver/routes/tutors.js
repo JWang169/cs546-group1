@@ -16,6 +16,7 @@ router.get("/", async (req, res) => {
 
 // update tutor info 
 router.put("/:id", async (req, res) => {
+  console.log('in routes/tutors.js')
   const info = req.body['info'];
   const subjects = req.body['subjects'];
   if(!info){
@@ -26,8 +27,7 @@ router.put("/:id", async (req, res) => {
     res.status(400).json({error: "No Tutor subjects provided."})
     return 
   }
-  console.log(req.params.id)
-  console.log(info)
+
   try{
     const updatedTutor = await tutorData.updateTutor(req.params.id, info, subjects);
     res.status(200).json(updatedTutor);

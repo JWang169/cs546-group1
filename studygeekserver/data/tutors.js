@@ -16,7 +16,7 @@ async function getTutor(id){
         id = ObjectId.createFromHexString(id)
     }
     const theTutor = await tutorCollection.findOne({ "_id": id });
-    if (theTutor === null) throw 'No student with that id';
+    if (theTutor === null) throw 'No tutor with that id';
     return theTutor;
 }
 
@@ -27,6 +27,8 @@ async function createTutor(email, firstName, lastName){
         'email': email,
         'firstName': firstName,
         'lastName': lastName,
+        'info': "",
+        'subjects': []
     }
     const insertInfo = await tutorCollection.insertOne(newTutor);
     if (insertInfo.insertedCount === 0) throw `Could not add new student`;
@@ -43,7 +45,7 @@ async function updateTutor(tutorId, info, subjects){
         tutorId = ObjectId.createFromHexString(tutorId);
     }
     const tutorCollection = await tutors();
-    const oldInfo = this.getTutor(tutorId);
+    const oldInfo = await this.getTutor(tutorId);
     const updatedTutor = {
         'email': oldInfo.email,
         'firstName': oldInfo.firstName,
@@ -52,8 +54,7 @@ async function updateTutor(tutorId, info, subjects){
         'subjects': subjects
     }
     const updatedInfo = await tutorCollection.updateOne({_id:tutorId}, { $set : updatedTutor});
-    console.log("this is the updatedInfo")
-    console.log(updatedInfo)
+    // console.log(updatedInfo)
     return await this.getTutor(tutorId);
 }
 

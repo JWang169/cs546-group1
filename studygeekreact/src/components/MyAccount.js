@@ -12,7 +12,8 @@ const MyAccount =() => {
     const [lastName, setLastName] = useState("");
     const [subjects, setSubjects] = useState([]);
     const [info, setInfo] = useState("");
-    const [newInfo, setNewInfo] = useState("");
+    const [newInfo, setNewInfo] = useState(undefined);
+
     const getAccount = async() =>{
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
         // console.log(tokenInfo)
@@ -31,24 +32,20 @@ const MyAccount =() => {
 
     const submitInfo = async(event) => {
         event.preventDefault();
-        // add about me to database
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
-        // console.log(tokenInfo)
-        console.log('im in submitInfo func')
-        if(newInfo.length === 0){
-            setNewInfo(info);
+        let newData = {'info': newInfo, 'subjects': subjects};
+        if(!newInfo){
+            console.log('no new info')
+            newData['info'] = info;
         }
+        // console.log(newData)
         const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}`;
         try{
-            const { data } = await axios.put(urlString, {
-                'info': newInfo,
-                'subjects': subjects
-            });
-            console.log(data);
+            const { data } = await axios.put(urlString, newData);
+            // console.log(data);
         }catch(e){
             console.log(e)
         }
-
         setEdit(false)
     }
 
@@ -60,12 +57,12 @@ const MyAccount =() => {
     const addInfo = (event) => {
         event.preventDefault();
         setInfo(newInfo);
+        setNewInfo(newInfo);
     }
 
     const onClickFunc = () => {
         setEdit(true);
     }
-
 
     useEffect(() => {
         getAccount()

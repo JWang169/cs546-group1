@@ -24,6 +24,8 @@ async function createStudent(email, firstName, lastName){
         'email': email,
         'firstName': firstName,
         'lastName': lastName,
+        'info': "",
+        'subjects': []
     }
     const insertInfo = await studentCollection.insertOne(newStudent);
     if (insertInfo.insertedCount === 0) throw `Could not add new student`;
