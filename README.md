@@ -81,11 +81,13 @@ Users can also edit their info on **account page**.<br/>
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/editAccount.png">
 <br/>
 
-## Database
+
 ## User Collections samples
 <img src="https://github.com/JWang169/cs546-group1/blob/master/img/userDB.png">
 
 
+## Tutor Collections samples
+<img src="https://github.com/JWang169/cs546-group1/blob/master/img/tutorDB.png">
 
 
 
