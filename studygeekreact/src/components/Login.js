@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-
+import UserContext from './context/UserContext';
 
 const LogIn = () => {
     const [email, setEmail] = useState("");
@@ -9,19 +9,24 @@ const LogIn = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [emailError, setEmailError] = useState("");
     const history = useHistory();
-
+    const {token, setToken} = useContext(UserContext);
     const submitInfo = async(event) =>{
       event.preventDefault();
       try {
-        const token = await axios.post('http://localhost:3003/login',{
+        const newToken = await axios.post('http://localhost:3003/login',{
           'email': email,
           'password': password
         });
         // login succeed
         // console.log(token);
-        localStorage.setItem("token", token.data);
+        // console.log('log in succeed!')
+        // console.log(newToken.data); 
+        localStorage.setItem("token", newToken.data);
+        setToken(newToken);
+        // const tokenInfo = jwt_decode(localStorage.getItem("token"));
         history.push('/')
       }catch(e){
+        console.log(e);
         const jsonResponse = e.response;
         if(jsonResponse.data.error === 'No such user'){
           setEmailError("User Email doesn't exist.");
@@ -32,6 +37,7 @@ const LogIn = () => {
     }
 
     return (
+    
     <form className="ui form" onSubmit={submitInfo}>
       <div className="field">
         <label>Email</label>

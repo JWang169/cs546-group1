@@ -1,19 +1,23 @@
-import React, {useState} from 'react';
+import React, { useContext } from 'react';
+import UserContext from './context/UserContext';
+
 
 const LogOut = () => {
-    const [loggedout, setLoggedout] = useState(false);
-
+    const {token, setToken} = useContext(UserContext);
     const submitInfo = async(event) =>{
       event.preventDefault();
-      setLoggedout(true)
+      setToken(null)
       localStorage.clear("token");
     }
 
     return (
+
     <form className="ui form" onSubmit={submitInfo}>
-      <button className='ui button' type='submit'>Log Out </button>
+      { token && 
+        <button className='ui button' type='submit'>Log Out </button>
+      }
       
-      { loggedout && <h2>
+      { !token && <h2>
           Dobby is free.
           </h2>
       }

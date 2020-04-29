@@ -52,9 +52,11 @@ async function getUser(email, password){
             },
             "Flibbertigibbet",
             {
-                expiresIn: "365d"
+                expiresIn: "7d"
             }
         )
+        // console.log('token from data/users')
+        // console.log(token)
         return token;
     }else{
         throw `Password doesn't match.`

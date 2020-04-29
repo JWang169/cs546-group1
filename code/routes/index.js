@@ -14,9 +14,10 @@ const handler = app => {
     app.use('/logout', (req, res) => {
         res.render("studygeeks/logout", {});
     });
+
     app.use('*', (req, res) => {
         res.render("studygeeks/homepage", {});
     });
 };
   
-module.exports = handler;
+module.exports = handler; 
