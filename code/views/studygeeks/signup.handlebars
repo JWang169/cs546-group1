@@ -1,0 +1,52 @@
+<div class='ui container'>
+  <h2>Sign up</h2>
+
+<form class="ui form">
+    <div class="two fields">
+        <div class="field">
+            <label for="first_name">First Name</label>
+            <input name='first_name' autofocus=true placeholder= 'First name' id="first_name" required>
+        </div>
+        <div class="field">
+            <label for="last_name">Last Name</label>
+            <input name="last_name" placeholder='Last name' id="last_name" required>
+        </div>
+    </div>
+
+    <div class="ui radio checkbox">
+        <input
+            type="checkbox"
+            name="checkboxRadioGroup"
+            readOnly=""
+            tabIndex="0"
+            value="tutor"
+        />
+        <label>I am a tutor.</label>
+    </div>
+
+    <div class="field">
+        <label for="email">Email</label>
+        <input type="email" name="email" required=true placeholder='email@example.com' id="email" required>
+    </div>
+
+    <div class="field">
+        <label for="password">Password</label>
+        <input type="password" placeholder='******' autocomplete="off" id="password" required>
+        <em>Six characters minimum</em>
+        <br>
+    </div>
+
+    <div class="field">
+        <label for="pass confirm">Password Confirm</label>
+        <input type="password" autocomplete="off" placeholder="******" id="pass confirm" required>
+    </div>
+
+    <div class="field">
+        <div class="ui checkbox">
+            <input type="checkbox" tabindex="0" required>
+            <label>I agree to the Terms and Conditions</label>
+        </div>
+    </div>
+
+    <button class="ui button" type="submit">Submit</button>
+</form>

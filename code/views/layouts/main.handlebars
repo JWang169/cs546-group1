@@ -2,24 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+<link rel="stylesheet" href="/public/site.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css" >
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <title>Study Geeks</title>
 </head>
 <body>
-    <nav class="navbar navbar-light bg-light ">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/homepage">Home</a>
-        {{#if visitor}}
-        <a class="nav-link" style="float:left" href="/signup">Sign Up</a>
-        <a class="nav-link" style="float:left" href="/login">Log In</a>
-        {{else}}
-        <a class="nav-link" style="float:left" href="/myaccount">My Page </a>
-        <a class="nav-link" style="float:left" href="/logout">Log Out</a>
-        {{/if}}
-        </span>
 
-
-
+        <div class="collapse navbar-collapse">
+            <div class="navbar-nav">
+            {{#if returnUser }}
+            <a class="nav-item nav-link" href="/myaccount">My Page</a>
+            <a class="nav-item nav-link" href="/logout">Log Out</a>
+            {{else}}
+            <a class="nav-item nav-link" href="/signup">Sign Up</a>
+            <a class="nav-item nav-link" href="/login">Log In</a>
+            {{/if}}
+            </div>
+        </div>
     </nav>
     <main>{{{body}}}</main>
 
