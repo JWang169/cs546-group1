@@ -10,31 +10,25 @@ function Navigation(props) {
     // const pathname = window.location.pathname;
     // const path = pathname ==='/' ? 'home': pathname.substr(1);
     // const [activeItem, setActiveItem ] = useState(path); 
- 
-
-    // const [userUrl, setUserUrl] = useState("");
     // const handleItemClick = (e, { name }) => setActiveItem(name);
 
     const {token, setToken} = useContext(UserContext);
-    // if (token){
-    //   let curTime = Date.now() / 1000;
-    //   const jwt = jwt_decode(token);
-    //   if (jwt.exp < curTime ){
-    //     setToken(null);
-    //     localStorage.clear("token");
-    //   }
-    // }
-
     useEffect(() => {
       if(token){
-        const tokenInfo = jwt_decode(token);
-        const exp = tokenInfo.exp;
-        if (exp < Date.now() / 1000){
-          localStorage.clear("token");
+        try{
+          const tokenInfo = jwt_decode(token);
+          const exp = tokenInfo.exp;
+          if (exp < Date.now() / 1000){
+            localStorage.clear("token");
+            setToken(null);
+          }
+        }catch(e){
           setToken(null);
+          localStorage.clear("token");
+          console.log(e);
         }
       }
-    })
+    });
 
     // useEffect(() => {
     //   if (token){

@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
-
+import jwt_decode from "jwt-decode";
 import 'semantic-ui-css/semantic.min.css';
 import '../App.css';
 
@@ -20,6 +20,17 @@ import UserContext from "./context/UserContext";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
+
+  // useEffect(() => {
+  //   if(token){
+  //     const tokenInfo = jwt_decode(token);
+  //     const exp = tokenInfo.exp;
+  //     if (exp < Date.now() / 1000){
+  //       localStorage.clear("token");
+  //       setToken(null);
+  //     }
+  //   }
+  // })
 
   return (
     

@@ -17,12 +17,9 @@ const LogIn = () => {
           'email': email,
           'password': password
         });
-        // login succeed
-        // console.log(token);
-        // console.log('log in succeed!')
-        // console.log(newToken.data); 
+
         localStorage.setItem("token", newToken.data);
-        setToken(newToken);
+        setToken(newToken.data);
         // const tokenInfo = jwt_decode(localStorage.getItem("token"));
         history.push('/')
       }catch(e){
