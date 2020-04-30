@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import UserContext from './context/UserContext';
 
 
 const SignUp = () => {
+    const {token, setToken} = useContext(UserContext);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -43,6 +45,12 @@ const SignUp = () => {
         }
       }  
     }
+
+    useEffect(() => {
+      if (token){
+        history.push('/')
+      }
+    }); 
 
     return (
       <form className="ui form" onSubmit={submitInfo}>

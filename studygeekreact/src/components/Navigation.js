@@ -25,7 +25,16 @@ function Navigation(props) {
     //   }
     // }
 
-    // console.log(tokenInfo);
+    useEffect(() => {
+      if(token){
+        const tokenInfo = jwt_decode(token);
+        const exp = tokenInfo.exp;
+        if (exp < Date.now() / 1000){
+          localStorage.clear("token");
+          setToken(null);
+        }
+      }
+    })
 
     // useEffect(() => {
     //   if (token){

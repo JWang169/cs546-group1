@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import UserContext from './context/UserContext';
 
 const LogIn = () => {
@@ -36,8 +36,14 @@ const LogIn = () => {
       }  
     }
 
+    useEffect(() => {
+      if (token){
+        history.push('/')
+      }
+    }); 
+
     return (
-    
+
     <form className="ui form" onSubmit={submitInfo}>
       <div className="field">
         <label>Email</label>
