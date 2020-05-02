@@ -10,6 +10,8 @@ const SignUp = () => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [town, setTown] = useState("");
+    const [state, setState] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [noMatch, setNoMatch] = useState(false);
     const history = useHistory();
@@ -33,7 +35,9 @@ const SignUp = () => {
           'lastName': lastName,
           'status': status,
           'email': email,
-          'password': password
+          'password': password,
+          'town': town,
+          'state': state
         });
         history.push('/login');
       }catch(e){
@@ -136,6 +140,30 @@ const SignUp = () => {
         </div>
 
         <div className="field">
+          <label>State</label>
+          <input 
+          type='text' 
+          name='state' 
+          placeholder='State'
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+          required
+          />
+        </div>
+
+        <div className="field">
+          <label>Town</label>
+          <input 
+          type='text' 
+          name='town' 
+          placeholder='Town'
+          value={town}
+          onChange={(e) => setTown(e.target.value)}
+          required
+          />
+        </div>
+
+        <div className="field">
           <div className="ui radio checkbox">
             <input
               type="checkbox"
@@ -148,6 +176,7 @@ const SignUp = () => {
             <label>I am a tutor.</label>
           </div>
         </div>
+
         <div className="field">
           <div className='ui checkbox'>
           <input type='checkbox' tabIndex='0' required/>

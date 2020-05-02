@@ -6,6 +6,7 @@ import UserContext from './context/UserContext';
 const LogIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [status, setStatus] = useState("students");
     const [errorMessage, setErrorMessage] = useState("");
     const [emailError, setEmailError] = useState("");
     const history = useHistory();
@@ -15,7 +16,8 @@ const LogIn = () => {
       try {
         const newToken = await axios.post('http://localhost:3003/login',{
           'email': email,
-          'password': password
+          'password': password,
+          'status': status
         });
 
         localStorage.setItem("token", newToken.data);
@@ -88,6 +90,21 @@ const LogIn = () => {
         required
         />
       </div>
+
+      <div className="field">
+          <div className="ui radio checkbox">
+            <input
+              type="checkbox"
+              name="checkboxRadioGroup"
+              readOnly=""
+              tabIndex="0"
+              value="tutor"
+              onChange={(e) => setStatus("tutors")}
+            />
+            <label>I am a tutor.</label>
+          </div>
+      </div>
+
       <div className="field">
         <div className='ui checkbox'>
         <input type='checkbox' tabIndex='0' required/>
