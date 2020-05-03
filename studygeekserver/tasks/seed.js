@@ -176,7 +176,25 @@ const malfoy = new Student({
     lastName: "Malfoy",
     town: "Slytherin",
     state:"Hogwarts",
-    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK"
+    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
+    availability: [
+        {
+            day: "Thursday",
+            dayNum: 4,
+            start: 1496320200000,
+            startExtended: new Date(1496320200000),
+            end: 1496323800000,
+            endExtended: new Date(1496323800000)
+        },
+        {
+            day: "Friday",
+            dayNum: 5,
+            start: 1496413800000,
+            startExtended: new Date(1496413800000),
+            end: 1496460600000,
+            endExtended: new Date(1496460600000)
+        }
+    ]
   /* info: "A charming boy who is a little bit lost",
     education: "Jonior", 
     subjects: ["Flying", "Potions", "Divination"]*/
