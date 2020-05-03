@@ -61,5 +61,52 @@ async function createStudent(email, firstName, lastName, password, town, state){
     return insertInfo.insertedId;
 }
 
+const dayOfWeek= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-module.exports = {getAllstudents, getStudent, createStudent}
+async function addAvailability(id, start, end){
+    //this code was written assuming that the HTML date input type='datetime-local'
+
+    const studentCollection = await students();
+
+    const newStart = new Date(start);
+    const newEnd = new Date(end);
+    const newDay= newStart.getDay();
+    if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
+    const newStartTime = newStart.getTime();//there also exists a getTimeLocal function, but I didn't want to use it
+    const newEndTime = newEnd.getTime();//NOTE: The time is represented by the number of milliseconds since the year began
+    if(newStartTime>=newEndTime)throw "The available time range must end after it begins";
+    const currentStudent = await this.getStudent(id);
+    const availableArray = currentStudent.availability;
+    
+    var i;
+    for(i=0;i<availableArray.length;i++){
+        if(availableArray[i].dayNum==newDay){
+            if(availableArray[i].start>=newStartTime){
+                if(availableArray[i].start<newEndTime) throw "The available time range cannot overlap with any pre-existing availabilities";
+            }
+            if(availableArray[i].start<=newStartTime){
+                if(availableArray[i].end>newStartTime) throw "The available time range cannot overlap with any pre-existing availabilities";
+            }
+        }
+    }
+
+    let newAvailability = {
+        day: dayOfWeek[newDay],
+        dayNum: newDay,
+        start: newStartTime,
+        startExtended: newStart,
+        end: newEndTime,
+        endExtended: newEnd
+    };
+    const updateInfo = await studentCollection.updateOne(
+        {_id: id}, 
+        {$addToSet: {availability: newAvailability}}
+    );
+
+    if(!updateInfo.matchedCount || !updateInfo.modifiedCount) throw "addition failed";
+
+    return newAvailability;
+}
+
+
+module.exports = {getAllstudents, getStudent, createStudent, addAvailability}
