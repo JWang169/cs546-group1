@@ -25,22 +25,45 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {//NOTE: when creating a new student profile, the studentSubjects and availability Arrays are initially empty
+  const reqStudent = req.body;//NOTE: These will need to be updated to match the form data passed in by html
 
-//GET /students/{email}
-router.get("/:email", async (req, res) => {
-  try {
-    // console.log(req);
-    const student = await student.getByEmail(req.params.id);
-    res.send(student)
-  } catch (e) {
-    console.log(e)
-    res.status(404).json({ message: "Student user not found!" });
+  if(!reqStudent){
+    res.status(400).json({error: "You must provide student profile data"});//this should be replaced by an error page redirect in the future
+    return;
   }
-});
-
-router.post("/", async (req, res) => {
-  // Not implemented
-  res.status(501).send();
+  if(!reqStudent.firstName){//type checking is done in data file
+    res.status(400).json({error: "You must provide a first name"});
+		return;
+  }
+  if(!reqStudent.lastName){
+    res.status(400).json({error: "You must provide a last name"});
+		return;
+  }
+  if(!reqStudent.town){
+    res.status(400).json({error: "You must provide a town"});
+		return;
+  }
+  if(!reqStudent.state){
+    res.status(400).json({error: "You must provide a state"});
+		return;
+  }
+  if(!reqStudent.email){
+    res.status(400).json({error: "You must provide an email"});
+		return;
+  }
+  if(!reqStudent.password){
+    res.status(400).json({error: "You must provide a password"});
+		return;
+  }
+  try{
+    const newStudent = await studentData.createStudent(reqStudent.email, reqStudent.firstName, reqStudent.lastName, reqStudent.password, reqStudent.town, reqStudent.state);
+    res.status(200).json({id: newStudent});
+    return;
+  }catch(e){
+    res.status(501).json({error: e});
+    return;
+  }
 });
 
 module.exports = router;
