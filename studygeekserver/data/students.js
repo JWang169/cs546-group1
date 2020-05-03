@@ -16,7 +16,7 @@ async function getStudent(id){
     const studentCollection = await students();
     if (typeof id !== "string" )throw "The id must be of type String";
     const theStudent = await studentCollection.findOne({ "_id": id });
-    if (theStudent === null) throw 'No student with that id';
+    if (theStudent === null) throw `No student with the id: ${id}`;
     return theStudent;
 }
 
@@ -24,7 +24,7 @@ async function getStudentByEmail(email){
     const studentCollection = await students();
     const emailLow = email.toLowerCase();
     const theStudent = await studentCollection.findOne({ "email": emailLow });
-    if (!theStudent) throw 'No student account with that email';
+    if (!theStudent) throw `No student account with the email: ${emailLow}`;
     return theStudent;
 }
 
@@ -38,7 +38,7 @@ async function createStudent(email, firstName, lastName, password, town, state){
     const emailLow= email.toLowerCase();//converts email to lowercase
     const studentCollection = await students();//need error checking for email duplicates
     const accountAlreadyExist = await studentCollection.findOne({"email":emailLow});
-    if(accountAlreadyExist)throw "There is already an account registered under that email!";
+    if(accountAlreadyExist)throw `There is already an account registered under the email: ${emailLow}`;
     const hashedPassword = await bcrypt.hash(password, saltRounds);// passsword double checked in front end
 
     let newStudent = {
@@ -82,10 +82,10 @@ async function addAvailability(id, start, end){
     for(i=0;i<availableArray.length;i++){
         if(availableArray[i].dayNum==newDay){
             if(availableArray[i].start>=newStartTime){
-                if(availableArray[i].start<newEndTime) throw "The available time range cannot overlap with any pre-existing availabilities";
+                if(availableArray[i].start<newEndTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
             }
             if(availableArray[i].start<=newStartTime){
-                if(availableArray[i].end>newStartTime) throw "The available time range cannot overlap with any pre-existing availabilities";
+                if(availableArray[i].end>newStartTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
             }
         }
     }
@@ -108,5 +108,17 @@ async function addAvailability(id, start, end){
     return newAvailability;
 }
 
+async function removeStudent(id){
+    const studentCollection = await students();
+    //let student = null;//Unecessary, but allows return to contain the info
+    //student = await this.getStudent(id);//of the deleted Student
+    const deletedInfo = studentCollection.removeOne({_id: id});
+    if (deletedInfo.deletedCount === 0)throw `deletion of student: (${id}) failed`;
+    return {deleted: true};
+}
 
-module.exports = {getAllstudents, getStudent, createStudent, addAvailability}
+/* TO IMPLEMENT:
+some form of remove availability function, but first need html delete specification info
+*/
+
+module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent}

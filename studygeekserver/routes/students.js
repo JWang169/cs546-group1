@@ -101,4 +101,31 @@ router.post("/:id/availability", async (req, res) => {//for form POST submission
   }
 }); 
 
+router.delete("/:id", async (req, res) =>{
+  //NOTE 1: Needs authentification and confirmation to be done before hand (but not here)
+  //NOTE 2: TutorPairs will need to be deleted, and all the corresponding entries that that would entail as well
+  //NOTE 3: Cookie for this student should be deleted, as well as Chat History
+  //NOTE 4: Reviews do not need to be deleted
+  try{
+    await studentData.getStudent(req.params.id);
+  }catch(e){
+    res.status(404).json({
+      error: "student with this ID not found",
+      reason: e
+    });
+  }
+  try{
+    const deletedStudent = await studentData.removeStudent(req.params.id);
+    res.status(200).json(deletedStudent);//Should have link to home page/account creation.
+  }catch(e){
+    res.status(500).json({error: e});
+  }
+});
+
+/* To implement here:
+  delete availability (need to know how the html form will select array item to delete)
+  delete Student
+  post/delete studentSubjects (need for the tutorPairs database to be created first)
+*/
+
 module.exports = router;
