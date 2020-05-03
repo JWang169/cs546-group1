@@ -66,7 +66,7 @@ router.post("/", async (req, res) => {//NOTE: when creating a new student profil
   }
 });
 
-router.post("/:id/available", async (req, res) => {//for form POST submission of available times for student
+router.post("/:id/availability", async (req, res) => {//for form POST submission of available times for student
   const availability = await req.body;
   //will need to get the start/end times from HTML, I RECOMMEND HTML FILE USE input type= 'datetime-local',
   //despite its lack of compatability accross browsers, it is provided to the class in the html intro slides

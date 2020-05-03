@@ -73,7 +73,7 @@ async function addAvailability(id, start, end){
     const newDay= newStart.getDay();
     if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
     const newStartTime = newStart.getTime();//there also exists a getTimeLocal function, but I didn't want to use it
-    const newEndTime = newEnd.getTime();//NOTE: The time is represented by the number of milliseconds since the year began
+    const newEndTime = newEnd.getTime();//NOTE: The time is represented by the number of milliseconds since Jan 1st, 1970, 00:00:00
     if(newStartTime>=newEndTime)throw "The available time range must end after it begins";
     const currentStudent = await this.getStudent(id);
     const availableArray = currentStudent.availability;
@@ -96,7 +96,7 @@ async function addAvailability(id, start, end){
         start: newStartTime,
         startExtended: newStart,
         end: newEndTime,
-        endExtended: newEnd
+        endExtended: newEnd//NOTE: this will output the time relative to the UTC timezone, making output look slightly off if not expected.
     };
     const updateInfo = await studentCollection.updateOne(
         {_id: id}, 
