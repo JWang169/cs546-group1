@@ -1,5 +1,11 @@
 const MongoClient = require('mongodb').MongoClient;
-const settings = require('./settings');
+const settings = {
+    mongoConfig: {
+      serverUrl: "mongodb://localhost:27017/",
+      database: "hogwarts"
+    }
+};
+
 const mongoConfig = settings.mongoConfig;
 
 let _connection = undefined;
