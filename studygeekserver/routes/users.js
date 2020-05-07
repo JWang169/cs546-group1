@@ -16,11 +16,14 @@ router.post("/signup", async (req, res) => {
     const lastName = req.body['lastName'];
     const firstName = req.body['firstName'];
     const status = req.body['status'];
+    const town = req.body['town'];
+    const state = req.body['state'];
+
     let userId = undefined;
 
     if(status === 'students'){
         try{
-            const insertId = await studentData.createStudent(email, firstName, lastName)
+            const insertId = await studentData.createStudent(email, firstName, lastName, password, town, state);
             userId = insertId;
         }catch(e){
             res.status(409).json({error: e});

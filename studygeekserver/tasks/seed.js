@@ -69,19 +69,42 @@ for(t in tutorArray){
     })
 }
 
-
 const Student = mongoose.model('Student', {
-    name: {
-        type:String
-    },
-    education: {
+    _id: {
         type: String
     },
-
-    info: {
+    firstName: {
         type:String
     },
-    subjects: {
+    lastName: {
+        type:String
+    },
+    hashedPassword: {
+        type:String//For now, all passwords in seed will default to
+        // $2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK
+        //from the lab 10
+    },
+    town:{
+        type:String
+    },
+    state:{
+        type:String
+    },
+    email: {
+        type:String
+    },
+    availability: {//lefft empty for now, have not yet implemented its database
+        type: Array,
+        "default": []
+    },
+    /*education: {// this does not exist in DB proposal
+        type: String
+    },*/
+
+    /*info: {
+        type:String
+    },*/
+    studentSubjects: {//left empty for now, have not yet implemented its database
         type: Array,
         "default": []
     }
@@ -89,48 +112,98 @@ const Student = mongoose.model('Student', {
 
 let studentArray = [];
 const harry = new Student({
-    name: "Harry Potter",
-    info: "The boy who lived",
-    education: "Junior", 
-    subjects: ["Flying", "Defence Against the Dark Arts", "Potions"]
+    _id:"507f1f77bcf86cd799439011",//from lab 6 (also seen in mongodb objectId webpage)
+    firstName: "Harry",
+    lastName:"Potter",
+    town:"Little Whinging",
+    state:"Surrey",
+    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
+    email: "horcrux@gmail.com"
+
+    //info: "The boy who lived",
+    //education: "Junior", 
+   // subjects: ["Flying", "Defence Against the Dark Arts", "Potions"]
 })
 studentArray.push(harry)
 
 const hermoine = new Student({
-    name: "Hermoine Granger",
-    info: "One of the most talented witch. ",
-    education: "Ph.D", 
-    subjects: ["Defence Against the Dark Arts", "Potions", "Transfiguration", "Divination"]
+    _id:"a4f8512b9a734baf863ff33f", //from lab 6
+    firstName: "Hermoine",
+    lastName: "Granger",
+    town: "Hogsmeade",
+    state: "Britain",
+    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
+    email: "bestwitch@gmail.com"
+
+    //info: "One of the most talented witch.",
+    //education: "Ph.D", 
+    //subjects: ["Defence Against the Dark Arts", "Potions", "Transfiguration", "Divination"]
 })
 studentArray.push(hermoine)
 
 const ron = new Student({
-    name: "Ron Wesley",
-    info: "Hermoine's future husband. ",
+    _id:"5324fbb60f664dc38e540408",//from lab 4
+    firstName: "Ron",
+    lastName: "Weasley",
+    town: "The Burrough",
+    state: "Devon",
+    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
+    email: "hermoineHusband@gmail.com"
+    /*info: "Hermoine's future husband. ",
     education: "Fresh", 
-    subjects: ["Flying"]
+    subjects: ["Flying"]*/
 })
 studentArray.push(ron)
 
 const luna = new Student({
-    name: "Luna Lovegood",
-    education: "Senior", 
+    _id:"5b0b614d46a8445083b965b8",//from lab4
+    firstName: "Luna",
+    lastName: "Lovegood",
+    town: "Rook",
+    state: "New Jersey",
+    hashedPassword:"$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
+    email: "nargles@gmail.com"
+  /*  education: "Senior", 
     info: "A true, delight Ravenclaw with a sing-song voice.",
-    subjects: ["Defence Against the Dark Arts", "Divination"]
+    subjects: ["Defence Against the Dark Arts", "Divination"]*/
 })
 studentArray.push(luna)
 
 const malfoy = new Student({
-    name: "Draco Lucius Malfoy",
-    info: "A charming boy who is a little bit lost",
+    _id: "5e1a0651741b255ddda996c4",//from mongodb objectid webpage
+    firstName: "Draco",
+    email: "lucius@gmail.com",
+    lastName: "Malfoy",
+    town: "Slytherin",
+    state:"Hogwarts",
+    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
+    availability: [
+        {
+            day: "Thursday",
+            dayNum: 4,
+            start: 1496320200000,
+            startExtended: new Date(1496320200000),
+            end: 1496323800000,
+            endExtended: new Date(1496323800000)
+        },
+        {
+            day: "Friday",
+            dayNum: 5,
+            start: 1496413800000,
+            startExtended: new Date(1496413800000),
+            end: 1496460600000,
+            endExtended: new Date(1496460600000)
+        }
+    ]
+  /* info: "A charming boy who is a little bit lost",
     education: "Jonior", 
-    subjects: ["Flying", "Potions", "Divination"]
+    subjects: ["Flying", "Potions", "Divination"]*/
 })
 studentArray.push(malfoy)
 
 for(t in studentArray){
     studentArray[t].save().then(() => {
-        console.log(studentArray[t])
+        console.log(studentArray[t])//this seems to only output malfoy for me.
     }).catch((error) => {
         console.log('Error', error)
     })
