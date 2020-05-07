@@ -12,7 +12,7 @@
 | Database Proposal| [database](./files/databaseProposal.pdf)| 03-13-2020 |
 | Front End React  | Implemented in [studygeekreact](./studygeekreact) | 04-16-2020 |
 | Server           | Implemented in [studygeekserver](./studygeekserver) | 04-16-2020 |
-
+| Pitch Presentation     | [Presentation](./files/StudyGeeks.pdf) | 05-06-2020 |
 
 Pull [studygeekreact](./studygeekreact) to run Study Geek as React app <br>
 Pull [studygeekserver](./studygeekserver) to run server
