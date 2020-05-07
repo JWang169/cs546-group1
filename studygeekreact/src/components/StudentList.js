@@ -3,8 +3,10 @@ import React, { useState, useEffect } from 'react';
 import StudentCard from './StudentCard';
 import { Card } from 'semantic-ui-react';
 
-const StudentList =() => {
+const StudentList = () => {
+    
     const [students, setStudents] = useState(undefined);
+
     const getStudents = async() => {
         try {
             const { data } = await axios.get('http://localhost:3003/students');
@@ -16,10 +18,11 @@ const StudentList =() => {
 
     useEffect(() => {
         getStudents();
-    }, []);
+    },[]);
 
     return (
         <div className='App-body'>
+        {console.log('this is from return'+students)}
         <Card.Group>
             {students && students.map((student) => (
                 <StudentCard student={student} key={student._id} /> 

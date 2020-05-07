@@ -9,6 +9,7 @@ const TutorList =() => {
         try {
             const { data } = await axios.get('http://localhost:3003/tutors');
             setTutors(data);
+            console.log(tutors)
         }catch(e){
             console.log(e);
         }

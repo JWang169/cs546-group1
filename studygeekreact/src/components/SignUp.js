@@ -18,7 +18,6 @@ const SignUp = () => {
     const [error, setError] = useState("");
     const [status, setStatus] = useState("students");
 
-
     const submitInfo = async(event) =>{
       event.preventDefault();
       if(password !== confirmPassword){
