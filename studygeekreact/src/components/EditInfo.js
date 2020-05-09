@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react'
 import jwt_decode from "jwt-decode";
 import { useHistory } from 'react-router-dom';
 
-const MyAccount =() => {
-    const [edit, setEdit] = useState("");
+const EditInfo =() => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -15,6 +14,7 @@ const MyAccount =() => {
     const [newSubject, setNewSubject] = useState("")
     const [newAvailability, setNewAvailability] = useState("")
     const history = useHistory();
+
 
     const getAccount = async() =>{
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
@@ -34,24 +34,28 @@ const MyAccount =() => {
         }
     };
 
-    // const submitInfo = async(event) => {
-    //     event.preventDefault();
-    //     const tokenInfo = jwt_decode(localStorage.getItem("token"));
-    //     let newData = {'info': newInfo, 'subjects': subjects};
-    //     if(!newInfo){
-    //         console.log('no new info')
-    //         newData['info'] = info;
-    //     }
-    //     // console.log(newData)
-    //     const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}`;
-    //     try{
-    //         const { data } = await axios.put(urlString, newData);
-    //         // console.log(data);
-    //     }catch(e){
-    //         console.log(e)
-    //     }
-    //     setEdit(false)
-    // }
+    const submitInfo = async(event) => {
+        event.preventDefault();
+        const tokenInfo = jwt_decode(localStorage.getItem("token"));
+        let newData = {
+            'firstName': firstName,
+            'lastName': lastName,
+            'town': town,
+            'state': state,
+            'studentSubjects': subjects,
+            'availability':availability
+        };
+
+        // console.log(newData)
+        const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}`;
+        console.log(urlString)
+        try{
+            const { data } = await axios.put(urlString, newData);
+            // console.log(data);
+        }catch(e){
+            console.log(e)
+        }
+    }
 
     const addSubject = (event) => {
         event.preventDefault();
@@ -63,14 +67,9 @@ const MyAccount =() => {
         setAvailability([...availability, newAvailability]);
     }
 
-    const onClickAccount = () => {
-        // setEdit(true);
-        history.push('/editinfo');
-    }
-
-    const onClickNoChange = () => {
-        setEdit(false);
-
+    const onClickNoChange = (event) => {
+        event.preventDefault();
+        history.push('/myaccount');
     }
 
     const deleteSubject = (event) => {
@@ -78,7 +77,6 @@ const MyAccount =() => {
         const {id} = event.target.parentElement;
         subjects.splice(id, 1)
         setSubjects([...subjects])
-        console.log(subjects)
     }
 
     const deleteAvailability= (event) => {
@@ -86,7 +84,6 @@ const MyAccount =() => {
         const {id} = event.target.parentElement;
         availability.splice(id, 1)
         setAvailability([...availability])
-        console.log(availability)
     }
 
     useEffect(() => {
@@ -95,39 +92,11 @@ const MyAccount =() => {
 
     return (
         <div className="container">
-            <h1>{firstName}'s Page.</h1>
+            <h1>Edit My Account.</h1>
             <br/>
             <hr/>
-            {!edit && <div className="row">
-                <div className="col">
-                    <h2>My Subjects: </h2>
-                    {subjects && subjects.map(s => (
-                        <div key={subjects.value}>
-                            <p>{s}</p>
-                        </div>
-                    ))}               
-                </div>
-                <div className="col">
-                    <h2>My Availability: </h2>
-                    {availability && availability.map(s => (
-                        <div key={Math.random() * 100000}>
-                            <p>{s}</p>
-                        </div>
-                    ))}  
-                </div>
-                <div className="col">
-                    <h2>My Account: </h2>
-                    <div className="form-group">First name: {firstName}</div>
-                    <div className="form-group">Last name: {lastName}</div>
-                    <div className="form-group">Email: {email}</div>
-                    <div className="form-group">State: {state}</div>
-                    <div className="form-group">Town: {town}</div>
-                </div>
-            </div>}
-
-            {!edit && <button className='ui button' onClick={onClickAccount}>Edit My Account</button>}        
             
-            {edit && <form className="ui form">
+            <form className="ui form" onSubmit={submitInfo}>
             <div className="field">
                 <div className="field">
                 <label>First Name</label>
@@ -214,14 +183,15 @@ const MyAccount =() => {
                     />
                 <button onClick={addAvailability}>Add Availability</button>   
                 </div>
-
             </div>    
-            </form>}
+            <button className="ui negative button" onClick={onClickNoChange}>Discard Change</button>
+            <button className="ui positive button" type='submit' style={{position: 'absolute', right: 50}}>Save Change </button>
+            </form>
             <br/>
-            { edit && <button className='ui button' onClick={onClickNoChange}>Discard Change</button>}  
+
 
         </div>
     )
 }
 
-export default MyAccount;
+export default EditInfo;

@@ -7,11 +7,11 @@ const LogOut = () => {
     const submitInfo = async(event) =>{
       event.preventDefault();
       setToken(null)
+      
       localStorage.clear("token");
     }
 
     return (
-
     <form className="ui form" onSubmit={submitInfo}>
       { token && 
         <button className='ui button' type='submit'>Log Out </button>
