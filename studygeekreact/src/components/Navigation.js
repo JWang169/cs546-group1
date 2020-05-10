@@ -5,7 +5,7 @@ import UserContext from './context/UserContext';
 import jwt_decode from "jwt-decode";
 
 
-function Navigation(props) {
+function Navigation() {
     // check pathname and set active in nav bar
     // const pathname = window.location.pathname;
     // const path = pathname ==='/' ? 'home': pathname.substr(1);

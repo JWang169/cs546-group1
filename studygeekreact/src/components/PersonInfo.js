@@ -8,9 +8,9 @@ const PersonInfo = (props) => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [subjects, setSubjects] = useState("");
+    const [availability, setAvailability] = useState("");
     const [state, setState] = useState("");
     const [town, setTown] = useState("");
-
 
     const getStudent = async() => {
         try{
@@ -21,6 +21,7 @@ const PersonInfo = (props) => {
             setState(data.state);
             setTown(data.town);
             setSubjects(data.studentSubjects)
+            setAvailability(data.availability)
 
         }catch(e){
             console.log(e);
@@ -62,6 +63,16 @@ const PersonInfo = (props) => {
                         </div>
                     ))}               
                 </div>
+
+                <div className="col">
+                    <h2>Availability: </h2>
+                    {availability && availability.map(s => (
+                        <div key={Math.random() * 100000}>
+                            <p>{s}</p>
+                        </div>
+                    ))}  
+                </div>
+
                 <div className="col">
                     <h2>Contact Info: </h2>
                     <div className="form-group">First name: {firstName}</div>
