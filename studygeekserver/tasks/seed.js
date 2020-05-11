@@ -42,6 +42,7 @@ const Snape = new Tutor({
     _id:uuid(),
     //_id:"507f1f77bcf86cd799439011",
     email: "severus@snape.com",
+    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Severus",
     lastName: "Snape",
     town: "Hoboken",
@@ -56,6 +57,7 @@ const Moody = new Tutor({
     _id:uuid(),
     // _id: "5e1a0651741b255ddda996c4",
     email: "alastor@moody.com",
+    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Alastor",
     lastName: "Moody",
     town: "Dublin",
@@ -70,6 +72,7 @@ const Lupin = new Tutor({
     // _id:"a4f8512b9a734baf863ff33f",
     _id:uuid(),
     email: "remus@lupin.com",
+    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Remus",
     lastName: "JohnLupin",
     town: "Dallas",
@@ -83,6 +86,7 @@ tutorArray.push(Lupin)
 const Minerva = new Tutor({
     _id:uuid(),
     email: "minerva@mcgonagall.com",
+    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Minerva",
     lastName: "McGonagall",
     town: "Seattle",
@@ -96,6 +100,7 @@ tutorArray.push(Minerva)
 const Sybill = new Tutor({
     _id:uuid(),
     email: "sybill@trelawney.com",
+    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Sybill",
     lastName: "Trelawney",
     town: "Baltimore",
@@ -109,6 +114,7 @@ tutorArray.push(Sybill)
 const Rolanda = new Tutor({
     _id:uuid(),
     email: "rolanda@hooch.com",
+    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Rolanda",
     lastName: "Hooch",
     town: "Miami",
