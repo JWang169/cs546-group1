@@ -25,16 +25,31 @@ const Tutor = mongoose.model('Tutor', {
     },
     state:{
       type:String
+     },
+    availability: {//lefft empty for now, have not yet implemented its database
+        type: Array,
+        "default": []
     },
-    subject:{
-        type:String
-    },
-    proficiency:{
+    /*education: {// this does not exist in DB proposal
         type: String
-    },
-    price:{
-        type: Number
-    },
+    },*/
+
+    /*info: {
+        type:String
+    },*/
+    studentSubjects: {//left empty for now, have not yet implemented its database
+        type: Array,
+        "default": []
+//     ,
+//     subject:{
+//         type:String
+//     },
+//     proficiency:{
+//         type: String
+//     },
+//     price:{
+//         type: Number
+//     },
 })
 
 let tutorArray = [];
@@ -46,10 +61,10 @@ const Snape = new Tutor({
     firstName: "Severus",
     lastName: "Snape",
     town: "Hoboken",
-    state: "NJ",
-    subject: "Potions",
-    proficiency : "Advanced",
-    price : "10"
+    state: "NJ"
+//     subject: "Potions",
+//     proficiency : "Advanced",
+//     price : "10"
 })
 tutorArray.push(Snape)
 
@@ -61,10 +76,10 @@ const Moody = new Tutor({
     firstName: "Alastor",
     lastName: "Moody",
     town: "Dublin",
-    state: "CA",
-    subject: "Defence Against the Dark Arts",
-    proficiency : "Intermediate",
-    price : "25"
+    state: "CA"
+//     subject: "Defence Against the Dark Arts",
+//     proficiency : "Intermediate",
+//     price : "25"
 })
 tutorArray.push(Moody)
 
@@ -77,9 +92,9 @@ const Lupin = new Tutor({
     lastName: "JohnLupin",
     town: "Dallas",
     state: "TX",
-    subject: "Defence Against the Dark Arts",
-    proficiency : "Advanced",
-    price : "50"
+//     subject: "Defence Against the Dark Arts",
+//     proficiency : "Advanced",
+//     price : "50"
 })
 tutorArray.push(Lupin)
 
@@ -90,10 +105,10 @@ const Minerva = new Tutor({
     firstName: "Minerva",
     lastName: "McGonagall",
     town: "Seattle",
-    state: "Washington",
-    subject: "Transfiguration",
-    proficiency : "Beginner",
-    price : "15"
+    state: "Washington"
+//     subject: "Transfiguration",
+//     proficiency : "Beginner",
+//     price : "15"
 })
 tutorArray.push(Minerva)
 
@@ -104,10 +119,10 @@ const Sybill = new Tutor({
     firstName: "Sybill",
     lastName: "Trelawney",
     town: "Baltimore",
-    state: "Maryland",
-    subject: "Divination",
-    proficiency : "Beginner",
-    price : "25"
+    state: "Maryland"
+//     subject: "Divination",
+//     proficiency : "Beginner",
+//     price : "25"
 })
 tutorArray.push(Sybill)
 
@@ -118,10 +133,10 @@ const Rolanda = new Tutor({
     firstName: "Rolanda",
     lastName: "Hooch",
     town: "Miami",
-    state: "Florida",
-    subject: "Flying",
-    proficiency : "Advanced",
-    price : "100"
+    state: "Florida"
+//     subject: "Flying",
+//     proficiency : "Advanced",
+//     price : "100"
 })
 tutorArray.push(Rolanda)
 
