@@ -1,9 +1,14 @@
 import React, { useContext } from 'react';
 import UserContext from './context/UserContext';
-
+import { useHistory } from 'react-router-dom';
 
 const LogOut = () => {
     const {token, setToken} = useContext(UserContext);
+    const history = useHistory();
+    console.log(token);
+    if(token === null){
+      history.push('/login')
+    }
     const submitInfo = async(event) =>{
       event.preventDefault();
       setToken(null)

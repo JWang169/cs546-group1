@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import UserContext from './context/UserContext';
 
 const LogIn = () => {
@@ -36,7 +36,7 @@ const LogIn = () => {
     }
 
     useEffect(() => {
-      if (token){
+      if (token !== null){
         history.push('/')
       }
     }); 

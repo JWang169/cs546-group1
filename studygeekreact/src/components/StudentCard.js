@@ -10,9 +10,13 @@ const StudentCard = ({student}) => (
             size='mini'
             src={student.img || faker.image.avatar()}
             />
-            <Card.Header>{student.lastName}</Card.Header>
+            <Card.Header>{student.firstName}</Card.Header>
             <Card.Meta>{student.town}</Card.Meta>
-            <Card.Description>{student.studentSubjects}</Card.Description>
+            <Card.Description>
+                {student.studentSubjects && student.studentSubjects.map(sub => (
+                    <li key={Math.random() * 100000}>{sub}</li>
+                ))}
+            </Card.Description>
         </Card.Content>   
         <Card.Content>
             <div className='ui two buttons'>

@@ -1,9 +1,11 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react'
+import UserContext from './context/UserContext';
+import React, { useState, useContext, useEffect } from 'react'
 import jwt_decode from "jwt-decode";
 import { useHistory } from 'react-router-dom';
 
 const MyAccount =() => {
+    const {token, setToken} = useContext(UserContext);
     const [edit, setEdit] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -15,6 +17,10 @@ const MyAccount =() => {
     const [newSubject, setNewSubject] = useState("")
     const [newAvailability, setNewAvailability] = useState("")
     const history = useHistory();
+
+    if (token === null){
+        history.push('/login')
+    }
 
     const getAccount = async() =>{
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
@@ -33,6 +39,8 @@ const MyAccount =() => {
             console.log(e)
         }
     };
+    
+
 
     // const submitInfo = async(event) => {
     //     event.preventDefault();
@@ -90,8 +98,11 @@ const MyAccount =() => {
     }
 
     useEffect(() => {
+        // if (token === null){
+        //     history.push('/login')
+        // }
         getAccount()
-    }, []);
+    });
 
     return (
         <div className="container">
