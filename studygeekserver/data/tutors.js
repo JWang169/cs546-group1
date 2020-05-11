@@ -230,6 +230,17 @@ async function addAvailability(id, start, end){
 //   const
 // }
 
-// Task 1:
-module.exports = {getAlltutors, getTutor, createTutor, getTutorByEmail, getTutorBySubject,getTutorByTownState,getTutorByRatingLowToHigh
-,getTutorByRatingHighToLow,getTutorByProficiency,getTutorByPriceHighToLow,getTutorByPriceLowToHigh }//updateTutor}
+module.exports = {getAlltutors, 
+getTutor, 
+createTutor, 
+getTutorByEmail, 
+getTutorBySubject,
+getTutorByTownState,
+getTutorByRatingLowToHigh,
+getTutorByRatingHighToLow,
+getTutorByProficiency,
+getTutorByPriceHighToLow,
+getTutorByPriceLowToHigh,
+login,
+addAvailability,
+}
