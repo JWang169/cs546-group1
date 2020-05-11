@@ -4,7 +4,7 @@ const {ObjectId} = require('mongodb');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid/v4');
 const saltRounds = 16;
-//const dayOfWeek= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const dayOfWeek= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 //checked
 async function getAlltutors(){
@@ -119,7 +119,7 @@ async function login(email,password){
 }
 
 
-async function createTutor(email, firstName, lastName, town, state, subject, proficiency , price ,password )
+async function createTutor(email, firstName, lastName, town, state, password,)//subject , proficiency , price ,password )
   {
   if (!email ) throw "Email Must be provided";
   if (!firstName ) throw "First Name must be provided";
@@ -146,56 +146,56 @@ async function createTutor(email, firstName, lastName, town, state, subject, pro
         //'info': "",np
         'state': state,
         'town': town,
-        'subject' : subject,
-        'price' : price,
-        //'availability' = [],
+        //'subject' : subject,
+        //'price' : price,
+        'availability' : [],
         'hashedPassword' : hashedPassword,
-       'proficiency' : proficiency
+        //'proficiency' : proficiency
         //'ratings' : 0,
         //'tutorSubject': []
         }
   const insertInfo = await tutorCollection.insertOne(newTutor);
-  if (insertInfo.insertedCount === 0) throw `Could not add new student`;
+  if (insertInfo.insertedCount === 0) throw `Could not add new Tutor`;
   return insertInfo.insertedId;
 }
 
-// async function addAvailability(id, start, end){
-//   const newStart = new Date(start);
-//   const newEnd = new Date(end);
-//   const newDay= newStart.getDay();
-//   if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
-//   const newStartTime = newStart.getTime();
-//   const newEndTime = newEnd.getTime();
-//   if(newStartTime>=newEndTime)throw "The available time range must end after it begins";
-//   const tutorCollection = await tutors();
-//   const currentTutor = await this.getTutor(id);
-//   const availableArray = currentTutor.availability;
-//   var i;
-//   for(i=0;i<availableArray.length;i++){
-//       if(availableArray[i].dayNum==newDay){
-//           if(availableArray[i].start>=newStartTime){
-//               if(availableArray[i].start<newEndTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
-//           }
-//           if(availableArray[i].start<=newStartTime){
-//               if(availableArray[i].end>newStartTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
-//           }
-//       }
-//     }
-//     let newAvailability = {
-//         day: dayOfWeek[newDay],
-//         dayNum: newDay,
-//         start: newStartTime,
-//         startExtended: newStart,
-//         end: newEndTime,
-//         endExtended: newEnd
-//     };
-//     const updateInfo = await tutorCollection.updateOne(
-//         {_id: id},
-//         {$addToSet: {availability: newAvailability}}
-//     );
-//     if(!updateInfo.matchedCount || !updateInfo.modifiedCount) throw "addition failed";
-//     return newAvailability;
-// }
+async function addAvailability(id, start, end){
+  const newStart = new Date(start);
+  const newEnd = new Date(end);
+  const newDay= newStart.getDay();
+  if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
+  const newStartTime = newStart.getTime();
+  const newEndTime = newEnd.getTime();
+  if(newStartTime>=newEndTime)throw "The available time range must end after it begins";
+  const tutorCollection = await tutors();
+  const currentTutor = await this.getTutor(id);
+  const availableArray = currentTutor.availability;
+  var i;
+  for(i=0;i<availableArray.length;i++){
+      if(availableArray[i].dayNum==newDay){
+          if(availableArray[i].start>=newStartTime){
+              if(availableArray[i].start<newEndTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+          }
+          if(availableArray[i].start<=newStartTime){
+              if(availableArray[i].end>newStartTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+          }
+      }
+    }
+    let newAvailability = {
+        day: dayOfWeek[newDay],
+        dayNum: newDay,
+        start: newStartTime,
+        startExtended: newStart,
+        end: newEndTime,
+        endExtended: newEnd
+    };
+    const updateInfo = await tutorCollection.updateOne(
+        {_id: id},
+        {$addToSet: {availability: newAvailability}}
+    );
+    if(!updateInfo.matchedCount || !updateInfo.modifiedCount) throw "addition failed";
+    return newAvailability;
+}
 
 
 // async function updateTutorGeneral(tutorId, info, subject, price, proficiency){
