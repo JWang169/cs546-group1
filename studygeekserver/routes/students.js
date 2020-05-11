@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {//NOTE: when creating a new student profile, the studentSubjects and availability Arrays are initially empty
+router.post("/signup", async (req, res) => {//NOTE: when creating a new student profile, the studentSubjects and availability Arrays are initially empty
   const reqStudent = req.body;//NOTE: These will need to be updated to match the form data passed in by html
 
   if(!reqStudent){

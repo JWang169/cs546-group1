@@ -29,7 +29,9 @@ const SignUp = () => {
       }
 
       try {
-        const result = await axios.post('http://localhost:3003/signup',{
+        const urlString = `http://localhost:3003/${status}/signup`;
+        console.log(urlString)
+        const result = await axios.post(urlString,{
           'firstName': firstName,
           'lastName': lastName,
           'status': status,
