@@ -1,62 +1,121 @@
 const mongoose = require('mongoose');
+const uuid = require('uuid/v4');
 
 mongoose.connect("mongodb://localhost:27017/hogwarts",{
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useUnifiedTopology: true
 })
 
 const Tutor = mongoose.model('Tutor', {
-    name: {
+    _id: {
+        type: String
+    },
+    email:{
         type:String
     },
-    info: {
+    firstName: {
         type:String
     },
-    subjects: {
-        type: Array,
-        "default": []
-    }
+    lastName: {
+      type:String
+    },
+    town:{
+      type:String
+    },
+    state:{
+      type:String
+    },
+    subject:{
+        type:String
+    },
+    proficiency:{
+        type: String
+    },
+    price:{
+        type: Number
+    },
 })
 
 let tutorArray = [];
 const Snape = new Tutor({
-    name: "Severus Snape",
-    info: "Half-blood Prince",
-    subjects: ["Potions", "Defence Against the Dark Arts"]
+    _id:uuid(),
+    //_id:"507f1f77bcf86cd799439011",
+    email: "severus@snape.com",
+    firstName: "Severus",
+    lastName: "Snape",
+    town: "Hoboken",
+    state: "NJ",
+    subject: "Potions",
+    proficiency : "Advanced",
+    price : "10"
 })
 tutorArray.push(Snape)
 
 const Moody = new Tutor({
-    name:"Alastor Moody",
-    info:"Mad Eye",
-    subjects: ["Defence Against the Dark Arts"]
+    _id:uuid(),
+    // _id: "5e1a0651741b255ddda996c4",
+    email: "alastor@moody.com",
+    firstName: "Alastor",
+    lastName: "Moody",
+    town: "Dublin",
+    state: "CA",
+    subject: "Defence Against the Dark Arts",
+    proficiency : "Intermediate",
+    price : "25"
 })
 tutorArray.push(Moody)
 
 const Lupin = new Tutor({
-    name:"Remus JohnLupin",
-    info:"Moony",
-    subjects: ["Defence Against the Dark Arts"]
+    // _id:"a4f8512b9a734baf863ff33f",
+    _id:uuid(),
+    email: "remus@lupin.com",
+    firstName: "Remus",
+    lastName: "JohnLupin",
+    town: "Dallas",
+    state: "TX",
+    subject: "Defence Against the Dark Arts",
+    proficiency : "Advanced",
+    price : "50"
 })
 tutorArray.push(Lupin)
 
-
 const Minerva = new Tutor({
-    name:"Minerva McGonagall",
-    info: "Babbling bumbling band of baboons",
-    subjects: ["Transfiguration"]
+    _id:uuid(),
+    email: "minerva@mcgonagall.com",
+    firstName: "Minerva",
+    lastName: "McGonagall",
+    town: "Seattle",
+    state: "Washington",
+    subject: "Transfiguration",
+    proficiency : "Beginner",
+    price : "15"
 })
 tutorArray.push(Minerva)
+
 const Sybill = new Tutor({
-    name:"Sybill Trelawney",
-    info:"Together we shall cast ourselves into the future",
-    subjects: ["Divination"]
+    _id:uuid(),
+    email: "sybill@trelawney.com",
+    firstName: "Sybill",
+    lastName: "Trelawney",
+    town: "Baltimore",
+    state: "Maryland",
+    subject: "Divination",
+    proficiency : "Beginner",
+    price : "25"
 })
 tutorArray.push(Sybill)
+
 const Rolanda = new Tutor({
-    name:"Rolanda Hooch",
-    info:"'UP'",
-    subjects: ["Flying"]
+    _id:uuid(),
+    email: "rolanda@hooch.com",
+    firstName: "Rolanda",
+    lastName: "Hooch",
+    town: "Miami",
+    state: "Florida",
+    subject: "Flying",
+    proficiency : "Advanced",
+    price : "100"
 })
 tutorArray.push(Rolanda)
 
@@ -121,7 +180,7 @@ const harry = new Student({
     email: "horcrux@gmail.com"
 
     //info: "The boy who lived",
-    //education: "Junior", 
+    //education: "Junior",
    // subjects: ["Flying", "Defence Against the Dark Arts", "Potions"]
 })
 studentArray.push(harry)
@@ -136,7 +195,7 @@ const hermoine = new Student({
     email: "bestwitch@gmail.com"
 
     //info: "One of the most talented witch.",
-    //education: "Ph.D", 
+    //education: "Ph.D",
     //subjects: ["Defence Against the Dark Arts", "Potions", "Transfiguration", "Divination"]
 })
 studentArray.push(hermoine)
@@ -150,7 +209,7 @@ const ron = new Student({
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     email: "hermoineHusband@gmail.com"
     /*info: "Hermoine's future husband. ",
-    education: "Fresh", 
+    education: "Fresh",
     subjects: ["Flying"]*/
 })
 studentArray.push(ron)
@@ -163,7 +222,7 @@ const luna = new Student({
     state: "New Jersey",
     hashedPassword:"$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     email: "nargles@gmail.com"
-  /*  education: "Senior", 
+  /*  education: "Senior",
     info: "A true, delight Ravenclaw with a sing-song voice.",
     subjects: ["Defence Against the Dark Arts", "Divination"]*/
 })
@@ -196,7 +255,7 @@ const malfoy = new Student({
         }
     ]
   /* info: "A charming boy who is a little bit lost",
-    education: "Jonior", 
+    education: "Jonior",
     subjects: ["Flying", "Potions", "Divination"]*/
 })
 studentArray.push(malfoy)
@@ -208,4 +267,3 @@ for(t in studentArray){
         console.log('Error', error)
     })
 }
-
