@@ -91,12 +91,40 @@ async function getTutorByProficiency(subject, proficiency){
   return theTutor;
 }
 
-async function createTutor(email, firstName, lastName, town, state, subject, proficiency , price) //,password )
+async function login(email,password){
+  if (!email) throw "Username must be provided";
+  if (!password) throw "Passsword must be provided";
+  const tutorCollection = await tutors();
+  const theTutor = await tutorCollection.findOne({email:email})
+  if (!theTutor) throw "No user available";
+  let matched = false;
+  try{
+    matched = await bcrypt.compare(password, theTutor.hashedpassword);
+	} catch (e) {
+		console.log(e)
+    }
+  if(matched){
+      const token = jwt.sign({
+                email: theTutor.email,
+            },
+            "Flibbertigibbet",
+            {
+                expiresIn: "7d"
+            }
+        )
+        return token;
+    }else{
+        throw `Password doesn't match.`
+    }
+}
+
+
+async function createTutor(email, firstName, lastName, town, state, subject, proficiency , price ,password )
   {
   if (!email ) throw "Email Must be provided";
   if (!firstName ) throw "First Name must be provided";
   if (!lastName ) throw "Last Name must be provided";
-  //if (!password ) throw "Password must be provided";
+  if (!password ) throw "Password must be provided";
   if (!town ) throw "Town must be provided";
   if (!state ) throw "State must be provided";
   if (typeof email != 'string') throw 'Email must be a string';
@@ -104,12 +132,12 @@ async function createTutor(email, firstName, lastName, town, state, subject, pro
   if (typeof lastName != 'string') throw 'You must provide a last name of type string';
   if (typeof town != 'string') throw 'You must provide a string of the town you reside in';
   if (typeof state != 'string') throw 'You must provide a string of the state you reside in';
-  // if (typeof password !='string') throw 'you must provide a valid password of type string';
+  if (typeof password !='string') throw 'you must provide a valid password of type string';
   const emailLow = email.toLowerCase();
   const tutorCollection = await tutors();
   const accountAlreadyExists = await tutorCollection.findOne({"email":emailLow});
   if (accountAlreadyExists) throw "Account Already Exists";
-  //const hashedPassword = await bcrypt.hash(password,saltRounds);
+  const hashedPassword = await bcrypt.hash(password,saltRounds);
   let newTutor = {
         _id : uuid(),
         'email': email,
@@ -119,20 +147,15 @@ async function createTutor(email, firstName, lastName, town, state, subject, pro
         'state': state,
         'town': town,
         'subject' : subject,
-        'price' : price
+        'price' : price,
         //'availability' = [],
-        //'hashedPassword' = hashedPassword,
-        // 'subjects': subject,
-        // 'proficiency' : proficiency;
-        // 'price' : [],
+        'hashedPassword' : hashedPassword,
+       'proficiency' : proficiency
         //'ratings' : 0,
         //'tutorSubject': []
-        //'subinfo': [{"subjects": subject , "proficiency" : proficiency, "price" :price}]
-
         }
   const insertInfo = await tutorCollection.insertOne(newTutor);
   if (insertInfo.insertedCount === 0) throw `Could not add new student`;
-    // const newId = insertInfo.insertedId;
   return insertInfo.insertedId;
 }
 
