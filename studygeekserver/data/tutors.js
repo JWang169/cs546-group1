@@ -118,7 +118,7 @@ async function login(email,password){
     }
 }
 
-async function createTutor(email, firstName, lastName, town, state, password,)//subject , proficiency , price ,password )
+async function createTutor(email, firstName, lastName, password, town, state)//subject , proficiency , price ,password )
   {
   if (!email ) throw "Email Must be provided";
   if (!firstName ) throw "First Name must be provided";
