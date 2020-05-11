@@ -40,6 +40,7 @@ const Tutor = mongoose.model('Tutor', {
     studentSubjects: {//left empty for now, have not yet implemented its database
         type: Array,
         "default": []
+    }
 //     ,
 //     subject:{
 //         type:String
