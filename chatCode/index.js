@@ -23,6 +23,7 @@ io.sockets.on('connection', function(socket) {
 
 });
 
-const server = http.listen(8080, function() {
-    console.log('listening on *:8080');
+const server = http.listen(3000, function() {
+    console.log("We've now got a server!");
+    console.log("Your routes will be running on http://localhost:3000");
 });

@@ -3,6 +3,8 @@ const app = express();
 const static = express.static(__dirname + '/public');
 const exphbs = require('express-handlebars');
 const configRoutes = require("./routes");
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 app.use('/public', static);
 app.use(express.json());
