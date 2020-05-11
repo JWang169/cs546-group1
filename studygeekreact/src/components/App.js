@@ -17,21 +17,21 @@ import PersonInfo from './PersonInfo';
 import MyAccount from './MyAccount';
 import UserContext from "./context/UserContext";
 import EditInfo from './EditInfo';
-
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
 
-  // useEffect(() => {
-  //   if(token){
-  //     const tokenInfo = jwt_decode(token);
-  //     const exp = tokenInfo.exp;
-  //     if (exp < Date.now() / 1000){
-  //       localStorage.clear("token");
-  //       setToken(null);
-  //     }
-  //   }
-  // })
+  useEffect(() => {
+    if(token){
+      const tokenInfo = jwt_decode(token);
+      const exp = tokenInfo.exp;
+      if (exp < Date.now() / 1000){
+        localStorage.clear("token");
+        setToken(null);
+      }
+    }
+  })
 
   return (
     
@@ -42,13 +42,13 @@ function App() {
           <Route exact path='/' component={Homepage} />
           <Route exact path='/signup' component={SignUp} />
           <Route exact path='/login' component={LogIn} />
-          <Route exact path='/logout' component={LogOut} token={token} />
+          <PrivateRoute exact path='/logout' component={LogOut} token={token} />
           <Route exact path='/demo' component={Demo} />
           <Route exact path='/searchtutors' component={SearchTutors} />
           <Route exact path='/searchstudents' component={SearchStudents} />
-          <Route exact path='/students/:id' component={PersonInfo} />
-          <Route exact path='/myaccount' component={MyAccount} />
-          <Route exact path='/editinfo' component={EditInfo} />
+          <PrivateRoute exact path='/students/:id' component={PersonInfo} />
+          <PrivateRoute exact path='/myaccount' component={MyAccount} />
+          <PrivateRoute exact path='/editinfo' component={EditInfo} />
         </Container>
       </UserContext.Provider>
     </Router>

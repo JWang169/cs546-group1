@@ -6,6 +6,10 @@ import { useHistory } from 'react-router-dom';
 
 const MyAccount =() => {
     const {token, setToken} = useContext(UserContext);
+    if (token === null){
+        console.log("no tokens");
+        history.push('/login')
+    }
     const [edit, setEdit] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -18,9 +22,7 @@ const MyAccount =() => {
     const [newAvailability, setNewAvailability] = useState("")
     const history = useHistory();
 
-    if (token === null){
-        history.push('/login')
-    }
+
 
     const getAccount = async() =>{
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
