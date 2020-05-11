@@ -1,9 +1,9 @@
 const mongoCollections = require('../config/mongoCollections');
 const tutors = mongoCollections.tutors;
 const {ObjectId} = require('mongodb');
-//const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const uuid = require('uuid/v4');
-//const saltRounds = 16;
+const saltRounds = 16;
 //const dayOfWeek= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 //checked
