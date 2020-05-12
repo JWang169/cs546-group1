@@ -139,19 +139,24 @@ async function createPair(tutorId,studentId,subject, proficiency){
 
     const insertInfo = await pairCollection.insertOne(newTutorPair);
     if (insertInfo.insertedCount === 0) throw `Could not add new pair`;
-
-    let newStudentSubject ={
+    try{
+    const tutoredBy = newTutorPair._id;
+    let newStudentSubject = {
         subjectName: subject,
         proficiency: proficiency,
-        tutoredBy: newTutorPair._id
-    }
+        tutoredBy: tutoredBy
+    };
 
     const addStudentSubject = await studentCollection.updateOne(
-        {_id: id},
-        {$addToSet: {studentSubjects: newStudentSubject}}
+        {_id: studentId},
+        {$addToSet: {"studentSubjects": newStudentSubject}}
     );
     if(!addStudentSubject.matchedCount || !addStudentSubject.modifiedCount) throw "subject addition to student failed";
-//Note: this does not update the tutor database
+    }catch(e){
+        await pairCollection.removeOne({_id:newTutorPair._id});
+        throw e;
+    }
+    //Note: this does not update the tutor database
     return newTutorPair
 }
 
