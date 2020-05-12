@@ -14,6 +14,9 @@ const Tutor = mongoose.model('Tutor', {
     email:{
         type:String
     },
+    hashedPassword:{
+      type: String
+    },
     firstName: {
         type:String
     },
@@ -26,120 +29,109 @@ const Tutor = mongoose.model('Tutor', {
     state:{
       type:String
      },
-    availability: {//lefft empty for now, have not yet implemented its database
+     tutorSubjects:{
+       type:Array,
+       "default":[]
+     },
+     availability: {
         type: Array,
         "default": []
     },
-    /*education: {// this does not exist in DB proposal
-        type: String
-    },*/
-
-    /*info: {
-        type:String
-    },*/
-    studentSubjects: {//left empty for now, have not yet implemented its database
-        type: Array,
-        "default": []
+    avgRatings:{
+      type:Array,
+      "default": 0
     }
-//     ,
-//     subject:{
-//         type:String
-//     },
-//     proficiency:{
-//         type: String
-//     },
-//     price:{
-//         type: Number
-//     },
 })
 
 let tutorArray = [];
 const Snape = new Tutor({
     _id:uuid(),
-    //_id:"507f1f77bcf86cd799439011",
     email: "severus@snape.com",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Severus",
     lastName: "Snape",
     town: "Hoboken",
-    state: "NJ"
-//     subject: "Potions",
-//     proficiency : "Advanced",
-//     price : "10"
+    state: "NJ",
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Maths",
+      proficiency : "Advanced",
+      price : "30",
+      teaches : [],
+    }]
 })
 tutorArray.push(Snape)
 
-const Moody = new Tutor({
-    _id:uuid(),
-    // _id: "5e1a0651741b255ddda996c4",
-    email: "alastor@moody.com",
-    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
-    firstName: "Alastor",
-    lastName: "Moody",
-    town: "Dublin",
-    state: "CA"
-//     subject: "Defence Against the Dark Arts",
-//     proficiency : "Intermediate",
-//     price : "25"
-})
-tutorArray.push(Moody)
-
-const Lupin = new Tutor({
-    // _id:"a4f8512b9a734baf863ff33f",
-    _id:uuid(),
-    email: "remus@lupin.com",
-    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
-    firstName: "Remus",
-    lastName: "JohnLupin",
-    town: "Dallas",
-    state: "TX",
-//     subject: "Defence Against the Dark Arts",
-//     proficiency : "Advanced",
-//     price : "50"
-})
-tutorArray.push(Lupin)
-
-const Minerva = new Tutor({
-    _id:uuid(),
-    email: "minerva@mcgonagall.com",
-    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
-    firstName: "Minerva",
-    lastName: "McGonagall",
-    town: "Seattle",
-    state: "Washington"
-//     subject: "Transfiguration",
-//     proficiency : "Beginner",
-//     price : "15"
-})
-tutorArray.push(Minerva)
-
-const Sybill = new Tutor({
-    _id:uuid(),
-    email: "sybill@trelawney.com",
-    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
-    firstName: "Sybill",
-    lastName: "Trelawney",
-    town: "Baltimore",
-    state: "Maryland"
-//     subject: "Divination",
-//     proficiency : "Beginner",
-//     price : "25"
-})
-tutorArray.push(Sybill)
-
-const Rolanda = new Tutor({
-    _id:uuid(),
-    email: "rolanda@hooch.com",
-    hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
-    firstName: "Rolanda",
-    lastName: "Hooch",
-    town: "Miami",
-    state: "Florida"
-//     subject: "Flying",
-//     proficiency : "Advanced",
-//     price : "100"
-})
-tutorArray.push(Rolanda)
+// const Moody = new Tutor({
+//     _id:uuid(),
+//     email: "alastor@moody.com",
+//     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
+//     firstName: "Alastor",
+//     lastName: "Moody",
+//     town: "Dublin",
+//     state: "CA"
+// //     subject: "Defence Against the Dark Arts",
+// //     proficiency : "Intermediate",
+// //     price : "25"
+// })
+// tutorArray.push(Moody)
+//
+// const Lupin = new Tutor({
+//     // _id:"a4f8512b9a734baf863ff33f",
+//     _id:uuid(),
+//     email: "remus@lupin.com",
+//     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
+//     firstName: "Remus",
+//     lastName: "JohnLupin",
+//     town: "Dallas",
+//     state: "TX",
+// //     subject: "Defence Against the Dark Arts",
+// //     proficiency : "Advanced",
+// //     price : "50"
+// })
+// tutorArray.push(Lupin)
+//
+// const Minerva = new Tutor({
+//     _id:uuid(),
+//     email: "minerva@mcgonagall.com",
+//     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
+//     firstName: "Minerva",
+//     lastName: "McGonagall",
+//     town: "Seattle",
+//     state: "Washington"
+// //     subject: "Transfiguration",
+// //     proficiency : "Beginner",
+// //     price : "15"
+// })
+// tutorArray.push(Minerva)
+//
+// const Sybill = new Tutor({
+//     _id:uuid(),
+//     email: "sybill@trelawney.com",
+//     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
+//     firstName: "Sybill",
+//     lastName: "Trelawney",
+//     town: "Baltimore",
+//     state: "Maryland"
+// //     subject: "Divination",
+// //     proficiency : "Beginner",
+// //     price : "25"
+// })
+// tutorArray.push(Sybill)
+//
+// const Rolanda = new Tutor({
+//     _id:uuid(),
+//     email: "rolanda@hooch.com",
+//     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
+//     firstName: "Rolanda",
+//     lastName: "Hooch",
+//     town: "Miami",
+//     state: "Florida"
+// //     subject: "Flying",
+// //     proficiency : "Advanced",
+// //     price : "100"
+// })
+// tutorArray.push(Rolanda)
 
 
 for(t in tutorArray){
