@@ -84,7 +84,7 @@ const TutorInfo = (props) => {
                     <h2>Subjects: </h2>
                     {subjects && subjects.map(s => (
                         <div key={Math.random() * 100000}>
-                            <p>{s}</p>
+                            <p>{s.subjectName}</p>
                         </div>
                     ))}               
                 </div>
