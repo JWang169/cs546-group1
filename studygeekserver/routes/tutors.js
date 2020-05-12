@@ -80,6 +80,7 @@ router.post('/signup', async (req, res) => {
     if(!tutor.email){
         res.status(400).json({error:"No email provided!"})
     }
+    //check for parameters
     const email = req.body['email'];
     const password = req.body['password'];
     const lastName = req.body['lastName'];
