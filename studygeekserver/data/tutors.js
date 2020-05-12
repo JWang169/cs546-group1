@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const uuid = require('uuid/v4');
 const saltRounds = 16;
 const dayOfWeek= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const jwt = require("jsonwebtoken");
 
 //checked
 async function getAlltutors(){
@@ -100,7 +101,7 @@ async function login(email,password){
   const theTutor = await tutorCollection.findOne({email:email})
   if (!theTutor) throw "No Tutor available";
   let matched = false;
-  matched = await bcrypt.compare(password, theTutor.hashedpassword);
+  matched = await bcrypt.compare(password, theTutor.hashedPassword);
   if(matched){
       const token = jwt.sign({
                 statusId: theTutor._id,
