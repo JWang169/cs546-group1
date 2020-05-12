@@ -14,10 +14,11 @@ const LogIn = () => {
     const submitInfo = async(event) =>{
       event.preventDefault();
       try {
-        const newToken = await axios.post('http://localhost:3003/login',{
+        const urlString = `http://localhost:3003/${status}/login`;
+        console.log(urlString)
+        const newToken = await axios.post(urlString,{
           'email': email,
           'password': password,
-          'status': status
         });
 
         localStorage.setItem("token", newToken.data);
