@@ -7,7 +7,7 @@ const LogOut = () => {
     const history = useHistory();
     console.log(token);
     if(token === null){
-      history.push('/login')
+      history.push('/logout')
     }
     const submitInfo = async(event) =>{
       event.preventDefault();
