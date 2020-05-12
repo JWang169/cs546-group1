@@ -93,6 +93,22 @@ async function getTutorByProficiency(subject, proficiency){
   return theTutor;
 }
 
+async function search(subject, proficiency, startTime, endTime, sort){
+  if (typeof subject !== "string") throw "Subject must be string";
+  if (typeof proficiency !== "string") throw "Proficiency must be a string";
+  if (typeof startTime !== "object") throw "Start Time must be a object";
+  if (typeof endTime !== "object") throw "End Time must be a object";
+  if (typeof sort !== "string") throw "Sorting should be a string of Price/ Rating";
+  const tutorCollection = await tutors();
+  if (sort === "price"){
+    const theTutor = await tutorCollection.find({'tutorSubjects.subject':subject},{'tutorSubjects.proficiency':proficiency})
+  }
+  else if (sort === "rate"){
+
+  }
+
+}
+
 async function login(email,password){
   if (!email) throw "Username must be provided";
   if (!password) throw "Passsword must be provided";
@@ -243,7 +259,7 @@ async function addAvailability(id, start, end){
     return newAvailability;
 }
 
-// async function updateTutorGeneral(tutorId, info, subject, price, proficiency){
+// async function updateTutor(tutorId, info, subject, price, proficiency){
 //     if(!tutorId) throw `No tutor id provided.`
 //     if(!info) throw `No info provided.`
 //     if(!subjects) throw `No subjects provided.`
@@ -254,13 +270,21 @@ async function addAvailability(id, start, end){
 //         'email': oldInfo.email,
 //         'firstName': oldInfo.firstName,
 //         'lastName': oldInfo.lastName,
-//         //'info': info,
 //         'subject': subject,
 //         'rating' : oldInfo.rating
 //
+//         'state': state,
+//         'town': town,
+//         'tutorSubjects' : [],
+//         'reviews' :[],
+//         //'info': "",
+//         //'price' : price,
+//         //'proficiency' : proficiency
+//         'availability' : [],
+//         'hashedPassword' : oldInfo.hashedPassword,
+//         'avgRatings' : 0
 //     }
 //     const updatedInfo = await tutorCollection.updateOne({_id:tutorId}, { $set : updatedTutor});
-//     // console.log(updatedInfo)
 //     return await this.getTutor(tutorId);
 // }
 
