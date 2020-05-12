@@ -143,20 +143,39 @@ async function createTutor(email, firstName, lastName, password, town, state)//s
         'email': emailLow,
         'firstName': firstName,
         'lastName': lastName,
-        //'info': "",np
         'state': state,
         'town': town,
-        //'subject' : subject,
+        'tutorSubjects' : [],
+        //'info': "",
         //'price' : price,
+        //'proficiency' : proficiency
         'availability' : [],
         'hashedPassword' : hashedPassword,
-        //'proficiency' : proficiency
-        //'ratings' : 0,
-        //'tutorSubject': []
+        'avgRatings' : 0
         }
   const insertInfo = await tutorCollection.insertOne(newTutor);
   if (insertInfo.insertedCount === 0) throw `Could not add new Tutor`;
   return insertInfo.insertedId;
+}
+
+async function createSubject(tutorID, subjectName, proficiency, price){
+  if (typeof tutorID !== "string") throw "Id must be a string";
+  if (typeof subjectName !== "string") throw "Subject Name must be a string";
+  if (typeof proficiency !== "string") throw "proficiency must be a string";
+  if (typeof price !== "number") throw "Price must be a number";
+  const tutorCollection = await tutors();
+  const tutorInfo = await this.getTutor(tutorID);
+  if (!tutorInfo) throw "Tutor not available";
+  const tutor = {
+    _id :uuid(),
+    'subjectName' : subjectName,
+    'proficiency' : proficiency,
+    'price' : price,
+    'teaches' : [],
+  }
+  const updateTutor = await tutorCollection.updateOne({_id: tutorID},{ $addToSet: { tutorSubjects: tutor }});
+  if (!updateTutor.matchedCount && !updateTutor.modifiedCount) throw 'could not update tutor successfully';
+  return await this.getTutor(tutorID);
 }
 
 async function addAvailability(id, start, end){
@@ -243,4 +262,5 @@ getTutorByPriceHighToLow,
 getTutorByPriceLowToHigh,
 login,
 addAvailability,
-}
+createSubject
+};

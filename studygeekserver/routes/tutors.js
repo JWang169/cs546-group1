@@ -41,7 +41,7 @@ router.get('/pricehightolow/:subject', async (req, res) => {
 
 router.get('/pricelowtohigh/:subject', async (req, res) => {
   try {
-    let tutor = await userData.getTutorByPriceLowToHigh(req.params.subject);
+    let tutor = await tutorData.getTutorByPriceLowToHigh(req.params.subject);
     res.json(tutor);
   } catch (e) {
     res.status(404).json({ error: 'Tutor not found' });
@@ -59,8 +59,8 @@ router.get('/townstate/:town/:state', async (req, res) => {
 
 router.get('/ratehightolow/', async (req, res) => {
   try {
-    let Tutor = await tutorData.getTutorByRatingHighToLow();
-    res.json(user);
+    let tutor = await tutorData.getTutorByRatingHighToLow();
+    res.json(tutor);
   } catch (e) {
     res.status(404).json({ error: 'Tutor not found' });
   }
@@ -74,6 +74,35 @@ router.get('/ratelowtohigh/', async (req, res) => {
     res.status(404).json({ error: 'Tutor not found' });
   }
 });
+
+router.post('/createSubject', async (req, res) => {
+  const tutorID = req.body['_id'];
+  const subjectName = req.body['subjectName'];
+  const proficiency = req.body['proficiency'];
+  const price = req.body['price'];
+  try {
+    let tutor = await tutorData.createSubject(tutorID, subjectName, proficiency, price);
+    res.json(tutor);
+  } catch (e) {
+    res.status(404).json({ error: 'Tutor not found' });
+  }
+});
+
+// router.get('/search', async (req, res) => {
+//   const theTutor = req.body;
+//   if (!tutor.subject){
+//     res.status(400).json({error:"No Subject was provided"});
+//   }
+//   if (!tutor.)
+//   const startTime = req.body['startTime'];
+//   const endTime = req.body['endTime'];
+//   try {
+//     let tutor = await tutorData.getTutorByRatingLowToHigh();
+//     res.json(tutor);
+//   } catch (e) {
+//     res.status(404).json({ error: 'Tutor not found' });
+//   }
+// });
 
 router.post('/signup', async (req, res) => {
   const tutor = req.body;
