@@ -6,6 +6,7 @@ const SearchBar = () => {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [proficiency, setProficiency] = useState('');
+    const [sort, setSort] = useState('');
     const handleChange = (e) => {
         setSearchTerm(e.target.value);
     };
@@ -17,7 +18,8 @@ const SearchBar = () => {
                 'startTime': startTime,
                 'endTime': endTime,
                 'subject': searchTerm,
-                'proficiency': proficiency
+                'proficiency': proficiency,
+                'sort': sort
             })
             
         }catch(e){
@@ -64,7 +66,7 @@ const SearchBar = () => {
                     <input 
                     type="radio" 
                     className="form-check-input" 
-                    name="optradio" 
+                    name="prof" 
                     onChange={(e) => setProficiency("Beginner")}
                     /> Beginner
                     </label>
@@ -73,7 +75,7 @@ const SearchBar = () => {
                 <label className="form-check-label">
                 <input type="radio" 
                 className="form-check-input" 
-                name="optradio"
+                name="prof"
                 onChange={(e) => setProficiency("Intermediate")}
                 /> Intermediate
                 </label>
@@ -82,20 +84,21 @@ const SearchBar = () => {
                 <label className="form-check-label">
                 <input type="radio" 
                 className="form-check-input" 
-                name="optradio"
+                name="prof"
                 onChange={(e) => setProficiency("Advanced")}
                 /> Advanced
                 </label>
             </div>   
-            </div>      
-            {/* <div className="form-check">
+            </div>  
+                
+            <div className="form-check">
                 <label>Sort By</label>
                 <div className="form-check">
                 <label className="form-check-label">
                 <input type="radio" 
                 className="form-check-input" 
                 name="optradio"
-                onChange={(e) => setProficiency("price")}
+                onChange={(e) => setSort("price")}
                 /> Price
                 </label>
                 </div> 
@@ -104,11 +107,11 @@ const SearchBar = () => {
                 <input type="radio" 
                 className="form-check-input" 
                 name="optradio"
-                onChange={(e) => setProficiency("rate")}
+                onChange={(e) => setSort("rate")}
                 /> Rating
                 </label>
                 </div> 
-                </div> */}
+                </div>
             <br/>
             <button className='ui button' type='submit'>Search</button>
         </form>
