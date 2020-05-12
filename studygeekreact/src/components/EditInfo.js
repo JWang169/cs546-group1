@@ -29,8 +29,14 @@ const EditInfo =() => {
             setEmail(data.email);
             setState(data.state);
             setTown(data.town);
-            setSubjects(data.studentSubjects)
+            if(tokenInfo.status === 'students'){
+                setSubjects(data.studentSubjects)
+            }else{
+                setSubjects(data.tutorSubjects)
+            }
+            
             setAvailability(data.availability)
+            console.log(subjects);
         }catch(e){
             console.log(e)
         }

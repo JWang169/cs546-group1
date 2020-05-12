@@ -17,6 +17,7 @@ import PersonInfo from './PersonInfo';
 import MyAccount from './MyAccount';
 import UserContext from "./context/UserContext";
 import EditInfo from './EditInfo';
+import TutorInfo from './TutorInfo';
 import PrivateRoute from "./PrivateRoute";
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route exact path='/searchtutors' component={SearchTutors} />
           <Route exact path='/searchstudents' component={SearchStudents} />
           <Route exact path='/students/:id' component={PersonInfo} />
+          <Route exact path='/tutors/:id' component={TutorInfo} />
           <Route exact path='/myaccount' component={MyAccount} />
           <Route exact path='/editinfo' component={EditInfo} />
         </Container>

@@ -5,7 +5,7 @@ const SearchBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
-
+    const [proficiency, setProficiency] = useState('');
     const handleChange = (e) => {
         setSearchTerm(e.target.value);
     };
@@ -16,7 +16,8 @@ const SearchBar = () => {
             const tutorlList = await axios.get(urlString, {
                 'startTime': startTime,
                 'endTime': endTime,
-                'subject': searchTerm
+                'subject': searchTerm,
+                'proficiency': proficiency
             })
             
         }catch(e){
@@ -52,12 +53,63 @@ const SearchBar = () => {
             <input
             type="datetime-local"
             value={endTime}
-            onChange={(e) => {
-                setEndTime(e.target.value);
-              }
-            }
+            onChange={(e) => {setEndTime(e.target.value);}}
             />
             </div>
+
+            <div className="field">
+            <label>Your Proficiency</label>
+            <div className="form-check">
+                    <label className="form-check-label">
+                    <input 
+                    type="radio" 
+                    className="form-check-input" 
+                    name="optradio" 
+                    onChange={(e) => setProficiency("Beginner")}
+                    /> Beginner
+                    </label>
+            </div> 
+            <div className="form-check">
+                <label className="form-check-label">
+                <input type="radio" 
+                className="form-check-input" 
+                name="optradio"
+                onChange={(e) => setProficiency("Intermediate")}
+                /> Intermediate
+                </label>
+            </div> 
+            <div className="form-check">
+                <label className="form-check-label">
+                <input type="radio" 
+                className="form-check-input" 
+                name="optradio"
+                onChange={(e) => setProficiency("Advanced")}
+                /> Advanced
+                </label>
+            </div>   
+            </div>      
+            {/* <div className="form-check">
+                <label>Sort By</label>
+                <div className="form-check">
+                <label className="form-check-label">
+                <input type="radio" 
+                className="form-check-input" 
+                name="optradio"
+                onChange={(e) => setProficiency("price")}
+                /> Price
+                </label>
+                </div> 
+                <div className="form-check">
+                <label className="form-check-label">
+                <input type="radio" 
+                className="form-check-input" 
+                name="optradio"
+                onChange={(e) => setProficiency("rate")}
+                /> Rating
+                </label>
+                </div> 
+                </div> */}
+            <br/>
             <button className='ui button' type='submit'>Search</button>
         </form>
     )

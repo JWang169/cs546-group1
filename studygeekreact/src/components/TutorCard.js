@@ -10,14 +10,18 @@ const TutorCard = ({tutor}) => (
             size='mini'
             src={tutor.img || faker.image.avatar()}
             />
-            <Card.Header>{tutor.name}</Card.Header>
-            <Card.Meta>{tutor.subjects}</Card.Meta>
-            <Card.Description>{tutor.info}</Card.Description>
+            <Card.Header>{tutor.firstName}</Card.Header>
+            <Card.Meta>{tutor.town}</Card.Meta>
+            <Card.Description>
+                {tutor.studentSubjects && tutor.studentSubjects.map(sub => (
+                    <li key={Math.random() * 100000}>{sub}</li>
+                ))}
+            </Card.Description>
         </Card.Content>   
         <Card.Content>
             <div className='ui two buttons'>
-            <Button basic color='green'>Contact</Button>
-            <Button basic color='blue'>Details</Button>                    
+            <Button basic color='green'>Request</Button>
+            <Button basic color='blue' href = {`/tutors/${tutor._id}`} >Details</Button>                   
             </div>
         </Card.Content>
     </Card>
