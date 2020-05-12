@@ -23,6 +23,9 @@ const Tutor = mongoose.model('Tutor', {
     town:{
       type:String
     },
+    hashedPassword:{
+        type:String
+    },
     state:{
       type:String
      },
