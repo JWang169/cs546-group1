@@ -40,7 +40,7 @@ const Tutor = mongoose.model('Tutor', {
     /*info: {
         type:String
     },*/
-    studentSubjects: {//left empty for now, have not yet implemented its database
+    tutorSubjects: {//left empty for now, have not yet implemented its database
         type: Array,
         "default": []
     }
@@ -58,8 +58,8 @@ const Tutor = mongoose.model('Tutor', {
 
 let tutorArray = [];
 const Snape = new Tutor({
-    _id:uuid(),
-    //_id:"507f1f77bcf86cd799439011",
+    //_id:uuid(),
+    _id:"e01b7e23-b68c-4631-859b-ee148cde5c1d",
     email: "severus@snape.com",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Severus",
@@ -73,8 +73,8 @@ const Snape = new Tutor({
 tutorArray.push(Snape)
 
 const Moody = new Tutor({
-    _id:uuid(),
-    // _id: "5e1a0651741b255ddda996c4",
+    //_id:uuid(),
+    _id: "e9247437-33a6-4d9f-8bc1-f269506dc774",
     email: "alastor@moody.com",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Alastor",
@@ -88,8 +88,8 @@ const Moody = new Tutor({
 tutorArray.push(Moody)
 
 const Lupin = new Tutor({
-    // _id:"a4f8512b9a734baf863ff33f",
-    _id:uuid(),
+    _id:"92e75cef-091a-4033-afb5-261eaecd3ec2",
+    //_id:uuid(),
     email: "remus@lupin.com",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Remus",
@@ -103,7 +103,8 @@ const Lupin = new Tutor({
 tutorArray.push(Lupin)
 
 const Minerva = new Tutor({
-    _id:uuid(),
+    _id: "4adec776-2d17-4a8d-a792-1792cb4f06b4",
+    //_id:uuid(),
     email: "minerva@mcgonagall.com",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Minerva",
@@ -117,7 +118,8 @@ const Minerva = new Tutor({
 tutorArray.push(Minerva)
 
 const Sybill = new Tutor({
-    _id:uuid(),
+    _id:"60625b69-1b3e-4743-b011-ac410723ebac",
+    //_id:uuid(),
     email: "sybill@trelawney.com",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Sybill",
@@ -131,7 +133,8 @@ const Sybill = new Tutor({
 tutorArray.push(Sybill)
 
 const Rolanda = new Tutor({
-    _id:uuid(),
+    _id: "855506ea-07cd-4081-8bde-5dfdb8ea9275",
+    // _id:uuid(),
     email: "rolanda@hooch.com",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Rolanda",
@@ -196,7 +199,8 @@ const Student = mongoose.model('Student', {
 
 let studentArray = [];
 const harry = new Student({
-    _id: uuid(),
+    _id: "263253c7-29e9-436d-95fa-645abd9aaa15",
+    //_id: uuid(),
     firstName: "Harry",
     lastName:"Potter",
     town:"Little Whinging",
@@ -219,7 +223,8 @@ const harry = new Student({
 studentArray.push(harry)
 
 const hermoine = new Student({
-    _id:uuid(), //from lab 6
+    _id:"8c3d8329-3a83-4112-9782-3a255fa7fc09",
+    //_id:uuid(), 
     firstName: "Hermoine",
     lastName: "Granger",
     town: "Hogsmeade",
@@ -234,7 +239,8 @@ const hermoine = new Student({
 studentArray.push(hermoine)
 
 const ron = new Student({
-    _id:uuid(),
+    _id:"e3094818-46bf-48a8-8575-f25a0f9a4a7b",
+    //_id:uuid(),
     firstName: "Ron",
     lastName: "Weasley",
     town: "The Burrough",
@@ -248,7 +254,8 @@ const ron = new Student({
 studentArray.push(ron)
 
 const luna = new Student({
-    _id:uuid(),
+    _id:"75de6056-87e4-4434-98e2-a6864e4ed288",
+    //_id:uuid(),
     firstName: "Luna",
     lastName: "Lovegood",
     town: "Rook",
@@ -262,7 +269,8 @@ const luna = new Student({
 studentArray.push(luna)
 
 const malfoy = new Student({
-    _id: uuid(),
+    _id:"c163eeff-3566-49c8-b63e-851da5b2de07",
+    //_id: uuid(),
     firstName: "Draco",
     email: "lucius@gmail.com",
     lastName: "Malfoy",
@@ -286,6 +294,13 @@ const malfoy = new Student({
             end: 1496460600000,
             endExtended: new Date(1496460600000)
         }
+    ],
+    studentSubjects: [
+        {
+            subjectName:"Magic",
+            proficiency:"novice",
+            tutoredBy:"a01cc6db-1c34-4552-b7ca-610f8cfb5abd"//this is the tutorPairId
+        }
     ]
   /* info: "A charming boy who is a little bit lost",
     education: "Jonior",
@@ -300,3 +315,43 @@ for(t in studentArray){
         console.log('Error', error)
     })
 }
+
+
+
+const TutorPair = mongoose.model('TutorPair', {
+    _id: {//id of pair
+        type: String
+    },
+    tutorId:{//id of tutor
+        type:String
+    },
+    studentId: {//id of student
+        type:String
+    },
+    subject:{//subject Taught
+        type:String
+    },
+    proficiency: {//subject's difficulty level
+        type:String
+    }
+})
+
+
+let tutorPairArray = [];
+const sybillMalfoy = new TutorPair({
+    _id: "a01cc6db-1c34-4552-b7ca-610f8cfb5abd",
+    tutorId: "60625b69-1b3e-4743-b011-ac410723ebac",
+    studentId: "c163eeff-3566-49c8-b63e-851da5b2de07",
+    subject:"Magic",
+    proficiency:"novice"
+})
+
+tutorPairArray.push(sybillMalfoy);
+for(t in tutorPairArray){
+    tutorPairArray[t].save().then(() => {
+        console.log(tutorPairArray[t])//this seems to only output malfoy for me.
+    }).catch((error) => {
+        console.log('Error', error)
+    })
+}
+    //_id: uuid(),
