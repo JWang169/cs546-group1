@@ -5,7 +5,7 @@ const SearchBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
-    const [subject, setSubject] = useState('');
+
     const handleChange = (e) => {
         setSearchTerm(e.target.value);
     };
@@ -16,7 +16,7 @@ const SearchBar = () => {
             const tutorlList = await axios.get(urlString, {
                 'startTime': startTime,
                 'endTime': endTime,
-                'subject': subject
+                'subject': searchTerm
             })
             
         }catch(e){
