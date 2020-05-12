@@ -14,6 +14,9 @@ const Tutor = mongoose.model('Tutor', {
     email:{
         type:String
     },
+    hashedPassword:{
+      type: String
+    },
     firstName: {
         type:String
     },
@@ -29,31 +32,18 @@ const Tutor = mongoose.model('Tutor', {
     state:{
       type:String
      },
-    availability: {//lefft empty for now, have not yet implemented its database
+     tutorSubjects:{
+       type:Array,
+       "default":[]
+     },
+     availability: {
         type: Array,
         "default": []
     },
-    /*education: {// this does not exist in DB proposal
-        type: String
-    },*/
-
-    /*info: {
-        type:String
-    },*/
-    tutorSubjects: {//left empty for now, have not yet implemented its database
-        type: Array,
-        "default": []
+    avgRatings:{
+      type:Array,
+      "default": 0
     }
-//     ,
-//     subject:{
-//         type:String
-//     },
-//     proficiency:{
-//         type: String
-//     },
-//     price:{
-//         type: Number
-//     },
 })
 
 let tutorArray = [];
@@ -65,10 +55,14 @@ const Snape = new Tutor({
     firstName: "Severus",
     lastName: "Snape",
     town: "Hoboken",
-    state: "NJ"
-//     subject: "Potions",
-//     proficiency : "Advanced",
-//     price : "10"
+    state: "NJ",
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Maths",
+      proficiency : "Advanced",
+      price : "30",
+      teaches : [],
+    }]
 })
 tutorArray.push(Snape)
 
@@ -146,6 +140,7 @@ const Rolanda = new Tutor({
 //     price : "100"
 })
 tutorArray.push(Rolanda)
+
 
 
 for(t in tutorArray){
