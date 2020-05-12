@@ -90,11 +90,11 @@ router.post('/signup', async (req, res) => {
 //     const proficiency = req.body['proficiency'];
 //     const price = req.body['price'];
     try{
-      const tutor = await tutorData.createTutor(email, firstName, lastName,town, state, password)//subject, proficiency, price, password)
+      const tutor = await tutorData.createTutor(email, firstName, lastName, password, town, state)//subject, proficiency, price, password)
       res.status(200).json(tutor)
     }catch(e){
       res.status(409).json({error: e});
-    }          
+    }
 });
 
 router.post('/login', async (req, res) => {
