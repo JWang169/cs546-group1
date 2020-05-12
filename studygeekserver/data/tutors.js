@@ -1,5 +1,6 @@
 const mongoCollections = require('../config/mongoCollections');
 const tutors = mongoCollections.tutors;
+const reviews = mongoCollections.reviews;
 const {ObjectId} = require('mongodb');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid/v4');
@@ -143,6 +144,7 @@ async function createTutor(email, firstName, lastName, town, state, password)//s
         'state': state,
         'town': town,
         'tutorSubjects' : [],
+        'reviews' :[],
         //'info': "",
         //'price' : price,
         //'proficiency' : proficiency
@@ -173,6 +175,34 @@ async function createSubject(tutorID, subjectName, proficiency, price){
   const updateTutor = await tutorCollection.updateOne({_id: tutorID},{ $addToSet: { tutorSubjects: tutor }});
   if (!updateTutor.matchedCount && !updateTutor.modifiedCount) throw 'could not update tutor successfully';
   return await this.getTutor(tutorID);
+}
+
+async function reviews(tutorId, studentId, content ,rating){
+  if (typeof tutorId !== "string") throw "Id must be a string";
+  if (typeof studentId !== "string") throw "Id must be a string";
+  if (typeof content !== "string") throw "Content must be a string";
+  if (typeof rating !== "number") throw "Rating must be a number";
+  const reviewCollection = await reviews();
+  let newReview ={
+    _id :uuid();
+    'tutorId' : tutorId;
+    'studentId' : studentId;
+    'content' : content;
+    'rating' : rating;
+  }
+  const reviewExists = await reviewCollection.findOne(newReview)
+  if (reviewExists) throw "The student has already reviewd the tutor";
+  const insertReview = await reviewCollection.insertOne(newReview);
+  if (insertReview.insertedCount === 0) throw "Review not added";
+  try{
+    const tutorCollection = await tutors();
+    const addReviewToTutor = await tutorCollection.updateOne({_id:tutorId},{$addToSet:{reviews:newReview._id}})
+    if (!addReviewToTutor.matchedCount && !addReviewToTutor.modifiedCount) throw 'Review to Tutor was not added';
+  }catch(e){
+    await reviewCollection.removeOne({_id:newReview._id});
+    throw "The update didnt happen";
+  }
+  return newReview;
 }
 
 async function addAvailability(id, start, end){
@@ -246,10 +276,10 @@ async function addAvailability(id, start, end){
 // }
 
 // Task 1:
-module.exports = {getAlltutors, 
-getTutor, 
-createTutor, 
-getTutorByEmail, 
+module.exports = {getAlltutors,
+getTutor,
+createTutor,
+getTutorByEmail,
 getTutorBySubject,
 getTutorByTownState,
 getTutorByRatingLowToHigh,
