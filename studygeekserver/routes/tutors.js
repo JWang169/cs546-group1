@@ -76,12 +76,13 @@ router.get('/ratelowtohigh/', async (req, res) => {
 });
 
 router.post('/createSubject', async (req, res) => {
-  const tutorID = req.body['id'];
+  const tutorID = req.body['_id'];
   const subjectName = req.body['subjectName'];
   const proficiency = req.body['proficiency'];
   const price = req.body['price'];
   try {
     let tutor = await tutorData.createSubject(tutorID, subjectName, proficiency, price);
+    console.log(tutor);
     res.json(tutor);
   } catch (e) {
     res.status(404).json({ error: 'Tutor not found' });
