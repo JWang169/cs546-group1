@@ -167,17 +167,15 @@ async function createSubject(tutorID, subjectName, proficiency, price){
   const tutorInfo = await this.getTutor(tutorID);
   if (!tutorInfo) throw "Tutor not available";
   const tutor = {
-    //_id :uuid(),
+    _id :uuid(),
     'subjectName' : subjectName,
     'proficiency' : proficiency,
     'price' : price,
     'teaches' : [],
   }
   const updateTutor = await tutorCollection.updateOne({_id: tutorID},{ $addToSet: { tutorSubjects: tutor }});
-  console.log(this.getTutor(tutorID));
-  if (updateTutor.modifiedCount === 0) console.log("no")//throw 'could not update tutor successfully';
-  return true;
-  //return await this.getTutor(tutorID);
+  if (!updateTutor.matchedCount && !updateTutor.modifiedCount) throw 'could not update tutor successfully';
+  return await this.getTutor(tutorID);
 }
 
 async function addAvailability(id, start, end){

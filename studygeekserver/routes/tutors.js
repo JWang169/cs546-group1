@@ -82,7 +82,6 @@ router.post('/createSubject', async (req, res) => {
   const price = req.body['price'];
   try {
     let tutor = await tutorData.createSubject(tutorID, subjectName, proficiency, price);
-    console.log(tutor);
     res.json(tutor);
   } catch (e) {
     res.status(404).json({ error: 'Tutor not found' });
