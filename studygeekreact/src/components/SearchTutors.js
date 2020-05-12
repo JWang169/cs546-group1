@@ -9,13 +9,14 @@ function Tutors() {
     <div className="container">
       <br/>
         <div className="row justify-content-center">
-          <h3>A thousand years later the magic remains. </h3>
+          <h3>Find Your Tutor</h3>
         </div>
         
         <SearchBar/>
         <hr/>
         <br/>
         <TutorList/>
+        <small>A thousand years later the magic remains. </small>
         {/* <Route exact path='/students/:id' component={StudentInfo} /> */}
     </div>
     </Router>
