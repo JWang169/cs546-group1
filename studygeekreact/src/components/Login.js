@@ -23,14 +23,11 @@ const LogIn = () => {
         localStorage.setItem("token", newToken.data);
         setToken(newToken.data);
         // const tokenInfo = jwt_decode(localStorage.getItem("token"));
-        history.push('/')
+        history.push('/homepage')
       }catch(e){
         console.log(e);
         const jsonResponse = e.response;
-        /*if(typeof jsonResponse.data.error ==='undefined'){///I'm getting a wierd error here. -Loughlin
-          setEmailError("No input email");
-        }
-        else*/ if(jsonResponse.data.error === 'No such user'){
+        if(jsonResponse.data.error === 'No such user'){
           setEmailError("User Email doesn't exist.");
         }else{
           setErrorMessage(jsonResponse.data.error);
@@ -40,7 +37,7 @@ const LogIn = () => {
 
     useEffect(() => {
       if (token !== null){
-        history.push('/')
+        history.push('/homepage')
       }
     }); 
 

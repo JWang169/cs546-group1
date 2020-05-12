@@ -50,12 +50,12 @@ router.post("/", async (req, res) => {
     const postData= req.body;
     if(!postData)throw "form submission error";
     try{
-        let match = false;
+        
         if(postData.status==="tutors"){
-            match = await tutorData.login(postData.email,postData.password);
+           const match = await tutorData.login(postData.email,postData.password);
         }
         else if(postData.status==="students"){
-            match = await studentData.login(postData.email,postData.password);
+            const match = await studentData.login(postData.email,postData.password);
             return match;
         } else throw "This is impossible";
     }catch(e){
