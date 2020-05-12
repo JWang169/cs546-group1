@@ -37,7 +37,7 @@ const LogIn = () => {
     }
 
     useEffect(() => {
-      if (token !== null){
+      if (token){
         history.push('/')
       }
     }); 
@@ -92,7 +92,26 @@ const LogIn = () => {
         />
       </div>
 
-      <div className="field">
+      <div className="form-check">
+      <label className="form-check-label">
+        <input 
+        type="radio" 
+        className="form-check-input" 
+        name="optradio" 
+        onChange={(e) => setStatus("tutors")}
+        /> I'm a tutor
+      </label>
+      </div>
+      <div className="form-check">
+        <label className="form-check-label">
+          <input type="radio" 
+          className="form-check-input" 
+          name="optradio"
+          onChange={(e) => setStatus("students")}
+          /> I'm a student
+        </label>
+      </div>    
+      {/* <div className="field">
           <div className="ui radio checkbox">
             <input
               type="checkbox"
@@ -103,15 +122,25 @@ const LogIn = () => {
               onChange={(e) => setStatus("tutors")}
             />
             <label>I am a tutor.</label>
+            <input
+              type="checkbox"
+              name="checkboxRadioGroup"
+              readOnly=""
+              tabIndex=""
+              value="tutor"
+              onChange={(e) => setStatus("tutors")}
+            />
+            <label>I am a tutor.</label>
           </div>
-      </div>
+      </div> */}
 
-      <div className="field">
+      {/* <div className="field">
         <div className='ui checkbox'>
         <input type='checkbox' tabIndex='0' required/>
         <label>You're just as sane as I am. </label>
         </div>
-      </div>
+      </div> */}
+      <br />
       <button className='ui button' type='submit'>Log In</button>
     </form>
     );

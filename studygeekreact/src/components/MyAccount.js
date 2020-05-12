@@ -6,7 +6,8 @@ import { useHistory } from 'react-router-dom';
 
 const MyAccount =() => {
     const {token, setToken} = useContext(UserContext);
-    if (token === null){
+    const history = useHistory();
+    if (!token){
         console.log("no tokens");
         history.push('/login')
     }
@@ -20,7 +21,6 @@ const MyAccount =() => {
     const [town, setTown] = useState("");
     const [newSubject, setNewSubject] = useState("")
     const [newAvailability, setNewAvailability] = useState("")
-    const history = useHistory();
 
 
 

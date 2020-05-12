@@ -7,7 +7,9 @@ const EditInfo =() => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [subjects, setSubjects] = useState("");
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
+    const [subjects, setSubjects] = useState([]);
     const [availability, setAvailability] = useState("");
     const [state, setState] = useState("");
     const [town, setTown] = useState("");
@@ -27,8 +29,14 @@ const EditInfo =() => {
             setEmail(data.email);
             setState(data.state);
             setTown(data.town);
-            setSubjects(data.studentSubjects)
+            if(tokenInfo.status === 'students'){
+                setSubjects(data.studentSubjects)
+            }else{
+                setSubjects(data.tutorSubjects)
+            }
+            
             setAvailability(data.availability)
+            console.log(subjects);
         }catch(e){
             console.log(e)
         }
@@ -64,6 +72,12 @@ const EditInfo =() => {
 
     const addAvailability = (event) => {
         event.preventDefault();
+        let newS = startTime;
+        let newE = endTime;
+        setNewAvailability({
+            'start': newS,
+            'end': newE
+        })
         setAvailability([...availability, newAvailability]);
     }
 
@@ -85,6 +99,7 @@ const EditInfo =() => {
         availability.splice(id, 1)
         setAvailability([...availability])
     }
+
 
     useEffect(() => {
         getAccount()
@@ -175,12 +190,31 @@ const EditInfo =() => {
                 </div>
                 <div className='field'>
                 <label>Add availability</label>
+                <div className="field">
+                    <label>Start time</label>
                     <input
+                    type="datetime-local"
+                    value={startTime}
+                    onChange={(e) => {setStartTime(e.target.value);}}
+                    required
+                    />
+                    </div>
+                    <div className="field">
+                    <label>End time</label>
+                    <input
+                    type="datetime-local"
+                    value={endTime}
+                    onChange={(e) => {setEndTime(e.target.value);}}
+                    required
+                    />
+                    </div>
+                    {/* <input
                     type="text"
                     name="newAvailability"
                     value={newAvailability}
                     onChange={(e) => setNewAvailability(e.target.value)}
-                    />
+                    /> */}
+
                 <button onClick={addAvailability}>Add Availability</button>   
                 </div>
             </div>    

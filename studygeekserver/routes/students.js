@@ -27,13 +27,37 @@ router.get("/:id", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const reqStudent= req.body;
+  
   try{
+    if(!reqStudent)throw "needs a login request";
+    if(!reqStudent.email)throw "needs an email";
+    if(!reqStudent.password)throw"needs a password";
     const token = await studentData.login(reqStudent.email,reqStudent.password);
-    return token;
+    res.send(token);
   }catch(e){
     res.status(404).json({error: e});
   }
 });
+
+router.post('/tutorPair',async(req, res) =>{
+  const reqPair = req.body;
+
+  try{
+    if (!reqPair)throw "needs a request";
+    if(!reqPair.tutorId)throw"needs a tutorId";
+    if(!reqPair.studentId)throw "needs a studentId";
+    if(!reqPair.subject)throw "needs a requested subject";
+    if(!reqPair.proficiency)throw"there needs to be a proficiency for the subject";
+  }catch(e){
+    res.status(404).json({error: e});
+  }
+  try{
+    const newPair= await studentData.createPair(reqPair.tutorId, reqPair.studentId, reqPair.subject, reqPair.proficiency);
+    res.status(200).json(newPair);
+  }catch(e){
+    res.status(503).json({error:e});
+  }
+})
 
 router.post("/signup", async (req, res) => {
   //NOTE: when creating a new student profile, the studentSubjects and availability Arrays are initially empty
