@@ -74,10 +74,14 @@ const Moody = new Tutor({
     firstName: "Alastor",
     lastName: "Moody",
     town: "Dublin",
-    state: "CA"
-//     subject: "Defence Against the Dark Arts",
-//     proficiency : "Intermediate",
-//     price : "25"
+    state: "CA",
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Science",
+      proficiency : "Advanced",
+      price : "25",
+      teaches : [],
+    }]
 })
 tutorArray.push(Moody)
 
@@ -90,9 +94,13 @@ const Lupin = new Tutor({
     lastName: "JohnLupin",
     town: "Dallas",
     state: "TX",
-//     subject: "Defence Against the Dark Arts",
-//     proficiency : "Advanced",
-//     price : "50"
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Computer Science",
+      proficiency : "Intermediate",
+      price : "100",
+      teaches : [],
+    }]
 })
 tutorArray.push(Lupin)
 
@@ -104,10 +112,14 @@ const Minerva = new Tutor({
     firstName: "Minerva",
     lastName: "McGonagall",
     town: "Seattle",
-    state: "Washington"
-//     subject: "Transfiguration",
-//     proficiency : "Beginner",
-//     price : "15"
+    state: "Washington",
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Statistics",
+      proficiency : "Beginner",
+      price : "50",
+      teaches : [],
+    }]
 })
 tutorArray.push(Minerva)
 
@@ -119,10 +131,14 @@ const Sybill = new Tutor({
     firstName: "Sybill",
     lastName: "Trelawney",
     town: "Baltimore",
-    state: "Maryland"
-//     subject: "Divination",
-//     proficiency : "Beginner",
-//     price : "25"
+    state: "Maryland",
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Maths",
+      proficiency : "Intermediate",
+      price : "10",
+      teaches : [],
+    }]
 })
 tutorArray.push(Sybill)
 
@@ -134,11 +150,14 @@ const Rolanda = new Tutor({
     firstName: "Rolanda",
     lastName: "Hooch",
     town: "Miami",
-    state: "Florida"
-//     subject: "Flying",
-//     proficiency : "Advanced",
-//     price : "100"
-})
+    state: "Florida",
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Computer Science",
+      proficiency : "Advanced",
+      price : "150",
+      teaches : [],
+    }]})
 tutorArray.push(Rolanda)
 
 
