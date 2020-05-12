@@ -27,7 +27,10 @@ const LogIn = () => {
       }catch(e){
         console.log(e);
         const jsonResponse = e.response;
-        if(jsonResponse.data.error === 'No such user'){
+        /*if(typeof jsonResponse.data.error ==='undefined'){///I'm getting a wierd error here. -Loughlin
+          setEmailError("No input email");
+        }
+        else*/ if(jsonResponse.data.error === 'No such user'){
           setEmailError("User Email doesn't exist.");
         }else{
           setErrorMessage(jsonResponse.data.error);

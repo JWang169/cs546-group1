@@ -5,7 +5,7 @@ const userData = data.users;
 const studentData = data.students;
 const tutorData = data.tutors;
 
-
+//will only happen if /login/signup but this shouldn't be needed
 router.post("/signup", async (req, res) => {
     const userPostData = req.body;
     if(!userPostData.email){
@@ -45,9 +45,26 @@ router.post("/signup", async (req, res) => {
     }
 });
 
+//here's the important one!
+router.post("/", async (req, res) => {
+    const postData= req.body;
+    if(!postData)throw "form submission error";
+    try{
+        let match = false;
+        if(postData.status==="tutors"){
+            match = await tutorData.login(postData.email,postData.password);
+        }
+        else if(postData.status==="students"){
+            match = await studentData.login(postData.email,postData.password);
+            return match;
+        } else throw "This is impossible";
+    }catch(e){
+        res.status(404).json({error: e});
+    }
 
-router.post("/login", async (req, res) => {
-    const email = req.body['email'];
+
+    
+    /*const email = req.body['email'];
     const password = req.body['password'];
 	try {
         const token = await userData.getUser(email, password);
@@ -56,7 +73,7 @@ router.post("/login", async (req, res) => {
         res.status(200).send(token);
 	}catch(e){
         res.status(401).json({error: e})
-    }
+    }*/
 });
 
 

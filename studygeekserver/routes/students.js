@@ -25,13 +25,22 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/signup", async (req, res) => {//NOTE: when creating a new student profile, the studentSubjects and availability Arrays are initially empty
+router.post("/signup", async (req, res) => {
+  //NOTE: when creating a new student profile, the studentSubjects and availability Arrays are initially empty
   const reqStudent = req.body;//NOTE: These will need to be updated to match the form data passed in by html
 
   if(!reqStudent){
     res.status(400).json({error: "You must provide student profile data"});//this should be replaced by an error page redirect in the future
     return;
   }
+/*let time;
+  if(reqStudent.time){
+    time= reqStudent.time;
+  }else{
+    time = 0;//some empty value for when the item isnt there
+  }*/
+
+
   if(!reqStudent.firstName){//type checking is done in data file
     res.status(400).json({error: "You must provide a first name"});
 		return;
@@ -71,16 +80,8 @@ router.post("/:id/availability", async (req, res) => {//for form POST submission
   //will need to get the start/end times from HTML, I RECOMMEND HTML FILE USE input type= 'datetime-local',
   //despite its lack of compatability accross browsers, it is provided to the class in the html intro slides
   
-  
-  
-  //code could likely also be easily modified for Tutor page
-  
-  /*if(!availability.day){//The day should be changed to match HTML form submission, at the moment, I will assume that "day"
-    res.status(400).json({error:"You must select a day of the week that you are available"});//This is the error line, modify it as needed
-    return;
-  }*///IGNORE THIS FUNCTION
 
-  if(!availability.startTime){//For html input, I recommend 'type=time', though I've heard it has compatability problems with safari and Internet Explorer
+  if(!availability.startTime){
     res.status(400).json({error:"You must select the time of day that you become available"});
     return;
   }
