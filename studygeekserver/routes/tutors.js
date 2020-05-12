@@ -102,7 +102,7 @@ router.post('/login', async (req, res) => {
   const password = req.body['password'];
   try{
     const token = await tutorData.login(email,password)
-    res.status(200).send(token);
+    res.send(token);
 	}catch(e){
         res.status(401).json({error: e})
     }
