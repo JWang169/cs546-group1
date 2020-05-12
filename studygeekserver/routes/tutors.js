@@ -94,19 +94,19 @@ router.post('/signup', async (req, res) => {
       res.status(200).json(tutor)
     }catch(e){
       res.status(409).json({error: e});
-    }          
-});
-
-router.post('/login', async (req, res) => {
-  const email = req.body['email'];
-  const password = req.body['password'];
-  try{
-    const token = await tutorData.login(email,password)
-    res.status(200).send(token);
-	}catch(e){
-        res.status(401).json({error: e})
     }
 });
+
+// router.post('/login', async (req, res) => {
+//   const email = req.body['email'];
+//   const password = req.body['password'];
+//   try{
+//     const token = await tutorData.login(email,password)
+//     res.status(200).send(token);
+// 	}catch(e){
+//         res.status(401).json({error: e})
+//     }
+// });
 
 // update tutor info
 // router.put("/:id", async (req, res) => {
