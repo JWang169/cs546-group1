@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/login", async (req, res) => {
   const reqStudent= req.body;
   try{
     const token = await studentData.login(reqStudent.email,reqStudent.password);

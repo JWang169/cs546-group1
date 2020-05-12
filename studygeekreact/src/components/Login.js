@@ -24,7 +24,7 @@ const LogIn = () => {
         localStorage.setItem("token", newToken.data);
         setToken(newToken.data);
         // const tokenInfo = jwt_decode(localStorage.getItem("token"));
-        history.push('/homepage')
+        history.push('/')
       }catch(e){
         console.log(e);
         const jsonResponse = e.response;
@@ -38,7 +38,7 @@ const LogIn = () => {
 
     useEffect(() => {
       if (token !== null){
-        history.push('/homepage')
+        history.push('/')
       }
     }); 
 
