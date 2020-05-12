@@ -17,7 +17,7 @@ const  Homepage = () => {
             to='/searchtutors'
           >
             <Icon name='pencil' />
-            I am a Student.
+            Search Tutors.
           </Menu.Item>
           <Menu.Item 
             name='tutor'
@@ -27,7 +27,7 @@ const  Homepage = () => {
             to='/searchstudents'
           >
             <Icon name='bullhorn' />
-            I am a Tutor.
+            See all Students.
           </Menu.Item>
       </Menu>
     </div>
