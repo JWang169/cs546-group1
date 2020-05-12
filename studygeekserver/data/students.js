@@ -1,5 +1,6 @@
 const mongoCollections = require('../config/mongoCollections');
 const students = mongoCollections.students;
+const tutorPairs = mongoCollections.tutorPairs;
 const {ObjectId} = require('mongodb');
 const bcrypt = require("bcryptjs");
 const uuid = require('uuid/v4');
@@ -109,6 +110,52 @@ async function addAvailability(id, start, end){
     return newAvailability;
 }
 
+async function createPair(tutorId,studentId,subject, proficiency){
+    const pairCollection= await tutorPairs();
+    const studentCollection = await students();
+    if(!tutorId) throw "tutor must be provided";
+    if(typeof tutorId !== "string") throw "tutorId must be of type string";
+    const currentStudent= await this.getStudent(studentId);
+    if(!subject)throw "subject must be provided";
+    if(typeof subject !=="string")throw "subject must be of type string";
+    if(!proficiency)throw"The student must provide thier level of proficiency";
+    if(typeof proficiency !== "string")throw "The subect's proficiency must be of type string";
+    
+    const pairAlreadyExists = await pairCollection.findOne({
+        "tutorId": tutorId,
+        "studentId":studentId,
+        "subject":subject,
+        "proficiency":proficiency 
+    });
+    if(pairAlreadyExists)throw "this student tutor pair already exists";
+    
+    let newTutorPair = {
+        _id: uuid(),
+        tutorId: tutorId,
+        studentId: studentId,
+        subject: subject,
+        proficiency: proficiency
+    };
+
+    const insertInfo = await pairCollection.insertOne(newTutorPair);
+    if (insertInfo.insertedCount === 0) throw `Could not add new pair`;
+
+    let newStudentSubject ={
+        subjectName: subject,
+        proficiency: proficiency,
+        tutoredBy: newTutorPair._id
+    }
+
+    const addStudentSubject = await studentCollection.updateOne(
+        {_id: id},
+        {$addToSet: {studentSubjects: newStudentSubject}}
+    );
+    if(!addStudentSubject.matchedCount || !addStudentSubject.modifiedCount) throw "subject addition to student failed";
+//Note: this does not update the tutor database
+    return newTutorPair
+}
+
+
 async function login(email,password){
   if (!email) throw "Email must be provided";
   if (!password) throw "Passsword must be provided";
@@ -179,4 +226,4 @@ async function removeStudent(id){
 some form of remove availability function, but first need html delete specification info
 */
 
-module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent, login}
+module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent, login, createPair}
