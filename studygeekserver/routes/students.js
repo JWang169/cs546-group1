@@ -29,7 +29,7 @@ router.post("/login", async (req, res) => {
   const reqStudent= req.body;
   try{
     const token = await studentData.login(reqStudent.email,reqStudent.password);
-    return token;
+    res.send(token);
   }catch(e){
     res.status(404).json({error: e});
   }
