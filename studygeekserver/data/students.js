@@ -78,7 +78,7 @@ async function addAvailability(id, start, end){
     if(newStartTime>=newEndTime)throw "The available time range must end after it begins";
     const currentStudent = await this.getStudent(id);
     const availableArray = currentStudent.availability;
-    
+
     var i;
     for(i=0;i<availableArray.length;i++){
         if(availableArray[i].dayNum==newDay){
@@ -100,7 +100,7 @@ async function addAvailability(id, start, end){
         endExtended: newEnd//NOTE: this will output the time relative to the UTC timezone, making output look slightly off if not expected.
     };
     const updateInfo = await studentCollection.updateOne(
-        {_id: id}, 
+        {_id: id},
         {$addToSet: {availability: newAvailability}}
     );
 
@@ -161,7 +161,7 @@ async function updateStudent(id, updatedStudent){
         town: updatedStudent.town,
         state: updatedStudent.state,
         hashedPassword: student.hashedPassword,
-        availability: student.availability, //change this if I need to update 
+        availability: student.availability, //change this if I need to update
     }
 
 }*/

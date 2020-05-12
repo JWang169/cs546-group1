@@ -94,18 +94,18 @@ async function getTutorByProficiency(subject, proficiency){
 async function login(email,password){
   if (!email) throw "Username must be provided";
   if (!password) throw "Passsword must be provided";
+  if (typeof email !== "string") throw "Username must be string";
+  const emailLow = email.toLowerCase();
   const tutorCollection = await tutors();
   const theTutor = await tutorCollection.findOne({email:email})
-  if (!theTutor) throw "No user available";
+  if (!theTutor) throw "No Tutor available";
   let matched = false;
-  try{
-    matched = await bcrypt.compare(password, theTutor.hashedpassword);
-	} catch (e) {
-		console.log(e)
-    }
+  matched = await bcrypt.compare(password, theTutor.hashedpassword);
   if(matched){
       const token = jwt.sign({
+                statusId: theTutor._id,
                 email: theTutor.email,
+                status: "tutor"
             },
             "Flibbertigibbet",
             {
@@ -139,7 +139,7 @@ async function createTutor(email, firstName, lastName, password, town, state)//s
   const hashedPassword = await bcrypt.hash(password,saltRounds);
   let newTutor = {
         _id : uuid(),
-        'email': email,
+        'email': emailLow,
         'firstName': firstName,
         'lastName': lastName,
         //'info': "",np
@@ -229,10 +229,10 @@ async function addAvailability(id, start, end){
 // }
 
 // Task 1:
-module.exports = {getAlltutors, 
-getTutor, 
-createTutor, 
-getTutorByEmail, 
+module.exports = {getAlltutors,
+getTutor,
+createTutor,
+getTutorByEmail,
 getTutorBySubject,
 getTutorByTownState,
 getTutorByRatingLowToHigh,
