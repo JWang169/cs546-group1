@@ -3,6 +3,7 @@ const students = mongoCollections.students;
 const {ObjectId} = require('mongodb');
 const bcrypt = require("bcryptjs");
 const uuid = require('uuid/v4');
+const jwt = require("jsonwebtoken");
 const saltRounds = 16;
 
 
@@ -68,7 +69,7 @@ async function addAvailability(id, start, end){
 
     const studentCollection = await students();
 
-    const newStart = new Date(start);
+    const newStart = new Date(start);//creates item of milliseconds since Jan 1st 1970 began
     const newEnd = new Date(end);
     const newDay= newStart.getDay();
     if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
@@ -108,6 +109,63 @@ async function addAvailability(id, start, end){
     return newAvailability;
 }
 
+async function login(email,password){
+  if (!email) throw "Email must be provided";
+  if (!password) throw "Passsword must be provided";
+  if (typeof email !== "string") throw "Email must be a string";
+  const emailLow = email.toLowerCase();
+  const studentCollection = await students();
+  const student = await studentCollection.findOne({email: emailLow})
+  if (!student) throw "No student found";
+  let matched = false;
+   matched = await bcrypt.compare(password, student.hashedPassword);
+  if(matched){
+      const token = jwt.sign({
+                statusId: student._id,
+                email: student.email,
+                status: "students"
+            },
+            "Flibbertigibbet",
+            {
+                expiresIn: "7d"
+            }
+        )
+        return token;
+    }else{
+        throw `Password doesn't match.`
+    }
+}
+/*
+async function updateStudent(id, updatedStudent){
+    const student = await this.getStudent(id);
+    if (typeof updatedStudent.email != 'string') throw 'Email must be a string';
+    const emailDup= updatedStudent.email;//converts email to lowercase
+    const emailLow = emailDup.toLowerCase();
+    if (typeof updatedStudent.firstName != 'string') throw 'You must provide a first name of type string';
+    if (typeof updatedStudent.lastName != 'string') throw 'You must provide a last name of type string';
+    if (typeof updatedStudent.town != 'string') throw 'You must provide a string of the town you reside in';
+    if (typeof updatedStudent.state != 'string') throw 'You must provide a string of the state you reside in';
+    //if (typeof updatedStudent.password !='string') throw 'you must provide a valid password of type string';
+
+    //NOTE: neither the availability nor the StudentSubjects arrays will  be updated here. Those will need their own functions.
+    //However, the tutor pairs database will need to be updated, if the student's name changes
+    //I think thatthe chat history should remain the same, regardless of name change because your past name will not be changed
+    //ALSO, password will not be changed here
+    //As it stands, the availability object in the student database does not matter here, and is currently altered in different functions.
+    //let me know if u want this function to change that.
+
+    let studentUpdateInfo = {
+        firstName: updatedStudent.firstName,
+        lastName: updatedStudent.lastName,
+        email: emailLow,
+        town: updatedStudent.town,
+        state: updatedStudent.state,
+        hashedPassword: student.hashedPassword,
+        availability: student.availability, //change this if I need to update 
+    }
+
+}*/
+
 async function removeStudent(id){
     const studentCollection = await students();
     //let student = null;//Unecessary, but allows return to contain the info
@@ -121,4 +179,4 @@ async function removeStudent(id){
 some form of remove availability function, but first need html delete specification info
 */
 
-module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent}
+module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent, login}

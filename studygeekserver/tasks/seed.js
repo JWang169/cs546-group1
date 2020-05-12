@@ -193,13 +193,21 @@ const Student = mongoose.model('Student', {
 
 let studentArray = [];
 const harry = new Student({
-    _id:"507f1f77bcf86cd799439011",//from lab 6 (also seen in mongodb objectId webpage)
+    _id: uuid(),
     firstName: "Harry",
     lastName:"Potter",
     town:"Little Whinging",
     state:"Surrey",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
-    email: "horcrux@gmail.com"
+    email: "horcrux@gmail.com",
+    availability:[{
+        day: "Thursday",
+        dayNum: 4,
+        start: 1496320200000,//milliseconds since the  Jan 1st, 1970, 00:00:00, retrieved from html type ='datetime-local' and converted in JS
+        startExtended: new Date(1496320200000),
+        end: 1496323800000,
+        endExtended: new Date(1496323800000)
+    }]
 
     //info: "The boy who lived",
     //education: "Junior",
@@ -208,7 +216,7 @@ const harry = new Student({
 studentArray.push(harry)
 
 const hermoine = new Student({
-    _id:"a4f8512b9a734baf863ff33f", //from lab 6
+    _id:uuid(), //from lab 6
     firstName: "Hermoine",
     lastName: "Granger",
     town: "Hogsmeade",
@@ -223,7 +231,7 @@ const hermoine = new Student({
 studentArray.push(hermoine)
 
 const ron = new Student({
-    _id:"5324fbb60f664dc38e540408",//from lab 4
+    _id:uuid(),
     firstName: "Ron",
     lastName: "Weasley",
     town: "The Burrough",
@@ -237,7 +245,7 @@ const ron = new Student({
 studentArray.push(ron)
 
 const luna = new Student({
-    _id:"5b0b614d46a8445083b965b8",//from lab4
+    _id:uuid(),
     firstName: "Luna",
     lastName: "Lovegood",
     town: "Rook",
@@ -251,7 +259,7 @@ const luna = new Student({
 studentArray.push(luna)
 
 const malfoy = new Student({
-    _id: "5e1a0651741b255ddda996c4",//from mongodb objectid webpage
+    _id: uuid(),
     firstName: "Draco",
     email: "lucius@gmail.com",
     lastName: "Malfoy",
