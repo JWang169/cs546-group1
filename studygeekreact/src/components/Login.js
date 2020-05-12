@@ -37,7 +37,7 @@ const LogIn = () => {
     }
 
     useEffect(() => {
-      if (token !== null){
+      if (token){
         history.push('/')
       }
     }); 

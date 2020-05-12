@@ -42,13 +42,13 @@ function App() {
           <Route exact path='/' component={Homepage} />
           <Route exact path='/signup' component={SignUp} />
           <Route exact path='/login' component={LogIn} />
-          <PrivateRoute exact path='/logout' component={LogOut} token={token} />
+          <Route exact path='/logout' component={LogOut} token={token} />
           <Route exact path='/demo' component={Demo} />
           <Route exact path='/searchtutors' component={SearchTutors} />
           <Route exact path='/searchstudents' component={SearchStudents} />
-          <PrivateRoute exact path='/students/:id' component={PersonInfo} />
-          <PrivateRoute exact path='/myaccount' component={MyAccount} />
-          <PrivateRoute exact path='/editinfo' component={EditInfo} />
+          <Route exact path='/students/:id' component={PersonInfo} />
+          <Route exact path='/myaccount' component={MyAccount} />
+          <Route exact path='/editinfo' component={EditInfo} />
         </Container>
       </UserContext.Provider>
     </Router>
