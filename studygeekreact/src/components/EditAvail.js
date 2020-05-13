@@ -34,8 +34,8 @@ const EditInfo =() => {
         console.log(urlString);
         try{
             const { data } = await axios.post(urlString, {
-                start: startTime,
-                end: endTime
+                startTime: startTime,
+                endTime: endTime
             });
             setErrorMsg(false);
             history.push('/myaccount');
@@ -58,8 +58,8 @@ const EditInfo =() => {
         const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}/availability`;
         try{
             const delInfo = {
-                startTime: availability[index].start,
-                endTime: availability[index].end
+                start: availability[index].start,
+                end: availability[index].end
             }
             console.log(delInfo);
             const {data} = await axios.delete(urlString, delInfo);
@@ -91,8 +91,8 @@ const EditInfo =() => {
                 <div className='field'>
                 <h3>Availability</h3>
                     {availability && availability.map((s, index) => (
-                        <div key={s.start}>
-                            <h4>From: {s.start}  To: {s.end} 
+                        <div key={Math.random() * 100000}>
+                            <h4>{s.day}, {s.startH}:{s.startM} - {s.endH}:{s.endM}
                             <button className="button" onClick={(e) =>deleteAvailability(e, index)} style={{position: 'absolute', right: 550}}>Delete</button></h4>                           
                         </div>
                     ))}  
