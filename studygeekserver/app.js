@@ -22,15 +22,11 @@ app.use(
 );
 
 // New, used for chatting
-let userPairs = {};
-let roomCounter = 1;
 
 io.sockets.on('connection', function(socket) {
-    socket.on('username', function({username, targetUser}) {
-        socket.username = username;
-        let roomName = 'room' + roomCounter.toString();
-        roomCounter++;
-        userPairs.roomName = [username, targetUser];
+    socket.on('connect', function({info}) {
+        socket.username = info.username;
+        let roomName = info.roomId;
         socket.join(roomName);
         io.to(roomName).emit('is_online', '🔵 <i>' + socket.username + ' joined the chat..</i>');
     });
@@ -44,6 +40,7 @@ io.sockets.on('connection', function(socket) {
     });
 
 });
+
 // End of New
 
 configRoutes(app);
