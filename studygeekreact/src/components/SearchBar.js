@@ -20,8 +20,7 @@ const SearchBar = () => {
                 'subject': searchTerm,
                 'proficiency': proficiency,
                 'sort': sort
-            })
-            
+            })   
         }catch(e){
             console.log(e);
         }
@@ -113,7 +112,7 @@ const SearchBar = () => {
                 </div> 
                 </div>
             <br/>
-            <button className='ui button' type='submit'>Search</button>
+            <button className="ui primary button" type='submit'>Search</button>
         </form>
     )
 
