@@ -24,7 +24,7 @@ const MyAccount =() => {
 
     const getAccount = async() =>{
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
-        // console.log(tokenInfo)
+        console.log(tokenInfo)
         const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}`;
         try{
             const { data } = await axios.get(urlString);
@@ -73,7 +73,6 @@ const MyAccount =() => {
             <div className="row">
                 <div className="col">
                     <h2>My Subjects: </h2>
-                    <button className='ui button' onClick={onClickSub}>Edit My Subjects</button>   
                     {subjects && subjects.map(s => (
                         <div key={Math.random() * 100000}>
                             <p>{s.subjectName}</p>
@@ -87,11 +86,10 @@ const MyAccount =() => {
                             <p>{s.start} {s.end}</p>
                         </div>
                     ))}
-                    <button className='ui button' onClick={onClickAvail}>Edit My Availability</button>   
+                    
                 </div>
                 <div className="col">
                     <h2>My Account: </h2>
-                    <button className='ui button' onClick={onClickAccount}>Edit My Account</button>  
                     <div className="form-group">First name: {firstName}</div>
                     <div className="form-group">Last name: {lastName}</div>
                     <div className="form-group">Email: {email}</div>
@@ -99,6 +97,17 @@ const MyAccount =() => {
                     <div className="form-group">Town: {town}</div>                     
                 </div>
             </div> 
+            <div className="row">
+            <div className="col">
+            <button className="ui primary button" onClick={onClickSub}>Edit My Subjects</button>     
+            </div>
+            <div className="col">
+            <button className="ui primary button" onClick={onClickAvail}>Edit My Availability</button>   
+            </div>
+            <div className="col">
+            <button className="ui primary button" onClick={onClickAccount}>Edit My Account</button>  
+            </div>
+            </div>
         </div>
     )
 }
