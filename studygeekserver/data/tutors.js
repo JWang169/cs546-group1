@@ -102,7 +102,7 @@ async function getTutorByEmail(email){
 //   return theTutor;
 // }
 
-async function search(subject, proficiency, startTime, endTime, sorts){
+async function search(subject, proficiency, sorts){ //starttime and end time
   if (typeof subject !== "string") throw "Subject must be string";
   if (typeof proficiency !== "string") throw "Proficiency must be a string";
   // if (typeof startTime !== "object") throw "Start Time must be a object";
@@ -110,12 +110,22 @@ async function search(subject, proficiency, startTime, endTime, sorts){
   if (typeof sorts !== "string") throw "Sorting should be a string of Price/ Rating";
   const tutorCollection = await tutors();
   if (sorts === "price"){
-    const theTutor = await tutorCollection.find({'tutorSubjects.subject':subject},{'tutorSubjects.proficiency':proficiency}).sort({price:-1}).toArray();
+    const theTutor = await tutorCollection.find().sort({price:-1}).toArray();
   }
-  else if (sorts === "rate"){
-    const theTutor = await tutorCollection.find({'tutorSubjects.subject':subject},{'tutorSubjects.proficiency':proficiency}).sort({avgRatings:1}).toArray();
+  if (sorts === "rate"){
+    const theTutor = await tutorCollection.find().sort({avgRatings:-1}).toArray();
+  }
+  if (proficiency ==="Advanced"){
+    const theTutor = await tutorCollection.find({'tutorSubjects.proficiency':"Advanced"}).toArray();
+  }
+  if (proficiency ==="Intermediate"){
+    const theTutor = await tutorCollection.find({'tutorSubjects.proficiency':"Intermediate"}).toArray();
+  }
+  if (proficiency ==="Begineer"){
+    const theTutor = await tutorCollection.find({'tutorSubjects.proficiency':"Beginner"}).toArray();
   }
   return thetutor;
+
 }
 
 async function login(email,password){
@@ -200,42 +210,45 @@ async function createSubject(tutorID, subjectName, proficiency, price){
   return await this.getTutor(tutorID);
 }
 
-async function removeSubject(tutorId, subjectName, proficiency, price){
-  if (typeof tutorID !== "string") throw "Id must be a string";
+//checked but doesn't work
+async function removeSubject(tutorId, subjectName){
+  if (typeof tutorId !== "string") throw "Id must be a string";
   if (typeof subjectName !== "string") throw "Subject Name must be a string";
   // if (typeof proficiency !== "string") throw "proficiency must be a string";
   // if (typeof price !== "number") throw "Price must be a number";
   const tutorCollection = await tutors();
-  const tutorInfo = await this.getTutor(tutorID);
+  const tutorInfo = await this.getTutor(tutorId);
   if (!tutorInfo) throw "Tutor not available";
-  const findSubject = await tutorCollection.findOne({_id:tutorId},{'tutorSubjects.subjectName':subjectName});
+  const findSubject = await tutorCollection.findOne({_id:tutorId,'tutorSubjects.subjectName':subjectName});
   if (!findSubject) throw "Subject Not Found";
-  const removeSubject = await tutorCollection.removeOne({_id:tutorId},{'tutorSubjects.subjectName':subjectName});
-  if(removeSubject.deletedCount===0)throw "failed to delete review";
+  const removeSubject = await tutorCollection.updateOne({_id:tutorId},{$unset:{'tutorSubjects.subjectName':subjectName}});
+  //if (!removeSubject.matchedCount && !removeSubject.modifiedCount) throw 'could not update subject successfully';
   return this.getTutor(tutorId);
 }
 
+//checked works
 async function updateSubject(tutorId, subjectName, proficiency, price){
-  if (typeof tutorID !== "string") throw "Id must be a string";
+  if (typeof tutorId !== "string") throw "Id must be a string";
   if (typeof subjectName !== "string") throw "Subject Name must be a string";
   if (typeof proficiency !== "string") throw "proficiency must be a string";
   if (typeof price !== "number") throw "Price must be a number";
   const tutorCollection = await tutors();
-  const tutorInfo = await this.getTutor(tutorID);
+  const tutorInfo = await this.getTutor(tutorId);
   if (!tutorInfo) throw "Tutor not available";
-  const findSubject = await tutorCollection.findOne({_id:tutorId},{'tutorSubjects.subjectName':subjectName});
+  const findSubject = await tutorCollection.findOne({_id:tutorId,'tutorSubjects.subjectName':subjectName});
   if (!findSubject) throw "Subject Not Found";
-  const updateSubject ={
+  const updateSubject = {
     'subjectName' : subjectName,
     'proficiency' : proficiency,
     'price' : price,
     'teaches' : tutorInfo.tutorSubjects.teaches,
   }
-  const updateTutor = await tutorCollection.updateOne({_id:tutorId},{'tutorSubjects.subjectName': subjectName},{set : {tutorSubjects:updateSubject}});
+  const updateTutor = await tutorCollection.updateOne({_id:tutorId,'tutorSubjects.subjectName': subjectName},{$set : {tutorSubjects:updateSubject}});
   if (!updateTutor.matchedCount && !updateTutor.modifiedCount) throw 'could not update subject successfully';
-  return await this.getTutor(tutorID);
+  return await this.getTutor(tutorId);
 }
 
+<<<<<<< HEAD
 // async function updateSubject(tutorId,subjectName,proficiency, price){
 //   if (typeof tutorID !== "string") throw "Id must be a string";
 //   if (typeof subjectName !== "string") throw "Subject Name must be a string";
@@ -249,6 +262,7 @@ async function updateSubject(tutorId, subjectName, proficiency, price){
 //     'subjectName': subjectName
 //   }
 // }
+=======
 async function getReviewById(id){
     if (!id) throw "The id must be provided"
     if (typeof(id) !== "string" ) throw "The id must be a string";
@@ -257,6 +271,7 @@ async function getReviewById(id){
     if (!theReview) throw 'No tutor with that id';
     return theReview;
 }
+>>>>>>> 2b8d38bdca12a08956ea3dc1526a8f70c2cb515e
 
 async function createReviews(tutorId, studentId, content ,rating){
   if (typeof tutorId !== "string") throw "Id must be a string";
@@ -330,89 +345,124 @@ async function removeReview(tutorId, studentId, reviewId){
   if(removedReview.deletedCount===0)throw "failed to delete review";
 }
 
+async function getReview(id){
+  if (!id) throw "The id must be provided"
+  if (typeof(id) !== "string" ) throw "The id must be a string";
+  const reviewCollection = await reviews();
+  const theReview = await reviewCollection.findOne({ "_id": id });
+  if (!theReview) throw 'No Review with that id';
+  return theReview;
+}
+
 async function addAvailability(id, start, end){
-    const tutorCollection = await tutors();
-    const newStart = new Date(start);
-    const newEnd = new Date(end);
-    const newDay= newStart.getDay();
-    if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
-    const newStartTime = newStart.getTime();
-    const newStartHours = newStart.getHours();
-    const newStartMinutes = newStart.getMinutes();
-    const newEndTime = newEnd.getTime();
-    const newEndHours = newEnd.getHours();
-    const newEndMinutes = newEnd.getMinutes();
-    if(newStartTime>=newEndTime)throw "The available time range must end after it begins";
-    const currentTutor = await this.getTutor(id);
-    const availableArray = currentTutor.availability;
-    var i;
-    for(i=0;i<availableArray.length;i++){
-        if(availableArray[i].dayNum==newDay){
-            if(availableArray[i].start>=newStartTime){
-                if(availableArray[i].start<newEndTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
-            }
-            if(availableArray[i].start<=newStartTime){
-                if(availableArray[i].end>newStartTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
-            }
-        }
-    }
-    let newAvailability = {
-        day: dayOfWeek[newDay],
-        dayNum: newDay,
-        start: newStartTime,
-        startH: newStartHours,
-        startM: newStartMinutes,
-        startExtended: newStart,
-        end: newEndTime,
-        endH: newEndHours,
-        endM: newEndMinutes,
-        endExtended: newEnd//NOTE: this will output the time relative to the UTC timezone, making output look slightly off if not expected.
-    };
-    const updateInfo = await tutorCollection.updateOne({_id: id},{$addToSet: {availability: newAvailability}});
-    if(!updateInfo.matchedCount || !updateInfo.modifiedCount) throw "addition failed";
-    return newAvailability;
+  //this code was written assuming that the HTML date input type='datetime-local'
+  const tutorCollection = await tutors();
+  const newStart = new Date(start);
+  const newEnd = new Date(end);
+  const newDay= newStart.getDay();
+  if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
+  const newStartTime = newStart.getTime();
+  const newStartHours = newStart.getHours();
+  const newStartMinutes = newStart.getMinutes();
+  const newEndTime = newEnd.getTime();
+  const newEndHours = newEnd.getHours();
+  const newEndMinutes = newEnd.getMinutes();
+  if(newStartTime>=newEndTime)throw "The available time range must end after it begins";
+  const currentTutor = await this.getTutor(id);
+  const availableArray = currentTutor.availability;
+
+  var i;
+  for(i=0;i<availableArray.length;i++){
+      if(availableArray[i].dayNum==newDay){
+          if(availableArray[i].startH>newStartHours){
+              if(availableArray[i].startH<newEndHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+              if(availableArray[i].startH==newEndHours){//if end and start in same hour, check the minutes
+                  if(availableArray[i].startM<newEndMinutes)throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+              }
+          }
+          if(availableArray[i].startH<newStartHours){
+              if(availableArray[i].endH>newStartHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+              if(availableArray[i].endH==newStartHours){//if end and start in same hour, check the minutes
+                  if(availableArray[i].endM>newStartMinutes)throw `The avaialable time range cannot overlap with the pre-existing avaialbility, ${availableArray[i]}`;
+              }
+          }
+          if(availableArray[i].startH==newStartHours){//if both start in same hour, check minutes (mostly the same checks as above)
+              if(availableArray[i].startM>newStartMinutes){
+                  if(availableArray[i].startH<newEndHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                  if(availableArray[i].startH==newEndHours){//if end and start in same hour, check the minutes
+                      if(availableArray[i].startM<newEndMinutes)throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                  }
+              }
+              if(availableArray[i].startM<newStartMinutes){
+                  if(availableArray[i].endH>newStartHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                  if(availableArray[i].endH==newStartHours){//if end and start in same hour, check the minutes
+                      if(availableArray[i].endM>newStartMinutes)throw `The avaialable time range cannot overlap with the pre-existing avaialbility, ${availableArray[i]}`;
+                  }
+              }
+          }
+      }
+  }
+
+  let newAvailability = {
+      day: dayOfWeek[newDay],
+      dayNum: newDay,
+      start: newStartTime,
+      startH: newStartHours,
+      startM: newStartMinutes,
+      startExtended: newStart,
+      end: newEndTime,
+      endH: newEndHours,
+      endM: newEndMinutes,
+      endExtended: newEnd//NOTE: this will output the time relative to the UTC timezone, making output look slightly off if not expected.
+  };
+  const updateInfo = await tutorCollection.updateOne(
+      {_id: id},
+      {$addToSet: {availability: newAvailability}}
+  );
+
+  if(!updateInfo.matchedCount || !updateInfo.modifiedCount) throw "addition failed";
+
+  return newAvailability;
 }
 
 async function removeAvailability(id, start, end){
-    const studentCollection=await students();
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const foundAvailability = await studentCollection.findOne({_id:id,
-        "availability.startExtended":startDate,
-        "availability.endExtended":endDate
-    });
-    if(foundAvailability===null)throw "availability not found";
-    const deleteAvailability =await studentCollection.updateOne({_id:id},
-        {$pull:
-            { availability:
-                {
-                    startExtended: startDate,
-                    endExtended:endDate
-                }
-            }
-        });
-    if(!deleteAvailability.matchedCount && !deleteAvailability.modifiedCount)throw "failed to delete availability";
-    return foundAvailability;
+  const tutorCollection=await tutors();
+  //const startDate = new Date(start);
+  //const endDate = new Date(end);
+  const foundAvailability = await tutorCollection.findOne({_id:id,
+      "availability.start":start,
+      "availability.end":end
+  });
+  if(foundAvailability===null)throw "availability not found";
+  const deleteAvailability =await tutorCollection.updateOne({_id:id},
+      {$pull:
+          { availability:
+              {
+                  start: start,
+                  end:end
+              }
+          }
+      });
+  if(!deleteAvailability.matchedCount && !deleteAvailability.modifiedCount)throw "failed to delete availability";
+  return foundAvailability;
 }
 
-async function updateTutor(tutorId, email, firstName, lastName, password, state, town,){
-    if (typeof email != 'string') throw 'Email must be a string';
+async function updateTutor(tutorId, firstName, lastName, state, town,){
+
     if (typeof firstName != 'string') throw 'You must provide a first name of type string';
     if (typeof lastName != 'string') throw 'You must provide a last name of type string';
     if (typeof town != 'string') throw 'You must provide a string of the town you reside in';
     if (typeof state != 'string') throw 'You must provide a string of the state you reside in';
-    if (typeof password !='string') throw 'you must provide a valid password of type string';
     const tutor = await this.getTutor(tutorId);
     if(!tutor) throw `No tutor available.`;
-    const emailLow = email.toLowerCase();
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     let tutorUpdate = {
       firstName: firstName,
       lastName: lastName,
-      email: emailLow,
+      email: tutor.emailLow,
       town: town,
       state: state,
-      password: hashedPassword,
+      password: tutor.password,
       availability : tutor.availability,
       tutorSubjects : tutor.tutorSubjects,
       reviews: tutor.reviews,
@@ -459,5 +509,10 @@ updateTutor,
 removeTutor,
 login,
 addAvailability,
-createSubject
+createSubject,
+<<<<<<< HEAD
+getReview
+=======
+search
+>>>>>>> 2b8d38bdca12a08956ea3dc1526a8f70c2cb515e
 };
