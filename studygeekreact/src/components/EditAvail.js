@@ -47,10 +47,24 @@ const EditInfo =() => {
         history.push('/myaccount');
     }
 
-    const deleteAvailability= (event, index) => {
+    // post to server to delete an availability.
+    const deleteAvailability= async(event, index) => {
         event.preventDefault();
-        // availability[index]
-        // post to server to delete an availability.
+        const tokenInfo = jwt_decode(localStorage.getItem("token"));
+        const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}/availability/delete`;
+        console.log( {
+            startTime: availability[index].start,
+            endTime: availability[index].end
+        })
+        try{
+            const {data} = await axios.post(urlString, {
+                startTime: availability[index].start,
+                endTime: availability[index].end
+            });
+            history.push('/myaccount')
+        }catch(e){
+            console.log(e)
+        }   
     }
     // const deleteAvailability= (event) => {
     //     event.preventDefault();
