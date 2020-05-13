@@ -40,14 +40,16 @@ const EditSub =() => {
         event.preventDefault();
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
         const urlString = `http://localhost:3003/${tokenInfo.status}/createSubject`;
+        const newInfo = {
+            _id:tokenInfo.statusId,
+            subjectName: newSubjectName,
+            proficiency: proficiency,
+            price: newPrice
+        }
+        console.log(newInfo)
         console.log(urlString);
         try{
-            const {data} = await axios.post(urlString, {
-                _id:tokenInfo.statusId,
-                subjectName: newSubjectName,
-                proficiency: proficiency,
-                price: newPrice
-            })
+            const {data} = await axios.post(urlString, newInfo)
             history.push('/myaccount');
         }catch(e){
             console.log(e);

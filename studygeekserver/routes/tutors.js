@@ -106,21 +106,45 @@ router.post('/createSubject', async (req, res) => {
   }
 });
 
-// router.get('/search', async (req, res) => {
-//   const theTutor = req.body;
-//   if (!tutor.subject){
-//     res.status(400).json({error:"No Subject was provided"});
-//   }
-//   if (!tutor.)
-//   const startTime = req.body['startTime'];
-//   const endTime = req.body['endTime'];
-//   try {
-//     let tutor = await tutorData.getTutorByRatingLowToHigh();
-//     res.json(tutor);
-//   } catch (e) {
-//     res.status(404).json({ error: 'Tutor not found' });
-//   }
-// });
+router.delete('/removeSubject', async (req, res) => {
+  const tutorId = req.body['_id'];
+  const subjectName =req.body ['subjectName'];
+  try {
+    let tutor = await tutorData.removeSubject(tutorId, subjectName);
+    res.json(tutor);
+  } catch (e) {
+    res.status(404).json({ error: 'Tutor not found' });
+  }
+});
+
+router.put('/updateSubject', async (req, res) => {
+  const tutorId = req.body['_id'];
+  const subjectName =req.body ['subjectName'];
+  const proficiency = req.body['proficiency'];
+  const price = req.body['price'];
+  try{
+    let tutor = await tutorData.updateSubject(tutorId, subjectName, proficiency, price);
+    res.json(tutor);
+  } catch (e) {
+    res.status(404).json({ error: 'Tutor not found' });
+  }
+});
+
+router.get('/search', async (req, res) => {
+  //const theTutor = req.body;
+  // if (!theTutor.subject){
+  //   res.status(400).json({error:"No Subject was provided"});
+  // }
+  // if (!tutor.)
+  // const startTime = req.body['startTime'];
+  // const endTime = req.body['endTime'];
+  try {
+    let theTutor = await tutorData.search("Maths","Advanced","price");//req.body.subject,req.body.proficiency,req.body.sort);
+    res.json(theTutor);
+  } catch (e) {
+    res.status(404).json({ error: 'Tutor not found' });
+  }
+});
 
 router.post('/review', async (req, res) => {
   try{
@@ -137,6 +161,16 @@ router.post('/review', async (req, res) => {
 }catch(e){
   res.status(503).json({error:e});
 }
+});
+
+router.post('/review/:id', async (req, res) => {
+  try{
+  const review = await tutorData.getReview(req.params.id);
+  await studentData.removeReview(oldPair);
+    res.status(200).json(review);
+  }catch(e){
+    res.status(503).json({error: e});
+  }
 });
 
 router.post('/signup', async (req, res) => {
@@ -220,8 +254,9 @@ router.post("/:id/availability", async (req, res) => {
   }
 });
 
-router.delete('/:id/availability', async (req,res) => {
+router.post('/:id/availability/delete', async (req,res) => {
   const reqAvailable = req.body;
+  console.log(reqAvailable)
   try{
     if(!reqAvailable)throw"No request body passed into delete function";
     if(!reqAvailable.start)throw"No start time passed into delete availability";
@@ -255,16 +290,8 @@ router.put('/:id', async (req, res) => {
     res.status(404).json({error:"no state found"});
     return;
   }
-  if(!req.body.email){
-    res.status(404).json({error:"no email found"});
-    return;
-  }
-  if(!req.body.password){
-    res.status(404).json({error:"no password found"});
-    return;
-  }
   try{
-  const theTutor = await tutorData.updateTutor(req.params.id, req.body.email, req.body.firstName,req.body.lastName,req.body.password, req.body.state, req.body.town,);
+  const theTutor = await tutorData.updateTutor(req.params.id, req.body.firstName,req.body.lastName, req.body.state, req.body.town,);
   res.status(200).json(theTutor);
   }catch(e){
     res.status(503).json({error:e})

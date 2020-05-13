@@ -7,14 +7,29 @@ import UserContext from './context/UserContext';
 const TutorInfo = (props) => {
     console.log(props.match.params.id)
     const {token, setToken} = useContext(UserContext);
+    const [tokenInfo, setTokenInfo] = useState("");
     const history = useHistory();
+
+    useEffect(() => {
+        !token && history.push('/login') 
+        token && decodeToken(token) && getTutor();
+    }, []);
+
+    const decodeToken = (token) => {
+        try{
+            setTokenInfo(jwt_decode(localStorage.getItem("token")));
+        }catch(e){
+            setToken("");
+        }
+        
+    }
     if (!token){
         console.log("no tokens");
         history.push('/login')
     }
     
-    const tokenInfo = jwt_decode(localStorage.getItem("token"));
-    console.log(tokenInfo)
+    // const tokenInfo = jwt_decode(localStorage.getItem("token"));
+    // console.log(tokenInfo)
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -59,9 +74,6 @@ const TutorInfo = (props) => {
         }
     }
 
-    useEffect(() => {
-        token != null && getTutor();
-    }, []);
 
     return (
         <div className="container">
