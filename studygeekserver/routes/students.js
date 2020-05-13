@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const studentData = data.students;
+const pairData = data.pairs;
 
 router.get("/", async (req, res) => {
   try {
@@ -21,6 +22,19 @@ router.get("/:id", async (req, res) => {
     res.status(200).send(student);
   } catch (e) {
     console.log(e)
+    res.status(404).json({ message: "Student not found!" });
+  }
+});
+
+// List the people this student can chat with
+router.get('/chatOptions', async (req, res) => {
+  try {
+    const student = await studentData.getStudent(req.params.id);
+    const pairs = await pairData.getPairsWithStudent(req.params.id);
+    console.log(pairs);
+    res.render('mainChatStudents', {pairs: pairs})
+  } catch (e) {
+    console.log(e);
     res.status(404).json({ message: "Student not found!" });
   }
 });
@@ -67,7 +81,7 @@ router.post("/signup", async (req, res) => {
     res.status(400).json({error: "You must provide student profile data"});//this should be replaced by an error page redirect in the future
     return;
   }
-/*let time;
+  /*let time;
   if(reqStudent.time){
     time= reqStudent.time;
   }else{
