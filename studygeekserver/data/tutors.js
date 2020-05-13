@@ -46,62 +46,62 @@ async function getTutorByEmail(email){
   return theTutor;
 }
 
-async function getTutorBySubject(subject){
-  if (!subject) throw "The id must be provided"
-  if (typeof(subject) !== "string") throw "The subject must be a string";
-  const tutorCollection = await tutors();
-  const theTutor = await tutorCollection.find({"subject":subject}).toArray();
-  return theTutor;
-}
-
-//checked
-async function getTutorByPriceHighToLow(subject){
-  if (!subject) throw "The subject must be provided";
-  if (typeof(subject) !== "string") throw "Subject must be of type string";
-  const tutorCollection = await tutors();
-  const theTutor = await tutorCollection.find({"subject":subject}).sort({"price": -1}).toArray();
-  return theTutor;
-}
-
-//checked
-async function getTutorByPriceLowToHigh(subject){
-  if (!subject) throw "The subject must be provided";
-  if (typeof(subject) !== "string") throw "Subject must be of type string";
-  const tutorCollection = await tutors();
-  const theTutor = await tutorCollection.find({"subject":subject}).sort({"price": 1}).toArray();
-  return theTutor;
-}
-
-//checked
-async function getTutorByTownState(town,state){
-  if (!town) throw "The town must be provided";
-  if(!state) throw "The state must be provided";
-  if (typeof(town) !=="string") throw "Town must be a string";
-  if (typeof(state) !== "string") throw "State must be a string";
-  const tutorCollection = await tutors();
-  const theTutor = await tutorCollection.find({"town":town,"state":state}).toArray();
-  return theTutor
-}
-
-async function getTutorByRatingHighToLow(){
-  const tutorCollection = await tutors();
-  const theTutor = await tutorCollection.find({}).sort({"ratings": -1}).toArray();
-  return theTutor;
-}
-
-async function getTutorByRatingLowToHigh(){
-  const tutorCollection = await tutors();
-  const theTutor = await tutorCollection.find({}).sort({"ratings": 1}).toArray();
-  return theTutor;
-}
-
-async function getTutorByProficiency(subject, proficiency){
-  if (!proficiency) throw "proficiency must be provided";
-  if (typeof proficiency !="string") "proficiency must be a string";
-  const tutorCollection = await tutors();
-  const theTutor = await tutorCollection.find({"subject":subject , "proficiency":proficiency});
-  return theTutor;
-}
+// async function getTutorBySubject(subject){
+//   if (!subject) throw "The id must be provided"
+//   if (typeof(subject) !== "string") throw "The subject must be a string";
+//   const tutorCollection = await tutors();
+//   const theTutor = await tutorCollection.find({"subject":subject}).toArray();
+//   return theTutor;
+// }
+//
+// //checked
+// async function getTutorByPriceHighToLow(subject){
+//   if (!subject) throw "The subject must be provided";
+//   if (typeof(subject) !== "string") throw "Subject must be of type string";
+//   const tutorCollection = await tutors();
+//   const theTutor = await tutorCollection.find({"subject":subject}).sort({"price": -1}).toArray();
+//   return theTutor;
+// }
+//
+// //checked
+// async function getTutorByPriceLowToHigh(subject){
+//   if (!subject) throw "The subject must be provided";
+//   if (typeof(subject) !== "string") throw "Subject must be of type string";
+//   const tutorCollection = await tutors();
+//   const theTutor = await tutorCollection.find({"subject":subject}).sort({"price": 1}).toArray();
+//   return theTutor;
+// }
+//
+// //checked
+// async function getTutorByTownState(town,state){
+//   if (!town) throw "The town must be provided";
+//   if(!state) throw "The state must be provided";
+//   if (typeof(town) !=="string") throw "Town must be a string";
+//   if (typeof(state) !== "string") throw "State must be a string";
+//   const tutorCollection = await tutors();
+//   const theTutor = await tutorCollection.find({"town":town,"state":state}).toArray();
+//   return theTutor
+// }
+//
+// async function getTutorByRatingHighToLow(){
+//   const tutorCollection = await tutors();
+//   const theTutor = await tutorCollection.find({}).sort({"ratings": -1}).toArray();
+//   return theTutor;
+// }
+//
+// async function getTutorByRatingLowToHigh(){
+//   const tutorCollection = await tutors();
+//   const theTutor = await tutorCollection.find({}).sort({"ratings": 1}).toArray();
+//   return theTutor;
+// }
+//
+// async function getTutorByProficiency(subject, proficiency){
+//   if (!proficiency) throw "proficiency must be provided";
+//   if (typeof proficiency !="string") "proficiency must be a string";
+//   const tutorCollection = await tutors();
+//   const theTutor = await tutorCollection.find({"subject":subject , "proficiency":proficiency});
+//   return theTutor;
+// }
 
 async function search(subject, proficiency, startTime, endTime, sort){
   if (typeof subject !== "string") throw "Subject must be string";
@@ -212,6 +212,14 @@ async function createSubject(tutorID, subjectName, proficiency, price){
 //     'subjectName': subjectName
 //   }
 // }
+async function getReviewById(id){
+    if (!id) throw "The id must be provided"
+    if (typeof(id) !== "string" ) throw "The id must be a string";
+    const reviewCollection = await reviews();
+    const theReview = await reviewCollection.findOne({ "_id": id });
+    if (!theReview) throw 'No tutor with that id';
+    return theReview;
+}
 
 async function createReviews(tutorId, studentId, content ,rating){
   if (typeof tutorId !== "string") throw "Id must be a string";
@@ -219,6 +227,8 @@ async function createReviews(tutorId, studentId, content ,rating){
   if (typeof content !== "string") throw "Content must be a string";
   if (typeof rating !== "number") throw "Rating must be a number";
   const reviewCollection = await reviews();
+  const reviewExists = await reviewCollection.findOne({tutorId:tutorId,subjectId:subjectId,content:content,rating:rating})
+  if (reviewExists) throw "The student has already reviewd the tutor";
   let newReview ={
     _id :uuid(),
     'tutorId' : tutorId,
@@ -226,11 +236,13 @@ async function createReviews(tutorId, studentId, content ,rating){
     'content' : content,
     'rating' : rating
   }
-  const reviewExists = await reviewCollection.findOne(newReview)
-  if (reviewExists) throw "The student has already reviewd the tutor";
   const insertReview = await reviewCollection.insertOne(newReview);
   if (insertReview.insertedCount === 0) throw "Review not added";
   try{
+    const students = mongoCollections.students;
+    const studentCollection = await students();
+    const findStudent = await studentCollection.findOne({_id:studentId});
+    if (!findStudent) throw "Student not found";
     const tutorCollection = await tutors();
     const addReviewToTutor = await tutorCollection.updateOne({_id:tutorId},{$addToSet:{reviews:newReview._id}})
     if (!addReviewToTutor.matchedCount && !addReviewToTutor.modifiedCount) throw 'Review to Tutor was not added';
@@ -241,31 +253,46 @@ async function createReviews(tutorId, studentId, content ,rating){
   return newReview;
 }
 
-async function addAvailability(id, start, end){
-  const newStart = new Date(start);
-  const newEnd = new Date(end);
-  const newDay= newStart.getDay();
-  if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
-  const newStartTime = newStart.getTime();
-  const newStartHours = newStart.getHours();
-  const newStartMinutes = newStart.getMinutes();
-  const newEndTime = newEnd.getTime();
-  const newEndHours = newEnd.getHours();
-  const newEndMinutes = newEnd.getMinutes();
-  if(newStartTime>=newEndTime)throw "The available time range must end after it begins";
+async function removeReview(tutorId, studentId, reviewId){
+  if (typeof tutorId !== "string") throw "Id must be a string";
+  if (typeof studentId !== "string") throw "Id must be a string";
+  if (typeof content !== "string") throw "Content must be a string";
+  if (typeof rating !== "number") throw "Rating must be a number";
+  const reviewCollection = await reviews();
   const tutorCollection = await tutors();
-  const currentTutor = await this.getTutor(id);
-  const availableArray = currentTutor.availability;
-  var i;
-  for(i=0;i<availableArray.length;i++){
-      if(availableArray[i].dayNum==newDay){
-          if(availableArray[i].start>=newStartTime){
-              if(availableArray[i].start<newEndTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
-          }
-          if(availableArray[i].start<=newStartTime){
-              if(availableArray[i].end>newStartTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
-          }
-      }
+  const theTutor = await this.getTutor(tutorId);
+  if (!theTutor) throw "The tutor is not found";
+  const updateTutor = await tutorCollection.updateOne({_id:tuorId}{pull:{reviews:reviewId});
+  if (!updateTutor.matchedCount && !updateTutor.modifiedCount) throw 'Review to Tutor was not deleted';
+  const removeReview = await reviewCollection.removeOne({_id:reviewId});
+  if(removedReview.deletedCount===0)throw "failed to delete review";
+}
+
+async function addAvailability(id, start, end){
+    const tutorCollection = await tutors();
+    const newStart = new Date(start);
+    const newEnd = new Date(end);
+    const newDay= newStart.getDay();
+    if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
+    const newStartTime = newStart.getTime();
+    const newStartHours = newStart.getHours();
+    const newStartMinutes = newStart.getMinutes();
+    const newEndTime = newEnd.getTime();
+    const newEndHours = newEnd.getHours();
+    const newEndMinutes = newEnd.getMinutes();
+    if(newStartTime>=newEndTime)throw "The available time range must end after it begins";
+    const currentTutor = await this.getTutor(id);
+    const availableArray = currentTutor.availability;
+    var i;
+    for(i=0;i<availableArray.length;i++){
+        if(availableArray[i].dayNum==newDay){
+            if(availableArray[i].start>=newStartTime){
+                if(availableArray[i].start<newEndTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+            }
+            if(availableArray[i].start<=newStartTime){
+                if(availableArray[i].end>newStartTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+            }
+        }
     }
     let newAvailability = {
         day: dayOfWeek[newDay],
@@ -277,12 +304,9 @@ async function addAvailability(id, start, end){
         end: newEndTime,
         endH: newEndHours,
         endM: newEndMinutes,
-        endExtended: newEnd
+        endExtended: newEnd//NOTE: this will output the time relative to the UTC timezone, making output look slightly off if not expected.
     };
-    const updateInfo = await tutorCollection.updateOne(
-        {_id: id},
-        {$addToSet: {availability: newAvailability}}
-    );
+    const updateInfo = await tutorCollection.updateOne({_id: id},{$addToSet: {availability: newAvailability}});
     if(!updateInfo.matchedCount || !updateInfo.modifiedCount) throw "addition failed";
     return newAvailability;
 }
@@ -314,13 +338,13 @@ async function addAvailability(id, start, end){
 //     return await this.getTutor(tutorId);
 // }
 
-async function deleteTutor(tutorId){
+async function removeTutor(tutorId){
   if (!tutorId) throw "No tutor id provided";
   const tutorCollection = await tutor();
   const deleteTutor = await tutorCollection.removeOne({_id:tutorId});
   if (deletionTutor.deletedCount === 0) throw "User wasn't delete";
   const reviewCollection = await reviews
-  return true;
+  return {delete:true};
 }
 
 module.exports = {getAlltutors,

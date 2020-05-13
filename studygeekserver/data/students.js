@@ -142,7 +142,7 @@ async function createPair(tutorId,studentId,subject, proficiency){
         "tutorId": tutorId,
         "studentId":studentId,
         "subject":subject,
-        "proficiency":proficiency 
+        "proficiency":proficiency
     });
     if(pairAlreadyExists)throw "this student tutor pair already exists";
     //add to tutorPairDB
@@ -164,7 +164,7 @@ async function createPair(tutorId,studentId,subject, proficiency){
     try{
         const foundTutor= await tutorCollection.findOne({_id:tutorId});
         if(!foundTutor)throw "tutor with tutorId not found";
-    
+
         const updatedTutor= await tutorCollection.updateOne(
                 {_id:tutorId,"tutorSubjects.subjectName":subject, "tutorSubjects.proficiency": proficiency},
                 {$addToSet:{"tutorSubjects.$.teaches": studentId}}
@@ -174,7 +174,7 @@ async function createPair(tutorId,studentId,subject, proficiency){
         await pairCollection.removeOne({_id: newTutorPair._id});
         throw e;
     }
-    
+
     try{
     let newStudentSubject = {
         subjectName: subject,
@@ -208,13 +208,13 @@ async function removePair(pair){//pair contains everything in a tutorPair
     if(!pair.tutorId)throw "no tutorID found in pair";
     if(typeof pair.tutorId !== "string")throw "tutorPair's tutorId must be a string";
     //student
-    const updatedStudent = await studentCollection.updateOne({_id: pair.studentId}, 
-        {$pull: 
-            { studentSubjects: 
+    const updatedStudent = await studentCollection.updateOne({_id: pair.studentId},
+        {$pull:
+            { studentSubjects:
                 {
-                    tutoredBy: pair._id, 
+                    tutoredBy: pair._id,
                     subjectName: pair.subject,
-                    proficiency: pair.proficiency    
+                    proficiency: pair.proficiency
                 }
             }
         });

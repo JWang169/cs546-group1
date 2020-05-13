@@ -41,7 +41,7 @@ router.get('/chatOptions', async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const reqStudent= req.body;
-  
+
   try{
     if(!reqStudent)throw "needs a login request";
     if(!reqStudent.email)throw "needs an email";
