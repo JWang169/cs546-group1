@@ -110,6 +110,15 @@ async function addAvailability(id, start, end){
     return newAvailability;
 }
 
+async function getPair(id){
+    const pairCollection = await tutorPairs();
+    if(!id)throw"needs a pair ID in url";
+    if(typeof id !=="string")throw "PairId must be of type string";
+    const thePair = await pairCollection.findOne({_id: id});
+    if(!thePair)throw `There is no pair with ID: ${id}`;
+    return thePair;
+}
+
 async function createPair(tutorId,studentId,subject, proficiency){
     const pairCollection= await tutorPairs();
     const studentCollection = await students();
@@ -120,7 +129,7 @@ async function createPair(tutorId,studentId,subject, proficiency){
     if(typeof subject !=="string")throw "subject must be of type string";
     if(!proficiency)throw"The student must provide thier level of proficiency";
     if(typeof proficiency !== "string")throw "The subect's proficiency must be of type string";
-    
+    //check if it exists
     const pairAlreadyExists = await pairCollection.findOne({
         "tutorId": tutorId,
         "studentId":studentId,
@@ -128,7 +137,7 @@ async function createPair(tutorId,studentId,subject, proficiency){
         "proficiency":proficiency 
     });
     if(pairAlreadyExists)throw "this student tutor pair already exists";
-    
+    //add to tutorPairDB
     let newTutorPair = {
         _id: uuid(),
         tutorId: tutorId,
@@ -139,8 +148,26 @@ async function createPair(tutorId,studentId,subject, proficiency){
 
     const insertInfo = await pairCollection.insertOne(newTutorPair);
     if (insertInfo.insertedCount === 0) throw `Could not add new pair`;
+    const tutoredBy = newTutorPair._id;//ID of tutorPair
+
+    //add to tutorsDB
+    const tutors = mongoCollections.tutors;
+    const tutorCollection = await tutors();
     try{
-    const tutoredBy = newTutorPair._id;
+        const foundTutor= await tutorCollection.findOne({_id:tutorId});
+        if(!foundTutor)throw "tutor with tutorId not found";
+    
+        const updatedTutor= await tutorCollection.updateOne(
+                {_id:tutorId,"tutorSubjects.subjectName":subject, "tutorSubjects.proficiency": proficiency},
+                {$addToSet:{"tutorSubjects.$.teaches": studentId}}
+            );
+        if(!updatedTutor.matchedCount || ! updatedTutor.modifiedCount)throw "failed to add studentId to teaches array";
+    }catch(e){
+        await pairCollection.removeOne({_id: newTutorPair._id});
+        throw e;
+    }
+    
+    try{
     let newStudentSubject = {
         subjectName: subject,
         proficiency: proficiency,
@@ -154,12 +181,48 @@ async function createPair(tutorId,studentId,subject, proficiency){
     if(!addStudentSubject.matchedCount || !addStudentSubject.modifiedCount) throw "subject addition to student failed";
     }catch(e){
         await pairCollection.removeOne({_id:newTutorPair._id});
+  /*    //  await tutor.deleteTeaches(tutorId, studentId, subject, proficiency);*/
         throw e;
     }
     //Note: this does not update the tutor database
     return newTutorPair
 }
 
+async function removePair(pair){//pair contains everything in a tutorPair
+    const pairCollection = await tutorPairs();
+    const studentCollection = await students();
+    const student = await this.getStudent(pair.studentId);
+    if(!student) throw "no student with matchingId found";
+    if(!pair.proficiency)throw "no subject proficiency found in pair";
+    if(typeof pair.proficiency !== "string")throw "tutorPair's proficiency must be a string";
+    if(!pair.subject)throw "no subject found in pair";
+    if(typeof pair.subject !== "string")throw "tutorPair's subject must be a string";
+    if(!pair.tutorId)throw "no tutorID found in pair";
+    if(typeof pair.tutorId !== "string")throw "tutorPair's tutorId must be a string";
+    //student
+    const updatedStudent = await studentCollection.updateOne({_id: pair.studentId}, 
+        {$pull: 
+            { studentSubjects: 
+                {
+                    tutoredBy: pair._id, 
+                    subjectName: pair.subject,
+                    proficiency: pair.proficiency    
+                }
+            }
+        });
+    if(!updatedStudent.matchedCount || !updatedStudent.modifiedCount) throw "pair removal from student failed";
+    //tutor
+    const tutors = mongoCollections.tutors;
+    const tutorCollection = await tutors();
+    const updatedTutor = await tutorCollection.updateOne(
+        {_id: pair.tutorId, "tutorSubjects.subjectName": pair.subject, "tutorSubjects.proficiency":pair.proficiency},
+        {$pull: {"tutorSubjects.$.teaches": pair.studentId}});
+    if(!updatedTutor.matchedCount || !updatedTutor.modifiedCount)throw "studentId removal from tutorSubjects failed";
+    //tutorPair
+    const removedPair = await pairCollection.removeOne({_id:pair._id});
+    if(removedPair.deletedCount===0)throw "failed to delete tutorPair";
+    return true;
+}
 
 async function login(email,password){
   if (!email) throw "Email must be provided";
@@ -231,4 +294,4 @@ async function removeStudent(id){
 some form of remove availability function, but first need html delete specification info
 */
 
-module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent, login, createPair}
+module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent, login, createPair, getPair, removePair}

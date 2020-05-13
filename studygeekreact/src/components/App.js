@@ -17,7 +17,10 @@ import PersonInfo from './PersonInfo';
 import MyAccount from './MyAccount';
 import UserContext from "./context/UserContext";
 import EditInfo from './EditInfo';
+import EditSub from './EditSub';
+import EditAvail from './EditAvail';
 import TutorInfo from './TutorInfo';
+import TutorAccount from './TutorAccount';
 import PrivateRoute from "./PrivateRoute";
 
 function App() {
@@ -51,6 +54,9 @@ function App() {
           <Route exact path='/tutors/:id' component={TutorInfo} />
           <Route exact path='/myaccount' component={MyAccount} />
           <Route exact path='/editinfo' component={EditInfo} />
+          <Route exact path='/editsub' component={EditSub} />
+          <Route exact path='/editavail' component={EditAvail} />
+          <Route exact path='/tutoraccount' component={TutorAccount} />
         </Container>
       </UserContext.Provider>
     </Router>

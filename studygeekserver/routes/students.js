@@ -136,6 +136,16 @@ router.post("/:id/availability", async (req, res) => {//for form POST submission
   }
 }); 
 
+router.delete("/tutorPair/:id", async (req, res) =>{
+  try{
+    const oldPair = await studentData.getPair(req.params.id);
+    await studentData.removePair(oldPair);
+    res.status(200).json(oldPair);
+  }catch(e){
+    res.status(503).json({error: e});
+  }
+})
+
 router.delete("/:id", async (req, res) =>{
   //NOTE 1: Needs authentification and confirmation to be done before hand (but not here)
   //NOTE 2: TutorPairs will need to be deleted, and all the corresponding entries that that would entail as well

@@ -13,7 +13,7 @@ const SearchBar = () => {
     const submitInfo = async(event) =>{
         event.preventDefault();
         try{
-            const urlString = `http://localhost:3003/students/searchTutor`;
+            const urlString = `http://localhost:3003/tutors/searchTutor`;
             const tutorlList = await axios.get(urlString, {
                 'startTime': startTime,
                 'endTime': endTime,

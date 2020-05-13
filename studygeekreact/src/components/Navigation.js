@@ -22,6 +22,7 @@ function Navigation() {
             localStorage.clear("token");
             setToken(null);
           }
+          console.log(tokenInfo)
         }catch(e){
           setToken(null);
           localStorage.clear("token");
