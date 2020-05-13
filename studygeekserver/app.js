@@ -24,19 +24,17 @@ app.use(
 // New, used for chatting
 
 io.sockets.on('connection', function(socket) {
-    socket.on('connect', function({info}) {
-        socket.username = info.username;
-        let roomName = info.roomId;
-        socket.join(roomName);
-        io.to(roomName).emit('is_online', '🔵 <i>' + socket.username + ' joined the chat..</i>');
+    socket.on('connect', function(username) {
+        socket.username = username;
+        io.emit('is_online', '🔵 <i>' + socket.username + ' joined the chat..</i>');
     });
 
     socket.on('disconnect', function(username) {
-        io.to('some room').emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
+        io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
     })
 
     socket.on('chat_message', function(message) {
-        io.to('some room').emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
+        io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
     });
 
 });

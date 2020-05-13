@@ -5,6 +5,23 @@ const tutorData = data.tutors;
 const studentData = data.students;
 const pairData = data.pairs;
 
+
+// List the people this tutor can chat with
+router.get('/chat', async (req, res) => {
+  const people = req.body;
+
+  try {
+    const tutor = await tutorData.getTutor(JSON.stringify(people.tutorId));
+    const student = await studentData.getStudent(JSON.stringify(people.studentId));
+    const pair = await pairData.getPairFromIds(JSON.stringify(people.tutorId), JSON.stringify(people.studentId));
+    
+    res.render('chat.ejs');
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({error: e});
+  }
+});
+
 router.get('/', async (req, res) => {
   try {
     let tutor = await tutorData.getAlltutors();
@@ -76,21 +93,6 @@ router.get('/:id', async (req, res) => {
 //     res.status(404).json({ error: 'Tutor not found' });
 //   }
 // });
-
-// List the people this tutor can chat with
-router.get('/chat', async (req, res) => {
-  const people = req.body;
-
-  try {
-    const tutor = await tutorData.getTutor(people.tutorId);
-    const student = await studentData.getStudent(people.studentId);
-    const pair = await pairData.getPairFromIds(people.tutorId, people.studentId);
-    res.render('chat.ejs', {roomId: pair._id});
-  } catch (e) {
-    console.log(e);
-    res.status(404).json({error: e});
-  }
-});
 
 router.post('/createSubject', async (req, res) => {
   const tutorID = req.body['_id'];
