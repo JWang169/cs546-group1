@@ -71,6 +71,7 @@ async function addAvailability(id, start, end){
     const studentCollection = await students();
 
     const newStart = new Date(start);//creates item of milliseconds since Jan 1st 1970 began
+    console.log(newStart);
     const newEnd = new Date(end);
     const newDay= newStart.getDay();
     if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
@@ -87,11 +88,31 @@ async function addAvailability(id, start, end){
     var i;
     for(i=0;i<availableArray.length;i++){
         if(availableArray[i].dayNum==newDay){
-            if(availableArray[i].start>=newStartTime){
-                if(availableArray[i].start<newEndTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+            if(availableArray[i].startH>newStartHours){
+                if(availableArray[i].startH<newEndHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                if(availableArray[i].startH==newEndHours){//if end and start in same hour, check the minutes
+                    if(availableArray[i].startM<newEndMinutes)throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                }
             }
-            if(availableArray[i].start<=newStartTime){
-                if(availableArray[i].end>newStartTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+            if(availableArray[i].startH<newStartHours){
+                if(availableArray[i].endH>newStartHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                if(availableArray[i].endH==newStartHours){//if end and start in same hour, check the minutes
+                    if(availableArray[i].endM>newStartMinutes)throw `The avaialable time range cannot overlap with the pre-existing avaialbility, ${availableArray[i]}`;
+                }
+            }
+            if(availableArray[i].startH==newStartHours){//if both start in same hour, check minutes (mostly the same checks as above)
+                if(availableArray[i].startM>newStartMinutes){
+                    if(availableArray[i].startH<newEndHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                    if(availableArray[i].startH==newEndHours){//if end and start in same hour, check the minutes
+                        if(availableArray[i].startM<newEndMinutes)throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                    }
+                }
+                if(availableArray[i].startM<newStartMinutes){
+                    if(availableArray[i].endH>newStartHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                    if(availableArray[i].endH==newStartHours){//if end and start in same hour, check the minutes
+                        if(availableArray[i].endM>newStartMinutes)throw `The avaialable time range cannot overlap with the pre-existing avaialbility, ${availableArray[i]}`;
+                    }
+                }
             }
         }
     }
