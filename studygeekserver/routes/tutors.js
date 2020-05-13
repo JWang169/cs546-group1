@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     let tutor = await tutorData.getTutor(req.params.id);
-    res.json(tutor);
+    res.status(200).json(tutor);
   } catch (e) {
     res.status(404).json({ error: 'Tutor not found' });
   }
@@ -106,7 +106,7 @@ router.post('/createSubject', async (req, res) => {
   }
 });
 
-router.delete('/removeSubject', async (req, res) => {
+router.post('/removeSubject', async (req, res) => {
   const tutorId = req.body['_id'];
   const subjectName =req.body ['subjectName'];
   try {

@@ -33,7 +33,7 @@ router.get('/chat', async (req, res) => {
   try {
     const student = await studentData.getStudent(people.studentId);
     const tutor = await tutorData.getTutor(people.tutorId);
-    const pair = await pairData.getPairFromIds(tutor, student);
+    const pair = await pairData.getPairFromIds(people.tutorId, people.studentId);
     console.log(pair);
     res.render('chat.ejs', {roomId: pair._id});
   } catch (e) {
