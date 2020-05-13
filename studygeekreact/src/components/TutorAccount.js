@@ -37,8 +37,8 @@ const TutorAccount =() => {
             setEmail(data.email);
             setState(data.state);
             setTown(data.town);
-            setSubjects(data.studentSubjects)
-            setAvailability(data.availability)
+            setSubjects(data.tutorSubjects);
+            setAvailability(data.availability);
         }catch(e){
             console.log(e)
         }

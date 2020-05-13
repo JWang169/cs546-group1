@@ -13,8 +13,8 @@ const TutorCard = ({tutor}) => (
             <Card.Header>{tutor.firstName}</Card.Header>
             <Card.Meta>{tutor.town}</Card.Meta>
             <Card.Description>
-                {tutor.studentSubjects && tutor.studentSubjects.map(sub => (
-                    <li key={Math.random() * 100000}>{sub}</li>
+                {tutor.tutorSubjects && tutor.tutorSubjects.map(sub => (
+                    <li key={Math.random() * 100000}>{sub.subjectName}</li>
                 ))}
             </Card.Description>
         </Card.Content>   
