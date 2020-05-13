@@ -14,6 +14,7 @@ const EditSub =() => {
     const [newPrice, setNewPrice] = useState('');
     const [pair, setPair] = useState(null);
     const [isTutor, setIsTutor] = useState(false);
+    const [editRate, setEditRate] = useState(false);
     const history = useHistory();
 
 
@@ -47,8 +48,8 @@ const EditSub =() => {
             proficiency: proficiency,
             price: newPrice
         }
-        console.log(newInfo)
-        console.log(urlString);
+        // console.log(newInfo)
+        // console.log(urlString);
         try{
             const {data} = await axios.post(urlString, newInfo)
             history.push('/myaccount');
@@ -63,11 +64,12 @@ const EditSub =() => {
         history.push('/myaccount');
     }
 
-// delete subject connections from stud/tutor
+
+    // delete subject connections from student account
     const deleteSubject = async(event, index) => {
         event.preventDefault();
         const pairId = subjects[index].tutoredBy;
-        console.log(pairId)
+        // console.log(pairId)
         const delUrl = `http://localhost:3003/students/tutorPair/${pairId}`;
         try{
             const {data} = await axios.delete(delUrl)
@@ -77,13 +79,19 @@ const EditSub =() => {
         }
     }
 
+
+    // delete subject from tutor account
     const deleteTutorSubject = async(event, index) => {
         event.preventDefault();
-        const pairId = subjects[index].tutoredBy;
-        console.log(pairId)
-        const delUrl = `http://localhost:3003/students/tutorPair/${pairId}`;
+        const s = subjects[index];
+        console.log(s)
+        const delUrl = 'http://localhost:3003/tutors/remove';
         try{
-            const {data} = await axios.delete(delUrl)
+            const {data} = await axios.delete(delUrl, {
+                subjectName: s.subjectName,
+                proficiency: s.proficiency,
+                price: s.price
+            })
             history.push('/myaccount');
         }catch(e){
             console.log(e);
@@ -148,11 +156,12 @@ const EditSub =() => {
                         <div key={Math.random() * 100000}>
                             <h2>{s.proficiency + " " + s.subjectName } {isTutor && "$" + s.price} 
                             <button className="ui primary button"onClick={(e) =>chatSub(e, index)}>Start a Chat</button>
-                            { isTutor && <button className="ui negative button"onClick={(e) =>deleteTutorSubject(e, index)}>Delete Subject</button>}
-                            { !isTutor && <button className="ui negative button"onClick={(e) =>deleteSubject(e, index)}>Delete Subject</button>}
+                            {/* { !isTutor && <button className="ui positive button" onClick={setEditRate(true)}>Rate My Professor</button>} */}
+                            { isTutor && <button className="ui negative button" onClick={(e) =>deleteTutorSubject(e, index)}>Delete Subject</button>}
+                            { !isTutor && <button className="ui negative button" onClick={(e) =>deleteSubject(e, index)}>Delete Subject</button>}
                             </h2>
                             
-                            { !isTutor && 
+                            { !isTutor && editRate && 
                             <form className="ui form">
                                 <div className="default text" role="alert" aria-live="polite" aria-atomic="true">Leave a comment</div>
                                 <textarea placeholder="How was your class?" rows="3"></textarea>

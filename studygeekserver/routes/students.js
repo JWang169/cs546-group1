@@ -9,13 +9,15 @@ const pairData = data.pairs;
 // List the people this student can chat with
 router.get('/chat', async (req, res) => {
   const people = req.body;
-  console.log(people.studentId )
+  console.log(req.body)
+  console.log(people.studentId)
+  console.log(typeof(people.studentId))
   try {
-    const student = await studentData.getStudent(JSON.stringify(people.studentId));
-    const tutor = await tutorData.getTutor(JSON.stringify(people.tutorId));
-    const pair = await pairData.getPairFromIds(JSON.stringify(people.tutorId), JSON.stringify(people.studentId));
+    // const student = await studentData.getStudent(JSON.stringify(people.studentId));
+    // const tutor = await tutorData.getTutor(JSON.stringify(people.tutorId));
+    // const pair = await pairData.getPairFromIds(JSON.stringify(people.tutorId), JSON.stringify(people.studentId));
     
-    res.render('chat.ejs');
+    res.render('../views/chat.ejs');
   } catch (e) {
     console.log(e);
     res.status(404).json({error: e});
