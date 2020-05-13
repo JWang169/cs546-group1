@@ -113,7 +113,7 @@ router.post("/:id/availability", async (req, res) => {//for form POST submission
   const availability = await req.body;
   //will need to get the start/end times from HTML, I RECOMMEND HTML FILE USE input type= 'datetime-local',
   //despite its lack of compatability accross browsers, it is provided to the class in the html intro slides
-  
+
 
   if(!availability.startTime){
     res.status(400).json({error:"You must select the time of day that you become available"});
@@ -134,7 +134,7 @@ router.post("/:id/availability", async (req, res) => {//for form POST submission
     res.status(500).json({error: e});
     return;
   }
-}); 
+});
 
 router.delete("/tutorPair/:id", async (req, res) =>{
   try{
