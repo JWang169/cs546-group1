@@ -9,4 +9,4 @@ DONE. its in the pull request ~Loughlin
 
 ***4. Need functions in routes to login and sign up !!!***
 
-I believe that I have already done these as well as a POST method to students/signup ~Loughlin
+I believe that I have already done these for students as a POST method to students/signup ~Loughlin
