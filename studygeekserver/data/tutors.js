@@ -248,6 +248,7 @@ async function updateSubject(tutorId, subjectName, proficiency, price){
   return await this.getTutor(tutorId);
 }
 
+<<<<<<< HEAD
 // async function updateSubject(tutorId,subjectName,proficiency, price){
 //   if (typeof tutorID !== "string") throw "Id must be a string";
 //   if (typeof subjectName !== "string") throw "Subject Name must be a string";
@@ -261,6 +262,16 @@ async function updateSubject(tutorId, subjectName, proficiency, price){
 //     'subjectName': subjectName
 //   }
 // }
+=======
+async function getReviewById(id){
+    if (!id) throw "The id must be provided"
+    if (typeof(id) !== "string" ) throw "The id must be a string";
+    const reviewCollection = await reviews();
+    const theReview = await reviewCollection.findOne({ "_id": id });
+    if (!theReview) throw 'No tutor with that id';
+    return theReview;
+}
+>>>>>>> 2b8d38bdca12a08956ea3dc1526a8f70c2cb515e
 
 async function createReviews(tutorId, studentId, content ,rating){
   if (typeof tutorId !== "string") throw "Id must be a string";
@@ -444,7 +455,7 @@ async function updateTutor(tutorId, firstName, lastName, state, town,){
     if (typeof state != 'string') throw 'You must provide a string of the state you reside in';
     const tutor = await this.getTutor(tutorId);
     if(!tutor) throw `No tutor available.`;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    //const hashedPassword = await bcrypt.hash(password, saltRounds);
     let tutorUpdate = {
       firstName: firstName,
       lastName: lastName,
@@ -498,6 +509,5 @@ updateTutor,
 removeTutor,
 login,
 addAvailability,
-// createSubject,
-// search
-};
+createSubject,
+getReview};
