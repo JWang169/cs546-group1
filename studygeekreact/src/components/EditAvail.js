@@ -55,14 +55,14 @@ const EditInfo =() => {
     const deleteAvailability= async(event, index) => {
         event.preventDefault();
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
-        const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}/availability`;
+        const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}/availability/delete`;
         try{
             const delInfo = {
                 start: availability[index].start,
                 end: availability[index].end
             }
             console.log(delInfo);
-            const {data} = await axios.delete(urlString, delInfo);
+            const {data} = await axios.post(urlString, delInfo);
             history.push('/myaccount');
         }catch(e){
             console.log(e)

@@ -211,9 +211,10 @@ router.delete("/tutorPair/:id", async (req, res) =>{
   }
 })
 
-router.delete('/:id/availability', async (req,res) => {//id here represents the studentId
+router.post('/:id/availability/delete', async (req,res) => {//id here represents the studentId
   //I sure do hope that I can have req.body passed into a delete function.
   const reqAvailable = req.body;
+  console.log(reqAvailable)
   try{
     if(!reqAvailable)throw"No request body passed into delete function";
     if(!reqAvailable.start)throw"No start time passed into delete availability";

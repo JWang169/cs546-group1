@@ -60,12 +60,17 @@ const EditSub =() => {
         history.push('/myaccount');
     }
 
-
-    const deleteSubject = (event) => {
+// delete subject connections from stud/tutor
+    const deleteSubject = async(event) => {
         event.preventDefault();
-        const {id} = event.target.parentElement;
-        subjects.splice(id, 1)
-        setSubjects([...subjects])
+        const urlString = `http://localhost:3003/'students'/tutorPair/:id`;
+        try{
+            const delInfo = {
+
+            }
+        }catch(e){
+            console.log(e);
+        }
     }
 
     useEffect(() => {
@@ -84,7 +89,7 @@ const EditSub =() => {
                 <label>Subjects</label>
                     {subjects && subjects.map(s => (
                         <div key={Math.random() * 100000}>
-                            <p>{s.subjectName} / {s.proficiency} / {s.price}
+                            <p>{s.subjectName } - {s.proficiency} / {s.price}
                             <button color='red' onClick={deleteSubject}>Delete</button>
                             </p>
                         </div>
