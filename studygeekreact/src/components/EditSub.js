@@ -12,6 +12,7 @@ const EditSub =() => {
     const [newSubjectName, setNewSubjectName] = useState("");
     const [proficiency, setProficiency] = useState('');
     const [newPrice, setNewPrice] = useState('');
+    const [pair, setPair] = useState(null);
     const [isTutor, setIsTutor] = useState(false);
     const history = useHistory();
 
@@ -99,7 +100,16 @@ const EditSub =() => {
     const chatSub = async(event, index) => {
         event.preventDefault();
         const pairId = subjects[index].tutoredBy;
+        try{
+            const {data} = await axios.get('http://localhost:3003/students/findPair' + pairId);
+            setPair(data);
+        }catch(e){
+            console.log(e);
+        }
+        const tutorId = pair.tutorId;
+        const studentId = pair.studentId;
         
+
     }
 
 
