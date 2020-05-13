@@ -38,7 +38,6 @@ function App() {
   })
 
   return (
-    
     <Router>
       <UserContext.Provider value={{ token, setToken }}>
         <Container>

@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import UserContext from './context/UserContext';
 
 const TutorInfo = (props) => {
-    console.log(props.match.params.id)
+    console.log("this is from tutorinfo" + props.match.params.id)
     const {token, setToken} = useContext(UserContext);
     const [tokenInfo, setTokenInfo] = useState("");
     const history = useHistory();
@@ -18,6 +18,7 @@ const TutorInfo = (props) => {
     const decodeToken = (token) => {
         try{
             setTokenInfo(jwt_decode(localStorage.getItem("token")));
+
         }catch(e){
             setToken("");
         }      
@@ -51,6 +52,7 @@ const TutorInfo = (props) => {
     }
 
     const getTutor = async() => {
+        console.log("this is from tutor info")
         try{
             const { data } = await axios.get('http://localhost:3003/tutors/' + props.match.params.id);
             setLastName(data.lastName);

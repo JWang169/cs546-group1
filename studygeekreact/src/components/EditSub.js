@@ -76,6 +76,25 @@ const EditSub =() => {
         }
     }
 
+    // rate tutor 
+    const rateTutor = async(event, index) => {
+        event.preventDefault();
+        // const pairId = subjects[index].tutoredBy;
+        // const rateData = {
+        //     tutorId: ,
+        //     studentId: ,
+        //     content: ,
+        //     rating: 
+        // }
+        // const rateUrl = `http://localhost:3003/tutors/review}`;
+        // try{
+        //     const {data} = await axios.post(rateUrl, rateData)
+        //     history.push('/myaccount');
+        // }catch(e){
+        //     console.log(e);
+        // }
+    }
+
     useEffect(() => {
         getAccount()
     }, []);
@@ -85,20 +104,30 @@ const EditSub =() => {
             <h1>Edit My Subjects.</h1>
             <br/>
             <hr/>
-            
-            <form className="ui form">
-            <div className="field">
-                <div className='field'>
-                <label>Subjects</label>
+            <div className='field'>
+                <h3>My Subjects</h3>
                     {subjects && subjects.map((s, index) => (
                         <div key={Math.random() * 100000}>
-                            <p>{s.subjectName } - {s.proficiency} / {s.price}
-                            { !isTutor && <button color='red' onClick={(e) =>deleteSubject(e, index)}>Delete</button>}
-                            </p>
+                            <h2>{s.subjectName } - {s.proficiency} {isTutor && s.price} 
+                            { !isTutor && <button className="ui negative button"onClick={(e) =>deleteSubject(e, index)}>Delete Subject</button>}</h2>
+                            
+                            { !isTutor && 
+                            <form className="ui form">
+                                <div className="default text" role="alert" aria-live="polite" aria-atomic="true">Leave a comment</div>
+                                <textarea placeholder="How was your class?" rows="3"></textarea>
+                                <div className="default text" role="alert" aria-live="polite" aria-atomic="true">Rate Your Tutor</div>
+                                <div className="ui input"><input type="number" placeholder="5" /></div>
+                                <button className="ui positive button" onClick={(e) =>rateTutor(e, index)}>Submit Rating</button>  
+                            </form>
+                            }
+                 
                         </div>
                     ))}  
-                </div>
-
+            </div>
+            <hr/>
+            <div className='field'>
+            <form className="ui form">
+            <div className="field">
                 <div className='field'>
                 <label>Add a subject</label>
                     <input
@@ -151,10 +180,10 @@ const EditSub =() => {
                 </div>
             </div>    
             <button className="ui positive button" onClick={addSubject}>Add Subject</button>   
-            <button className="ui negative button" onClick={onClickNoChange} style={{position: 'absolute', right: 50}}>Discard Change</button>
+            <button className="ui button" onClick={onClickNoChange} style={{position: 'absolute', right: 50}}>Discard Change</button>
             </form>
             <br/>
-
+            </div>
 
         </div>
     )
