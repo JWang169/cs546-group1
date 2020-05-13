@@ -1,4 +1,4 @@
-
+## PENDING
 1. **We need the rating system for tutors.**
 
 2. Chran should update his availability function to match the changes I made in mine (in the for loop that checks for overlapping times).
@@ -15,7 +15,7 @@
 
 POST http://localhost:3003/students/tutorPair/ 503 (Service Unavailable)
 
-Done: 
+### Done: 
 1. Student dataset: we need a function which enables students to update their personal info
 currently I am expecting a put request, something like: http://localhost:3003/students/75b16bac-1b4c-4fd8-bad7-9eebfb1e596e
  
