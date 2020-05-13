@@ -23,10 +23,10 @@ const TutorInfo = (props) => {
             setToken("");
         }      
     }
-    if (!token){
-        console.log("no tokens");
-        history.push('/login')
-    }
+    // if (!token){
+    //     console.log("no tokens");
+    //     history.push('/login')
+    // }
     
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -52,7 +52,7 @@ const TutorInfo = (props) => {
     }
 
     const getTutor = async() => {
-        console.log("this is from tutor info")
+        console.log("GET TUTOR FUNC NOT WORKING")
         try{
             const { data } = await axios.get('http://localhost:3003/tutors/' + props.match.params.id);
             setLastName(data.lastName);
