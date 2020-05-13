@@ -248,7 +248,6 @@ async function updateSubject(tutorId, subjectName, proficiency, price){
   return await this.getTutor(tutorId);
 }
 
-<<<<<<< HEAD
 // async function updateSubject(tutorId,subjectName,proficiency, price){
 //   if (typeof tutorID !== "string") throw "Id must be a string";
 //   if (typeof subjectName !== "string") throw "Subject Name must be a string";
@@ -262,16 +261,6 @@ async function updateSubject(tutorId, subjectName, proficiency, price){
 //     'subjectName': subjectName
 //   }
 // }
-=======
-async function getReviewById(id){
-    if (!id) throw "The id must be provided"
-    if (typeof(id) !== "string" ) throw "The id must be a string";
-    const reviewCollection = await reviews();
-    const theReview = await reviewCollection.findOne({ "_id": id });
-    if (!theReview) throw 'No tutor with that id';
-    return theReview;
-}
->>>>>>> 2b8d38bdca12a08956ea3dc1526a8f70c2cb515e
 
 async function createReviews(tutorId, studentId, content ,rating){
   if (typeof tutorId !== "string") throw "Id must be a string";
@@ -509,10 +498,6 @@ updateTutor,
 removeTutor,
 login,
 addAvailability,
-createSubject,
-<<<<<<< HEAD
-getReview
-=======
-search
->>>>>>> 2b8d38bdca12a08956ea3dc1526a8f70c2cb515e
+// createSubject,
+// search
 };

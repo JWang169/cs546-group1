@@ -20,16 +20,13 @@ const TutorInfo = (props) => {
             setTokenInfo(jwt_decode(localStorage.getItem("token")));
         }catch(e){
             setToken("");
-        }
-        
+        }      
     }
     if (!token){
         console.log("no tokens");
         history.push('/login')
     }
     
-    // const tokenInfo = jwt_decode(localStorage.getItem("token"));
-    // console.log(tokenInfo)
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -37,21 +34,17 @@ const TutorInfo = (props) => {
     const [availability, setAvailability] = useState("");
     const [state, setState] = useState("");
     const [town, setTown] = useState("");
-    const [paired, setPaired] = useState("");
-    
+
     const requestTutor = async(e, index)=>{
         e.preventDefault();
         try{
-            console.log('http://localhost:3003/students/tutorPair/')
             const reqInfo = {
                 tutorId: props.match.params.id,
                 studentId : tokenInfo.statusId,
                 subject: subjects[index].subjectName,
                 proficiency: subjects[index].proficiency
             }
-            console.log(reqInfo)
             const { data } = await axios.post('http://localhost:3003/students/tutorPair/', reqInfo)
-            console.log(data)
         }catch(e){
             console.log(e);
         }
