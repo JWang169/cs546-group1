@@ -1,3 +1,13 @@
+//update tutor
+//update subject
+//delete subject
+//delete tutor
+//search by features
+//review delete if student is deleted
+//can review be deleted if student tries to delete?
+//delete review when tutor is delete
+//delete in tutorPairs if tutor is deleted
+
 const mongoCollections = require('../config/mongoCollections');
 const tutors = mongoCollections.tutors;
 const reviews = mongoCollections.reviews;
@@ -103,10 +113,7 @@ async function search(subject, proficiency, startTime, endTime, sort){
   if (sort === "price"){
     const theTutor = await tutorCollection.find({'tutorSubjects.subject':subject},{'tutorSubjects.proficiency':proficiency})
   }
-  else if (sort === "rate"){
-
-  }
-
+  else if (sort === "rate"){}
 }
 
 async function login(email,password){
@@ -133,7 +140,7 @@ async function login(email,password){
     }
 }
 
-async function createTutor(email, firstName, lastName, town, state, password)//subject , proficiency , price ,password )
+async function createTutor(email, firstName, lastName,password , town, state)//subject , proficiency , price ,password )
   {
   if (!email ) throw "Email Must be provided";
   if (!firstName ) throw "First Name must be provided";
@@ -162,8 +169,6 @@ async function createTutor(email, firstName, lastName, town, state, password)//s
         'tutorSubjects' : [],
         'reviews' :[],
         //'info': "",
-        //'price' : price,
-        //'proficiency' : proficiency
         'availability' : [],
         'hashedPassword' : hashedPassword,
         'avgRatings' : 0
@@ -193,18 +198,32 @@ async function createSubject(tutorID, subjectName, proficiency, price){
   return await this.getTutor(tutorID);
 }
 
-async function reviews(tutorId, studentId, content ,rating){
+async function updateSubject(tutorId,subjectName,proficiency, price){
+  if (typeof tutorID !== "string") throw "Id must be a string";
+  if (typeof subjectName !== "string") throw "Subject Name must be a string";
+  if (typeof proficiency !== "string") throw "proficiency must be a string";
+  if (typeof price !== "number") throw "Price must be a number";
+  const tutorCollection = await tutors();
+  const tutorInfo = await this.getTutor(tutorID);
+  if (!tutorInfo) throw "Tutor not available";
+  const tutor = {
+    _id : tutorInfo.tutorSubjects._id
+    'subjectName': subjectName
+  }
+}
+
+async function createReviews(tutorId, studentId, content ,rating){
   if (typeof tutorId !== "string") throw "Id must be a string";
   if (typeof studentId !== "string") throw "Id must be a string";
   if (typeof content !== "string") throw "Content must be a string";
   if (typeof rating !== "number") throw "Rating must be a number";
   const reviewCollection = await reviews();
   let newReview ={
-    _id :uuid();
-    'tutorId' : tutorId;
-    'studentId' : studentId;
-    'content' : content;
-    'rating' : rating;
+    _id :uuid(),
+    'tutorId' : tutorId,
+    'studentId' : studentId,
+    'content' : content,
+    'rating' : rating
   }
   const reviewExists = await reviewCollection.findOne(newReview)
   if (reviewExists) throw "The student has already reviewd the tutor";
@@ -272,7 +291,6 @@ async function addAvailability(id, start, end){
 //         'lastName': oldInfo.lastName,
 //         'subject': subject,
 //         'rating' : oldInfo.rating
-//
 //         'state': state,
 //         'town': town,
 //         'tutorSubjects' : [],
@@ -282,24 +300,20 @@ async function addAvailability(id, start, end){
 //         //'proficiency' : proficiency
 //         'availability' : [],
 //         'hashedPassword' : oldInfo.hashedPassword,
-//         'avgRatings' : 0
 //     }
 //     const updatedInfo = await tutorCollection.updateOne({_id:tutorId}, { $set : updatedTutor});
 //     return await this.getTutor(tutorId);
 // }
 
-// async function requestTutor(studentId){
-//
-// }
-//
-// async function removeTutor(tutorid){
-//   if (!id) throw "No id is provided";
-//   if (typeof(id) !== "string") throw "Id must be a string";
-//   const tutorCollection = await tutors();
-//   const
-// }
+async function deleteTutor(tutorId){
+  if (!tutorId) throw "No tutor id provided";
+  const tutorCollection = await tutor();
+  const deleteTutor = await tutorCollection.removeOne({_id:tutorId});
+  if (deletionTutor.deletedCount === 0) throw "User wasn't delete";
+  const reviewCollection = await reviews
+  return true;
+}
 
-// Task 1:
 module.exports = {getAlltutors,
 getTutor,
 createTutor,
