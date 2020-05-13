@@ -260,7 +260,7 @@ router.put('/:id', async (req, res) => {
     return;
   }
   try{
-  const theTutor = await tutorData.updateTutor(req.params.id, email: req.body.email, req.body.firstName,req.body.lastName,password: req.body.password,state: req.body.state,town: req.body.town,);
+  const theTutor = await tutorData.updateTutor(req.params.id, req.body.email, req.body.firstName,req.body.lastName,req.body.password, req.body.state, req.body.town,);
   res.status(200).json(theTutor);
   }catch(e){
     res.status(503).json({error:e})
