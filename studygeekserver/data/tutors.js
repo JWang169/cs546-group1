@@ -230,7 +230,7 @@ async function updateSubject(tutorId, subjectName, proficiency, price){
     'price' : price,
     'teaches' : tutorInfo.tutorSubjects.teaches,
   }
-  const updateSubject = await tutorCollection.updateOne({_id:tutorId},{tutorSubjects.subjectName: subjectName},{set : {tutorSubjects:updateSubject})
+  const updateTutor = await tutorCollection.updateOne({_id:tutorId},{'tutorSubjects.subjectName': subjectName},{set : {tutorSubjects:updateSubject}});
   if (!updateTutor.matchedCount && !updateTutor.modifiedCount) throw 'could not update subject successfully';
   return await this.getTutor(tutorID);
 }
@@ -296,7 +296,7 @@ async function updateTutorRating(tutorId, rating){
   if (typeof rating !== "number") throw "Rating must be a number";
   const theTutor = await this.getTutor(tutorId);
   if (!theTutor) throw "The tutor is not found";
-  const updateInfo = await tutorCollection.updateOne({_id: tutorId},{$set: {avgRatings:rating});
+  const updateInfo = await tutorCollection.updateOne({_id: tutorId},{$set: {avgRatings:rating}});
   if(!updateInfo.matchedCount || !updateInfo.modifiedCount) throw "addition failed";
   return this.getTutor(id);
 }
