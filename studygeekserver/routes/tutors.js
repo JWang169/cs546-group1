@@ -150,6 +150,7 @@ router.post("/:id/availability", async (req, res) => {
   };
   try{
     const tutorAddTime = await tutorData.addAvailability(req.params.id, availability.startTime, availability.endTime);
+   
     res.status(200).json(studentAddTime);//returns all available times
     return;
   }catch(e){
