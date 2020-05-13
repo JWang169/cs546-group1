@@ -11,7 +11,6 @@ const EditInfo =() => {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [availability, setAvailability] = useState("");
-    const [newAvailability, setNewAvailability] = useState("");
     const history = useHistory();
 
 
@@ -48,8 +47,9 @@ const EditInfo =() => {
         history.push('/myaccount');
     }
 
-    const deleteAvailability= (event) => {
+    const deleteAvailability= (event, index) => {
         event.preventDefault();
+        // availability[index]
         // post to server to delete an availability.
     }
     // const deleteAvailability= (event) => {
@@ -74,9 +74,10 @@ const EditInfo =() => {
             <div className="field">
                 <div className='field'>
                 <h3>Availability</h3>
-                    {availability && availability.map(s => (
+                    {availability && availability.map((s, index) => (
                         <div key={s.start}>
-                            <h4>From: {s.start}  To: {s.end} <button className="button" onClick={deleteAvailability} style={{position: 'absolute', right: 550}}>Delete</button></h4>                           
+                            <h4>From: {s.start}  To: {s.end} 
+                            <button className="button" onClick={(e) =>deleteAvailability(e, index)} style={{position: 'absolute', right: 550}}>Delete</button></h4>                           
                         </div>
                     ))}  
                 </div>
