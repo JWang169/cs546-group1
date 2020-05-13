@@ -20,8 +20,8 @@ const PersonInfo = (props) => {
             setEmail(data.email);
             setState(data.state);
             setTown(data.town);
-            setSubjects(data.studentSubjects)
-            setAvailability(data.availability)
+            setSubjects(data.studentSubjects);
+            setAvailability(data.availability);
 
         }catch(e){
             console.log(e);
