@@ -126,6 +126,7 @@ async function login(email,password){
   matched = await bcrypt.compare(password, theTutor.hashedPassword);
   if(matched){
       const token = jwt.sign({
+                statusId: theTutor._id,
                 email: theTutor.email,
                 status: "tutors"
             },
