@@ -139,6 +139,16 @@ router.post('/review', async (req, res) => {
 }
 });
 
+router.post('/review/:id', async (req, res) => {
+  try{
+  const review = await tutorData.getReview(req.params.id);
+  await studentData.removeReview(oldPair);
+    res.status(200).json(review);
+  }catch(e){
+    res.status(503).json({error: e});
+  }
+});
+
 router.post('/signup', async (req, res) => {
   const tutor = req.body;
     if(!tutor.email){
@@ -220,8 +230,9 @@ router.post("/:id/availability", async (req, res) => {
   }
 });
 
-router.delete('/:id/availability', async (req,res) => {
+router.post('/:id/availability/delete', async (req,res) => {
   const reqAvailable = req.body;
+  console.log(reqAvailable)
   try{
     if(!reqAvailable)throw"No request body passed into delete function";
     if(!reqAvailable.start)throw"No start time passed into delete availability";
@@ -255,16 +266,8 @@ router.put('/:id', async (req, res) => {
     res.status(404).json({error:"no state found"});
     return;
   }
-  if(!req.body.email){
-    res.status(404).json({error:"no email found"});
-    return;
-  }
-  if(!req.body.password){
-    res.status(404).json({error:"no password found"});
-    return;
-  }
   try{
-  const theTutor = await tutorData.updateTutor(req.params.id, req.body.email, req.body.firstName,req.body.lastName,req.body.password, req.body.state, req.body.town,);
+  const theTutor = await tutorData.updateTutor(req.params.id, req.body.firstName,req.body.lastName, req.body.state, req.body.town,);
   res.status(200).json(theTutor);
   }catch(e){
     res.status(503).json({error:e})
