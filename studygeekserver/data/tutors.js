@@ -207,7 +207,7 @@ async function updateSubject(tutorId,subjectName,proficiency, price){
   const tutorInfo = await this.getTutor(tutorID);
   if (!tutorInfo) throw "Tutor not available";
   const tutor = {
-    _id : tutorInfo.tutorSubjects._id
+    _id : tutorInfo.tutorSubjects._id,
     'subjectName': subjectName
   }
 }
