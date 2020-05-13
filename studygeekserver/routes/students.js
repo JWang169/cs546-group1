@@ -69,7 +69,7 @@ router.post('/tutorPair',async(req, res) =>{
     const newPair= await studentData.createPair(reqPair.tutorId, reqPair.studentId, reqPair.subject, reqPair.proficiency);
     res.status(200).json(newPair);
   }catch(e){
-    res.status(503).json({error:e});
+    res.status(404).json({error:e});
   }
 })
 
@@ -171,7 +171,7 @@ router.put('/:id', async (req, res) => {
   if(!reqStudent.state){
     res.status(404).json({error:"no state found"});
     return;
-  }
+  }/*
   if(!reqStudent.email){
     res.status(404).json({error:"no email found"});
     return;
@@ -179,7 +179,7 @@ router.put('/:id', async (req, res) => {
   if(!reqStudent.password){
     res.status(404).json({error:"no password found"});
     return;
-  }
+  }*/
 
   try{
  // const oldStudent = await studentData.getStudent(req.params.id);
@@ -188,9 +188,9 @@ router.put('/:id', async (req, res) => {
     lastName: reqStudent.lastName,
     state: reqStudent.state,
     town: reqStudent.town,
-    password: reqStudent.password,
-    email: reqStudent.email/*,
-    availability: oldStudent.availability,//these two don't change in the PUT
+    //password: reqStudent.password,
+    //email: reqStudent.email,
+    /*availability: oldStudent.availability,//these two don't change in the PUT
     studentSubjects: oldStudent.studentSubjects*/
   }
   const theStudent = await studentData.updateStudent(req.params.id, updatedStudent);

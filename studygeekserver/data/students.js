@@ -305,27 +305,27 @@ async function login(email,password){
 
 async function updateStudent(id, updatedStudent){
     const student = await this.getStudent(id);
-    if (typeof updatedStudent.email != 'string') throw 'Email must be a string';
+    /*if (typeof updatedStudent.email != 'string') throw 'Email must be a string';
     const emailDup= updatedStudent.email;//converts email to lowercase
-    const emailLow = emailDup.toLowerCase();
+    const emailLow = emailDup.toLowerCase();*/
     if (typeof updatedStudent.firstName != 'string') throw 'You must provide a first name of type string';
     if (typeof updatedStudent.lastName != 'string') throw 'You must provide a last name of type string';
     if (typeof updatedStudent.town != 'string') throw 'You must provide a string of the town you reside in';
     if (typeof updatedStudent.state != 'string') throw 'You must provide a string of the state you reside in';
-    if (typeof updatedStudent.password !='string') throw 'you must provide a valid password of type string';
+    /*if (typeof updatedStudent.password !='string') throw 'you must provide a valid password of type string';
     const unhashedPassword = updatedStudent.password;
     //NOTE: neither the availability nor the StudentSubjects arrays will  be updated here. Those will need their own functions.
     
     //I think thatthe chat history should remain the same, regardless of name change because your past name will not be changed
-    const hashedPassword= await bcrypt.hash(unhashedPassword, saltRounds);
+    const hashedPassword= await bcrypt.hash(unhashedPassword, saltRounds);*/
 
     let studentUpdateInfo = {
         firstName: updatedStudent.firstName,
         lastName: updatedStudent.lastName,
-        email: emailLow,
+        email: student.email,
         town: updatedStudent.town,
         state: updatedStudent.state,
-        hashedPassword: hashedPassword,
+        hashedPassword: student.hashedPassword,
         availability: student.availability, //this will not update
         studentSubjects: student.studentSubjects
     };
