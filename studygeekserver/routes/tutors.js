@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const tutorData = data.tutors;
+const pairData = data.pairs;
 
 router.get('/', async (req, res) => {
   try {
@@ -75,6 +76,19 @@ router.get('/ratelowtohigh/', async (req, res) => {
   }
 });
 
+// List the people this tutor can chat with
+router.get('/chatOptions', async (req, res) => {
+  try {
+    const tutor = await tutorData.getTutor(req.params.id);
+    const pairs = await pairData.getPairsWithTutor(req.params.id);
+    console.log(pairs);
+    res.render('mainChatTutors', {pairs: pairs})
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({ message: "Tutor not found!" });
+  }
+});
+
 router.post('/createSubject', async (req, res) => {
   const tutorID = req.body['_id'];
   const subjectName = req.body['subjectName'];
@@ -128,13 +142,15 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  const email = req.body['email'];
-  const password = req.body['password'];
   try{
+    if (!req.body.email) throw "Email should be given";
+    if (!req.body.password) throw "Password should be given";
+    const email = req.body['email'];
+    const password = req.body['password'];
     const token = await tutorData.login(email,password)
     res.send(token);
 	}catch(e){
-        res.status(401).json({error: e})
+        res.status(404).json({error: e})
     }
 });
 
@@ -150,7 +166,7 @@ router.post("/:id/availability", async (req, res) => {
   };
   try{
     const tutorAddTime = await tutorData.addAvailability(req.params.id, availability.startTime, availability.endTime);
-   
+
     res.status(200).json(studentAddTime);//returns all available times
     return;
   }catch(e){

@@ -55,24 +55,25 @@ const PersonInfo = (props) => {
             <br/>
             <hr/>
             <div className="row">
-                <div className="col">
-                    <h2>Subjects: </h2>
+            <div className="col">
+                    <h2>My Subjects: </h2>
                     {subjects && subjects.map(s => (
                         <div key={Math.random() * 100000}>
-                            <p>{s}</p>
+                            <p>{s.subjectName}</p>
                         </div>
                     ))}               
                 </div>
 
+
                 <div className="col">
-                    <h2>Availability: </h2>
+                    <h2>My Availability: </h2>
                     {availability && availability.map(s => (
                         <div key={Math.random() * 100000}>
-                            <p>{s}</p>
+                            <p>{s.day}, {s.startH}:{s.startM} - {s.endH}:{s.endM}</p>
                         </div>
-                    ))}  
+                    ))}
+                    
                 </div>
-
                 <div className="col">
                     <h2>Contact Info: </h2>
                     <div className="form-group">First name: {firstName}</div>

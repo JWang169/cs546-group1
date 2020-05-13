@@ -111,8 +111,8 @@ const EditInfo =() => {
                 </div>
                 
             </div>    
-            <button className="ui negative button" onClick={onClickNoChange}>Discard Change</button>
-            <button className="ui positive button" type='submit' style={{position: 'absolute', right: 50}}>Save Change </button>
+            <button className="ui positive button" type='submit' >Save Change </button>
+            <button className="ui negative button" onClick={onClickNoChange} style={{position: 'absolute', right: 50}}>Discard Change</button>
             </form>
             <br/>
 

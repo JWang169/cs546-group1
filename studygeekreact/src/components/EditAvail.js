@@ -11,7 +11,6 @@ const EditInfo =() => {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [availability, setAvailability] = useState("");
-    const [newAvailability, setNewAvailability] = useState("");
     const history = useHistory();
 
 
@@ -36,15 +35,36 @@ const EditInfo =() => {
                 startTime: startTime,
                 endTime: endTime
             });
+            history.push('/myaccount')
         }catch(e){
             console.log(e)
         }
  
     }
 
-    const deleteAvailability= (event) => {
+    const onClickBack = (event) => {
         event.preventDefault();
-        // post to server to delete an availability.
+        history.push('/myaccount');
+    }
+
+    // post to server to delete an availability.
+    const deleteAvailability= async(event, index) => {
+        event.preventDefault();
+        const tokenInfo = jwt_decode(localStorage.getItem("token"));
+        const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}/availability/delete`;
+        console.log( {
+            startTime: availability[index].start,
+            endTime: availability[index].end
+        })
+        try{
+            const {data} = await axios.post(urlString, {
+                startTime: availability[index].start,
+                endTime: availability[index].end
+            });
+            history.push('/myaccount')
+        }catch(e){
+            console.log(e)
+        }   
     }
     // const deleteAvailability= (event) => {
     //     event.preventDefault();
@@ -60,7 +80,7 @@ const EditInfo =() => {
 
     return (
         <div className="container">
-            <h1>Edit My Account.</h1>
+            <h1>Edit My Availability.</h1>
             <br/>
             <hr/>
             
@@ -68,9 +88,10 @@ const EditInfo =() => {
             <div className="field">
                 <div className='field'>
                 <h3>Availability</h3>
-                    {availability && availability.map(s => (
+                    {availability && availability.map((s, index) => (
                         <div key={s.start}>
-                            <p>From: {s.start}  To: {s.end} <button color='red' onClick={deleteAvailability}>Delete</button></p>                           
+                            <h4>From: {s.start}  To: {s.end} 
+                            <button className="button" onClick={(e) =>deleteAvailability(e, index)} style={{position: 'absolute', right: 550}}>Delete</button></h4>                           
                         </div>
                     ))}  
                 </div>
@@ -94,9 +115,10 @@ const EditInfo =() => {
                     required
                     />
                     </div>
+                    
+                    <button className="ui positive button" onClick={addAvailability}> Add Availability </button>
+                    <button className="ui button" onClick={onClickBack} style={{position: 'absolute', right: 50}}>Back to My Page</button>
 
-
-                <button onClick={addAvailability}>Add Availability</button>   
                 </div>
             </div>    
             </form>
