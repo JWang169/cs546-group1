@@ -141,7 +141,7 @@ async function login(email,password){
     }
 }
 
-async function createTutor(email, firstName, lastName,password , town, state)//subject , proficiency , price ,password )
+async function createTutor(email, firstName, lastName,password , town, state)
   {
   if (!email ) throw "Email Must be provided";
   if (!firstName ) throw "First Name must be provided";
@@ -197,6 +197,16 @@ async function createSubject(tutorID, subjectName, proficiency, price){
   const updateTutor = await tutorCollection.updateOne({_id: tutorID},{ $addToSet: { tutorSubjects: tutor }});
   if (!updateTutor.matchedCount && !updateTutor.modifiedCount) throw 'could not update tutor successfully';
   return await this.getTutor(tutorID);
+}
+
+async removeSubject(tutorId, subjectName, proficiency, price){
+  if (typeof tutorID !== "string") throw "Id must be a string";
+  if (typeof subjectName !== "string") throw "Subject Name must be a string";
+  if (typeof proficiency !== "string") throw "proficiency must be a string";
+  if (typeof price !== "number") throw "Price must be a number";
+  const tutorCollection = await tutors();
+  const tutorInfo = await this.getTutor(tutorID);
+  if (!tutorInfo) throw "Tutor not available";
 }
 
 // async function updateSubject(tutorId,subjectName,proficiency, price){
@@ -311,39 +321,68 @@ async function addAvailability(id, start, end){
     return newAvailability;
 }
 
-// async function updateTutor(tutorId, info, subject, price, proficiency){
-//     if(!tutorId) throw `No tutor id provided.`
-//     if(!info) throw `No info provided.`
-//     if(!subjects) throw `No subjects provided.`
-//     if (typeof(tutorId) !== "string") throw "Id must be a string"
-//     const tutorCollection = await tutors();
-//     const oldInfo = await this.getTutor(tutorId);
-//     const updatedTutor = {
-//         'email': oldInfo.email,
-//         'firstName': oldInfo.firstName,
-//         'lastName': oldInfo.lastName,
-//         'subject': subject,
-//         'rating' : oldInfo.rating
-//         'state': state,
-//         'town': town,
-//         'tutorSubjects' : [],
-//         'reviews' :[],
-//         //'info': "",
-//         //'price' : price,
-//         //'proficiency' : proficiency
-//         'availability' : [],
-//         'hashedPassword' : oldInfo.hashedPassword,
-//     }
-//     const updatedInfo = await tutorCollection.updateOne({_id:tutorId}, { $set : updatedTutor});
-//     return await this.getTutor(tutorId);
-// }
+async function removeAvailability(id, start, end){
+    const studentCollection=await students();
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const foundAvailability = await studentCollection.findOne({_id:id,
+        "availability.startExtended":startDate,
+        "availability.endExtended":endDate
+    });
+    if(foundAvailability===null)throw "availability not found";
+    const deleteAvailability =await studentCollection.updateOne({_id:id},
+        {$pull:
+            { availability:
+                {
+                    startExtended: startDate,
+                    endExtended:endDate
+                }
+            }
+        });
+    if(!deleteAvailability.matchedCount && !deleteAvailability.modifiedCount)throw "failed to delete availability";
+    return foundAvailability;
+}
+
+async function updateTutor(tutorId, email, firstName, lastName, password, state, town,){
+    if (typeof email != 'string') throw 'Email must be a string';
+    if (typeof firstName != 'string') throw 'You must provide a first name of type string';
+    if (typeof lastName != 'string') throw 'You must provide a last name of type string';
+    if (typeof town != 'string') throw 'You must provide a string of the town you reside in';
+    if (typeof state != 'string') throw 'You must provide a string of the state you reside in';
+    if (typeof password !='string') throw 'you must provide a valid password of type string';
+    const tutor = await this.getTutor(tutorId);
+    if(!tutor) throw `No tutor available.`;
+    const emailLow = email.toLowerCase();
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    let tutorUpdate = {
+      firstName: firstName,
+      lastName: lastName,
+      email: emailLow,
+      town: town,
+      state: state,
+      password: hashedPassword,
+      availability : tutor.availability,
+      tutorSubjects : tutor.tutorSubjects,
+      reviews: tutor.reviews,
+      avgRatings: tutor.avgRatings
+    }
+    const tutorCollection = await tutors();
+    const updateTutor = await tutorCollection.updateOne({_id:tutorId},{$set:tutorUpdate});
+    if(!updateTutor.matchedCount || !updateTutor.modifiedCount) throw 'Tutor update failed';
+    return tutorUpdate;
+}
 
 async function removeTutor(tutorId){
   if (!tutorId) throw "No tutor id provided";
+  const theTutor = await this.getTutor(id);
+  const reviewArray = theTutor.reviews;
+  for (i in reviewArray){
+    let foundReview = await this.getReview(reviewArray[i])
+    await this.removeReview(foundReview);
+  }
   const tutorCollection = await tutor();
   const deleteTutor = await tutorCollection.removeOne({_id:tutorId});
   if (deletionTutor.deletedCount === 0) throw "User wasn't delete";
-  const reviewCollection = await reviews
   return {delete:true};
 }
 
@@ -358,6 +397,7 @@ createTutor,
 // getTutorByProficiency,
 // getTutorByPriceHighToLow,
 // getTutorByPriceLowToHigh,
+removeTutor
 login,
 addAvailability,
 createSubject
