@@ -102,7 +102,7 @@ async function getTutorByEmail(email){
 //   return theTutor;
 // }
 
-async function search(subject, proficiency, startTime, endTime, sorts){
+async function search(subject, proficiency, sorts){ //starttime and end time
   if (typeof subject !== "string") throw "Subject must be string";
   if (typeof proficiency !== "string") throw "Proficiency must be a string";
   // if (typeof startTime !== "object") throw "Start Time must be a object";
@@ -110,10 +110,10 @@ async function search(subject, proficiency, startTime, endTime, sorts){
   if (typeof sorts !== "string") throw "Sorting should be a string of Price/ Rating";
   const tutorCollection = await tutors();
   if (sorts === "price"){
-    const theTutor = await tutorCollection.find({'tutorSubjects.subject':subject},{'tutorSubjects.proficiency':proficiency}).sort({price:-1}).toArray();
+    const theTutor = await tutorCollection.find({'tutorSubjects.subject':subject,'tutorSubjects.proficiency':proficiency}).sort({price:-1}).toArray();
   }
   else if (sorts === "rate"){
-    const theTutor = await tutorCollection.find({'tutorSubjects.subject':subject},{'tutorSubjects.proficiency':proficiency}).sort({avgRatings:1}).toArray();
+    const theTutor = await tutorCollection.find({'tutorSubjects.subject':subject,'tutorSubjects.proficiency':proficiency}).sort({avgRatings:1}).toArray();
   }
   return thetutor;
 }
@@ -200,55 +200,44 @@ async function createSubject(tutorID, subjectName, proficiency, price){
   return await this.getTutor(tutorID);
 }
 
-async function removeSubject(tutorId, subjectName, proficiency, price){
-  if (typeof tutorID !== "string") throw "Id must be a string";
+//checked but doesn't work
+async function removeSubject(tutorId, subjectName){
+  if (typeof tutorId !== "string") throw "Id must be a string";
   if (typeof subjectName !== "string") throw "Subject Name must be a string";
   // if (typeof proficiency !== "string") throw "proficiency must be a string";
   // if (typeof price !== "number") throw "Price must be a number";
   const tutorCollection = await tutors();
-  const tutorInfo = await this.getTutor(tutorID);
+  const tutorInfo = await this.getTutor(tutorId);
   if (!tutorInfo) throw "Tutor not available";
-  const findSubject = await tutorCollection.findOne({_id:tutorId},{'tutorSubjects.subjectName':subjectName});
+  const findSubject = await tutorCollection.findOne({_id:tutorId,'tutorSubjects.subjectName':subjectName});
   if (!findSubject) throw "Subject Not Found";
-  const removeSubject = await tutorCollection.removeOne({_id:tutorId},{'tutorSubjects.subjectName':subjectName});
-  if(removeSubject.deletedCount===0)throw "failed to delete review";
+  const removeSubject = await tutorCollection.updateOne({_id:tutorId},{$unset:{'tutorSubjects.subjectName':subjectName}});
+  //if (!removeSubject.matchedCount && !removeSubject.modifiedCount) throw 'could not update subject successfully';
   return this.getTutor(tutorId);
 }
 
+//checked works
 async function updateSubject(tutorId, subjectName, proficiency, price){
-  if (typeof tutorID !== "string") throw "Id must be a string";
+  if (typeof tutorId !== "string") throw "Id must be a string";
   if (typeof subjectName !== "string") throw "Subject Name must be a string";
   if (typeof proficiency !== "string") throw "proficiency must be a string";
   if (typeof price !== "number") throw "Price must be a number";
   const tutorCollection = await tutors();
-  const tutorInfo = await this.getTutor(tutorID);
+  const tutorInfo = await this.getTutor(tutorId);
   if (!tutorInfo) throw "Tutor not available";
-  const findSubject = await tutorCollection.findOne({_id:tutorId},{'tutorSubjects.subjectName':subjectName});
+  const findSubject = await tutorCollection.findOne({_id:tutorId,'tutorSubjects.subjectName':subjectName});
   if (!findSubject) throw "Subject Not Found";
-  const updateSubject ={
+  const updateSubject = {
     'subjectName' : subjectName,
     'proficiency' : proficiency,
     'price' : price,
     'teaches' : tutorInfo.tutorSubjects.teaches,
   }
-  const updateTutor = await tutorCollection.updateOne({_id:tutorId},{'tutorSubjects.subjectName': subjectName},{set : {tutorSubjects:updateSubject}});
+  const updateTutor = await tutorCollection.updateOne({_id:tutorId,'tutorSubjects.subjectName': subjectName},{$set : {tutorSubjects:updateSubject}});
   if (!updateTutor.matchedCount && !updateTutor.modifiedCount) throw 'could not update subject successfully';
-  return await this.getTutor(tutorID);
+  return await this.getTutor(tutorId);
 }
 
-// async function updateSubject(tutorId,subjectName,proficiency, price){
-//   if (typeof tutorID !== "string") throw "Id must be a string";
-//   if (typeof subjectName !== "string") throw "Subject Name must be a string";
-//   if (typeof proficiency !== "string") throw "proficiency must be a string";
-//   if (typeof price !== "number") throw "Price must be a number";
-//   const tutorCollection = await tutors();
-//   const tutorInfo = await this.getTutor(tutorID);
-//   if (!tutorInfo) throw "Tutor not available";
-//   const tutor = {
-//     _id : tutorInfo.tutorSubjects._id,
-//     'subjectName': subjectName
-//   }
-// }
 async function getReviewById(id){
     if (!id) throw "The id must be provided"
     if (typeof(id) !== "string" ) throw "The id must be a string";
@@ -459,5 +448,6 @@ updateTutor,
 removeTutor,
 login,
 addAvailability,
-createSubject
+createSubject,
+search
 };
