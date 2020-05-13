@@ -180,9 +180,8 @@ router.delete('/:id/availability', async (req,res) => {//id here represents the 
 })
 
 router.delete("/:id", async (req, res) =>{
-  //NOTE 1: Needs authentification and confirmation to be done before hand (but not here)
   //NOTE 2: TutorPairs will need to be deleted, and all the corresponding entries that that would entail as well
-  //NOTE 3: Cookie for this student should be deleted, as well as Chat History
+  //NOTE 3: Cookie for this student should be deleted, and maybe the chat history, I dunno how that works
   //NOTE 4: Reviews do not need to be deleted
   try{
     await studentData.getStudent(req.params.id);

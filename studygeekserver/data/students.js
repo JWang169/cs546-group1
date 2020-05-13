@@ -335,7 +335,12 @@ async function updateStudent(id, updatedStudent){
 async function removeStudent(id){
     const studentCollection = await students();
     //let student = null;//Unecessary, but allows return to contain the info
-    //student = await this.getStudent(id);//of the deleted Student
+    const theStudent = await this.getStudent(id);//of the deleted Student
+    const tutorPairArray = theStudent.studentSubjects;
+    for( i in tutorPairArray){
+        const foundPair = await this.getPair(tutorPairArray[i].tutoredBy);
+        await this.removePair(foundPair); 
+    }
     const deletedInfo = studentCollection.removeOne({_id: id});
     if (deletedInfo.deletedCount === 0)throw `deletion of student: (${id}) failed`;
     return {deleted: true};
