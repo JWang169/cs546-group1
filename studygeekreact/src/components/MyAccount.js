@@ -84,7 +84,7 @@ const MyAccount =() => {
                     <h2>My Availability: </h2>
                     {availability && availability.map(s => (
                         <div key={Math.random() * 100000}>
-                            <p>{s.start} {s.end}</p>
+                            <p>{s.day}, {s.startH}:{s.startM} - {s.endH}:{s.endM}</p>
                         </div>
                     ))}
                     <button className='ui button' onClick={onClickAvail}>Edit My Availability</button>   
