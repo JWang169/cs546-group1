@@ -198,19 +198,19 @@ async function createSubject(tutorID, subjectName, proficiency, price){
   return await this.getTutor(tutorID);
 }
 
-async function updateSubject(tutorId,subjectName,proficiency, price){
-  if (typeof tutorID !== "string") throw "Id must be a string";
-  if (typeof subjectName !== "string") throw "Subject Name must be a string";
-  if (typeof proficiency !== "string") throw "proficiency must be a string";
-  if (typeof price !== "number") throw "Price must be a number";
-  const tutorCollection = await tutors();
-  const tutorInfo = await this.getTutor(tutorID);
-  if (!tutorInfo) throw "Tutor not available";
-  const tutor = {
-    _id : tutorInfo.tutorSubjects._id
-    'subjectName': subjectName
-  }
-}
+// async function updateSubject(tutorId,subjectName,proficiency, price){
+//   if (typeof tutorID !== "string") throw "Id must be a string";
+//   if (typeof subjectName !== "string") throw "Subject Name must be a string";
+//   if (typeof proficiency !== "string") throw "proficiency must be a string";
+//   if (typeof price !== "number") throw "Price must be a number";
+//   const tutorCollection = await tutors();
+//   const tutorInfo = await this.getTutor(tutorID);
+//   if (!tutorInfo) throw "Tutor not available";
+//   const tutor = {
+//     _id : tutorInfo.tutorSubjects._id
+//     'subjectName': subjectName
+//   }
+// }
 
 async function createReviews(tutorId, studentId, content ,rating){
   if (typeof tutorId !== "string") throw "Id must be a string";

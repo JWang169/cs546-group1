@@ -138,6 +138,27 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.post("/:id/availability", async (req, res) => {
+  const availability = await req.body;
+  if(!availability.startTime){
+    res.status(400).json({error:"You must select the time of day that you become available"});
+    return;
+  }
+  if(!availability.endTime){
+    res.status(400).json({error:"You must select the time of day that you become unavailable"});
+    return;
+  };
+  try{
+    const tutorAddTime = await tutorData.addAvailability(req.params.id, availability.startTime, availability.endTime);
+    res.status(200).json(studentAddTime);//returns all available times
+    return;
+  }catch(e){
+    console.log(e);
+    res.status(500).json({error: e});
+    return;
+  }
+});
+
 // update tutor info
 // router.put("/:id", async (req, res) => {
 //   console.log('in routes/tutors.js')
