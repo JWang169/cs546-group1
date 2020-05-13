@@ -102,7 +102,7 @@ async function getTutorByEmail(email){
 //   return theTutor;
 // }
 
-async function search(subject, proficiency, sorts){ //starttime and end time
+async function search(subject, proficiency, sorts, startTime, endTime){ //starttime and end time
   if (typeof subject !== "string") throw "Subject must be string";
   if (typeof proficiency !== "string") throw "Proficiency must be a string";
   // if (typeof startTime !== "object") throw "Start Time must be a object";
@@ -222,6 +222,7 @@ async function removeSubject(tutorId, subjectName){
   const findSubject = await tutorCollection.findOne({_id:tutorId,'tutorSubjects.subjectName':subjectName});
   if (!findSubject) throw "Subject Not Found";
   const removeSubject = await tutorCollection.updateOne({_id:tutorId},{$unset:{'tutorSubjects.subjectName':subjectName}});
+  
   //if (!removeSubject.matchedCount && !removeSubject.modifiedCount) throw 'could not update subject successfully';
   return this.getTutor(tutorId);
 }

@@ -94,11 +94,15 @@ router.get('/chat', async (req, res) => {
 });
 
 router.post('/createSubject', async (req, res) => {
-  const tutorID = req.body['_id'];
-  const subjectName = req.body['subjectName'];
-  const proficiency = req.body['proficiency'];
-  const price = req.body['price'];
   try {
+    if(!req.body.tutorId) throw "Tutor Id must be given";
+    if(!req.body.subjectName) throw "Tutor Id must be given";
+    if(!req.body.proficiency) throw "Tutor Id must be given";
+    if(!req.body.price) throw "Tutor Id must be given";
+    const tutorID = req.body['_id'];
+    const subjectName = req.body['subjectName'];
+    const proficiency = req.body['proficiency'];
+    const price = req.body['price'];
     let tutor = await tutorData.createSubject(tutorID, subjectName, proficiency, price);
     res.json(tutor);
     return;
@@ -107,25 +111,31 @@ router.post('/createSubject', async (req, res) => {
   }
 });
 
-router.delete('/removeSubject', async (req, res) => {
+router.post('/removeSubject', async (req, res) => {
+  try {
+  if(!req.body.tutorId) throw "Tutor Id must be given";
+  if(!req.body.subjectName) throw "Tutor Id must be given";
   const tutorId = req.body['_id'];
   const subjectName =req.body ['subjectName'];
-  try {
-    let tutor = await tutorData.removeSubject(tutorId, subjectName);
-    res.json(tutor);
+  let tutor = await tutorData.removeSubject(tutorId, subjectName);
+  res.json(tutor);
   } catch (e) {
     res.status(404).json({ error: 'Tutor not found' });
   }
 });
 
 router.put('/updateSubject', async (req, res) => {
+  try{
+  if(!req.body.tutorId) throw "Tutor Id must be given";
+  if(!req.body.subjectName) throw "Tutor Id must be given";
+  if(!req.body.proficiency) throw "Tutor Id must be given";
+  if(!req.body.price) throw "Tutor Id must be given";
   const tutorId = req.body['_id'];
   const subjectName =req.body ['subjectName'];
   const proficiency = req.body['proficiency'];
   const price = req.body['price'];
-  try{
-    let tutor = await tutorData.updateSubject(tutorId, subjectName, proficiency, price);
-    res.json(tutor);
+  let tutor = await tutorData.updateSubject(tutorId, subjectName, proficiency, price);
+  res.json(tutor);
   } catch (e) {
     res.status(404).json({ error: 'Tutor not found' });
   }
@@ -167,7 +177,7 @@ router.post('/review', async (req, res) => {
 router.post('/review/:id', async (req, res) => {
   try{
   const review = await tutorData.getReview(req.params.id);
-  await studentData.removeReview(oldPair);
+  await tutorData.removeReview(review);
     res.status(200).json(review);
   }catch(e){
     res.status(503).json({error: e});
