@@ -42,11 +42,13 @@ router.get('/findPair/:id', async (req, res) => {
 // List the people this student can chat with
 router.get('/chat', async (req, res) => {
   const people = req.body;
-
+  console.log(people.studentId )
+  console.log(people.tutorId )
   try {
     const student = await studentData.getStudent(people.studentId);
     const tutor = await tutorData.getTutor(people.tutorId);
     const pair = await pairData.getPairFromIds(people.tutorId, people.studentId);
+    
     res.render('chat.ejs', {roomId: pair._id});
   } catch (e) {
     console.log(e);

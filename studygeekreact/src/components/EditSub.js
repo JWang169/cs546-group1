@@ -101,14 +101,20 @@ const EditSub =() => {
         event.preventDefault();
         const pairId = subjects[index].tutoredBy;
         try{
-            const {data} = await axios.get('http://localhost:3003/students/findPair' + pairId);
+            const {data} = await axios.get('http://localhost:3003/students/findPair/' + pairId);
             setPair(data);
+            // console.log(data)
+            const tId = data.tutorId;
+            const sId = data.studentId;
+            const {chatRes} = await axios.get('http://localhost:3003/students/chat', {
+                tutorId: tId,
+                studentId: sId
+            })
+
         }catch(e){
             console.log(e);
         }
-        const tutorId = pair.tutorId;
-        const studentId = pair.studentId;
-        
+
 
     }
 
