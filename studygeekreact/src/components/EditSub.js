@@ -103,7 +103,7 @@ const EditSub =() => {
         try{
             const {data} = await axios.get('http://localhost:3003/students/findPair/' + pairId);
             setPair(data);
-            // console.log(data)
+            console.log(data)
             const tId = data.tutorId;
             const sId = data.studentId;
             const {chatRes} = await axios.get('http://localhost:3003/students/chat', {

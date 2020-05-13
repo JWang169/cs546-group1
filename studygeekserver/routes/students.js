@@ -43,7 +43,6 @@ router.get('/findPair/:id', async (req, res) => {
 router.get('/chat', async (req, res) => {
   const people = req.body;
   console.log(people.studentId )
-  console.log(people.tutorId )
   try {
     const student = await studentData.getStudent(people.studentId);
     const tutor = await tutorData.getTutor(people.tutorId);
