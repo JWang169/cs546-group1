@@ -22,59 +22,59 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.get('/email/:email', async (req, res) => {
-  try {
-    let tutor = await tutorData.getTutorByEmail(req.params.email);
-    res.json(tutor);
-  } catch (e) {
-    res.status(404).json({ error: 'Tutor not found' });
-  }
-});
-
-router.get('/pricehightolow/:subject', async (req, res) => {
-  try {
-    let tutor = await tutorData.getTutorByPriceHighToLow(req.params.subject);
-    res.json(tutor);
-  } catch (e) {
-    res.status(404).json({ error: 'Tutor not found' });
-  }
-});
-
-router.get('/pricelowtohigh/:subject', async (req, res) => {
-  try {
-    let tutor = await tutorData.getTutorByPriceLowToHigh(req.params.subject);
-    res.json(tutor);
-  } catch (e) {
-    res.status(404).json({ error: 'Tutor not found' });
-  }
-});
-
-router.get('/townstate/:town/:state', async (req, res) => {
-  try {
-    let tutor = await tutorData.getTutorByTownState(req.params.town,req.params.state);
-    res.json(tutor);
-  } catch (e) {
-    res.status(404).json({ error: 'Tutor not found' });
-  }
-});
-
-router.get('/ratehightolow/', async (req, res) => {
-  try {
-    let tutor = await tutorData.getTutorByRatingHighToLow();
-    res.json(tutor);
-  } catch (e) {
-    res.status(404).json({ error: 'Tutor not found' });
-  }
-});
-
-router.get('/ratelowtohigh/', async (req, res) => {
-  try {
-    let tutor = await tutorData.getTutorByRatingLowToHigh();
-    res.json(tutor);
-  } catch (e) {
-    res.status(404).json({ error: 'Tutor not found' });
-  }
-});
+// router.get('/email/:email', async (req, res) => {
+//   try {
+//     let tutor = await tutorData.getTutorByEmail(req.params.email);
+//     res.json(tutor);
+//   } catch (e) {
+//     res.status(404).json({ error: 'Tutor not found' });
+//   }
+// });
+//
+// router.get('/pricehightolow/:subject', async (req, res) => {
+//   try {
+//     let tutor = await tutorData.getTutorByPriceHighToLow(req.params.subject);
+//     res.json(tutor);
+//   } catch (e) {
+//     res.status(404).json({ error: 'Tutor not found' });
+//   }
+// });
+//
+// router.get('/pricelowtohigh/:subject', async (req, res) => {
+//   try {
+//     let tutor = await tutorData.getTutorByPriceLowToHigh(req.params.subject);
+//     res.json(tutor);
+//   } catch (e) {
+//     res.status(404).json({ error: 'Tutor not found' });
+//   }
+// });
+//
+// router.get('/townstate/:town/:state', async (req, res) => {
+//   try {
+//     let tutor = await tutorData.getTutorByTownState(req.params.town,req.params.state);
+//     res.json(tutor);
+//   } catch (e) {
+//     res.status(404).json({ error: 'Tutor not found' });
+//   }
+// });
+//
+// router.get('/ratehightolow/', async (req, res) => {
+//   try {
+//     let tutor = await tutorData.getTutorByRatingHighToLow();
+//     res.json(tutor);
+//   } catch (e) {
+//     res.status(404).json({ error: 'Tutor not found' });
+//   }
+// });
+//
+// router.get('/ratelowtohigh/', async (req, res) => {
+//   try {
+//     let tutor = await tutorData.getTutorByRatingLowToHigh();
+//     res.json(tutor);
+//   } catch (e) {
+//     res.status(404).json({ error: 'Tutor not found' });
+//   }
+// });
 
 // List the people this tutor can chat with
 router.get('/chatOptions', async (req, res) => {
@@ -118,12 +118,52 @@ router.post('/createSubject', async (req, res) => {
 //   }
 // });
 
+router.post('/review', async (req, res) => {
+  try{
+    if(!req.body.tutorId) throw "Tutor Id must be given";
+    if(!req.body.studentId) throw "Tutor Id must be given";
+    if(!req.body.content) throw "Tutor Id must be given";
+    if(!req.body.rating) throw "Tutor Id must be given";
+  }catch(e){
+  res.status(404).json({error: e});
+  }
+  try{
+  const newReview= await tutorsData.createReview(req.body.tutorId, req.body.studentId, req.body.content, req.tutor.rating);
+  res.status(200).json(newReview);
+}catch(e){
+  res.status(503).json({error:e});
+}
+});
+
 router.post('/signup', async (req, res) => {
   const tutor = req.body;
     if(!tutor.email){
         res.status(400).json({error:"No email provided!"})
     }
-    //check for parameters
+    if(!tutor.firstName){
+      res.status(400).json({error: "You must provide a first name"});
+  		return;
+    }
+    if(!tutor.lastName){
+      res.status(400).json({error: "You must provide a last name"});
+  		return;
+    }
+    if(!tutor.town){
+      res.status(400).json({error: "You must provide a town"});
+  		return;
+    }
+    if(!tutor.state){
+      res.status(400).json({error: "You must provide a state"});
+  		return;
+    }
+    if(!tutor.email){
+      res.status(400).json({error: "You must provide an email"});
+  		return;
+    }
+    if(!tutor.password){
+      res.status(400).json({error: "You must provide a password"});
+  		return;
+    }
     const email = req.body['email'];
     const password = req.body['password'];
     const lastName = req.body['lastName'];
@@ -137,18 +177,20 @@ router.post('/signup', async (req, res) => {
       const tutor = await tutorData.createTutor(email, firstName, lastName, password, town, state)//subject, proficiency, price, password)
       res.status(200).json(tutor)
     }catch(e){
-      res.status(409).json({error: e});
+      res.status(501).json({error: e});
     }
 });
 
 router.post('/login', async (req, res) => {
-  const email = req.body['email'];
-  const password = req.body['password'];
   try{
+    if (!req.body.email) throw "Email should be given";
+    if (!req.body.password) throw "Password should be given";
+    const email = req.body['email'];
+    const password = req.body['password'];
     const token = await tutorData.login(email,password)
     res.send(token);
 	}catch(e){
-        res.status(401).json({error: e})
+        res.status(404).json({error: e})
     }
 });
 
@@ -164,13 +206,82 @@ router.post("/:id/availability", async (req, res) => {
   };
   try{
     const tutorAddTime = await tutorData.addAvailability(req.params.id, availability.startTime, availability.endTime);
-   
-    res.status(200).json(studentAddTime);//returns all available times
+
+    res.status(200).json(tutorAddTime);//returns all available times
     return;
   }catch(e){
     console.log(e);
     res.status(500).json({error: e});
     return;
+  }
+});
+
+router.delete('/:id/availability', async (req,res) => {
+  const reqAvailable = req.body;
+  try{
+    if(!reqAvailable)throw"No request body passed into delete function";
+    if(!reqAvailable.start)throw"No start time passed into delete availability";
+    if(!reqAvailable.end)throw"No end time passed into delete availability";
+  }catch(e){
+    res.status(404).json({error: e});
+    return;
+  }
+  try{
+    const deletedAvailability = await tutorData.removeAvailability(req.params.id, reqAvailable.start, reqAvailable.end);
+    res.status(200).json(deletedAvailability);
+  }catch(e){
+    res.status(503).json({error:e});
+  }
+})
+
+router.put('/:id', async (req, res) => {
+  if(!req.body.firstName){
+    res.status(404).json({error:"no first name found"});
+    return;
+  }
+  if(!req.body.lastName){
+    res.status(404).json({error:"no last name found"});
+    return;
+  }
+  if(!req.body.town){
+    res.status(404).json({error:"no town found"});
+    return;
+  }
+  if(!req.body.state){
+    res.status(404).json({error:"no state found"});
+    return;
+  }
+  if(!req.body.email){
+    res.status(404).json({error:"no email found"});
+    return;
+  }
+  if(!req.body.password){
+    res.status(404).json({error:"no password found"});
+    return;
+  }
+  try{
+  const theTutor = await tutorData.updateTutor(req.params.id, req.body.email, req.body.firstName,req.body.lastName,req.body.password, req.body.state, req.body.town,);
+  res.status(200).json(theTutor);
+  }catch(e){
+    res.status(503).json({error:e})
+  }
+
+})
+
+router.delete("/:id", async (req, res) =>{
+  try{
+    await tutorData.getTutor(req.params.id);
+  }catch(e){
+    res.status(404).json({
+      error: "Tutor with this ID not found",
+      reason: e
+    });
+  }
+  try{
+    const deletedTutor = await tutorData.removeTutor(req.params.id);
+    res.status(200).json(deletedTutor);
+  }catch(e){
+    res.status(500).json({error: e});
   }
 });
 
