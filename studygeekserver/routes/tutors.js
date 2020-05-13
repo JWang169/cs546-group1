@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const tutorData = data.tutors;
+const studentData = data.students;
 const pairData = data.pairs;
 
 router.get('/', async (req, res) => {
@@ -77,15 +78,18 @@ router.get('/:id', async (req, res) => {
 // });
 
 // List the people this tutor can chat with
-router.get('/chatOptions', async (req, res) => {
+router.get('/chat', async (req, res) => {
+  const people = req.body;
+
   try {
-    const tutor = await tutorData.getTutor(req.params.id);
-    const pairs = await pairData.getPairsWithTutor(req.params.id);
-    console.log(pairs);
-    res.render('mainChatTutors', {pairs: pairs})
+    const tutor = await tutorData.getTutor(people.tutorId);
+    const student = await studentData.getStudent(people.studentId);
+    const pair = await pairData.getPairFromIds(tutor, student);
+    console.log(pair);
+    res.render('chat.ejs', {roomId: pair._id});
   } catch (e) {
     console.log(e);
-    res.status(404).json({ message: "Tutor not found!" });
+    res.status(404).json({error: e});
   }
 });
 

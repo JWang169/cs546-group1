@@ -27,15 +27,18 @@ router.get("/:id", async (req, res) => {
 });
 
 // List the people this student can chat with
-router.get('/chatOptions', async (req, res) => {
+router.get('/chat', async (req, res) => {
+  const people = req.body;
+
   try {
-    const student = await studentData.getStudent(req.params.id);
-    const pairs = await pairData.getPairsWithStudent(req.params.id);
-    console.log(pairs);
-    res.render('mainChatStudents', {pairs: pairs})
+    const student = await studentData.getStudent(people.studentId);
+    const tutor = await tutorData.getTutor(people.tutorId);
+    const pair = await pairData.getPairFromIds(tutor, student);
+    console.log(pair);
+    res.render('chat.ejs', {roomId: pair._id});
   } catch (e) {
     console.log(e);
-    res.status(404).json({ message: "Student not found!" });
+    res.status(404).json({error: e});
   }
 });
 
