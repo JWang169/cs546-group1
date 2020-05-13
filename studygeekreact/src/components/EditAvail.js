@@ -1,5 +1,6 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react'
+import UserContext from './context/UserContext';
+import React, { useState, useContext, useEffect } from 'react'
 import jwt_decode from "jwt-decode";
 import { useHistory } from 'react-router-dom';
 
@@ -13,7 +14,7 @@ const EditInfo =() => {
     const [availability, setAvailability] = useState("");
     const [errorMsg, setErrorMsg] = useState(false);
     const history = useHistory();
-
+    const {token, setToken} = useContext(UserContext);
 
     const getAccount = async() =>{
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
@@ -68,13 +69,6 @@ const EditInfo =() => {
             console.log(e)
         }   
     }
-    // const deleteAvailability= (event) => {
-    //     event.preventDefault();
-    //     const {id} = event.target.parentElement;
-    //     availability.splice(id, 1)
-    //     setAvailability([...availability])
-    // }
-
 
     useEffect(() => {
         getAccount()

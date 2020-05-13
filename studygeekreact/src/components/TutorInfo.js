@@ -9,20 +9,21 @@ const TutorInfo = (props) => {
     const {token, setToken} = useContext(UserContext);
     const [tokenInfo, setTokenInfo] = useState("");
     const history = useHistory();
-
+    
     useEffect(() => {
         !token && history.push('/login') 
-        token && decodeToken(token) && getTutor();
+        token && getTutor();
+        
     }, []);
-
-    const decodeToken = (token) => {
+    
+    const decodeToken = () => {
         try{
             setTokenInfo(jwt_decode(localStorage.getItem("token")));
-
         }catch(e){
             setToken("");
         }      
     }
+    
     // if (!token){
     //     console.log("no tokens");
     //     history.push('/login')
@@ -53,6 +54,7 @@ const TutorInfo = (props) => {
 
     const getTutor = async() => {
         console.log("GET TUTOR FUNC NOT WORKING")
+        decodeToken();
         try{
             const { data } = await axios.get('http://localhost:3003/tutors/' + props.match.params.id);
             setLastName(data.lastName);
