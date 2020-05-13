@@ -287,8 +287,8 @@ async function createReviews(tutorId, studentId, content ,rating){
     await reviewCollection.removeOne({_id:newReview._id});
     throw "The update didnt happen";
   }
-  const avgRatings = await calcRating(tutorId);
-  const updateTutorRating = await updateTutorRating(tutorId, avgRatings);
+  const avgRatings = await this.calcRating(tutorId);
+  const updateTutorRating = await this.updateTutorRating(tutorId, avgRatings);
   return newReview;
 }
 
@@ -441,7 +441,7 @@ async function removeTutor(tutorId){
 module.exports = {getAlltutors,
 getTutor,
 createTutor,
-// getTutorByEmail,
+getTutorByEmail,
 // getTutorBySubject,
 // getTutorByTownState,
 // getTutorByRatingLowToHigh,
@@ -449,6 +449,13 @@ createTutor,
 // getTutorByProficiency,
 // getTutorByPriceHighToLow,
 // getTutorByPriceLowToHigh,
+removeSubject,
+updateSubject,
+updateTutorRating,
+createReviews,
+removeReview,
+removeAvailability,
+updateTutor,
 removeTutor,
 login,
 addAvailability,
