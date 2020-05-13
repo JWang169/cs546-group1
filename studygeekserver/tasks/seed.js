@@ -119,7 +119,15 @@ const Sybill = new Tutor({
     firstName: "Sybill",
     lastName: "Trelawney",
     town: "Baltimore",
-    state: "Maryland"
+    state: "Maryland",
+    tutorSubjects:[
+    {
+        
+        subjectName:"Magic",
+        proficiency: "Novice",
+        price:"20",
+        teaches:["c163eeff-3566-49c8-b63e-851da5b2de07"]
+    }]
 //     subject: "Divination",
 //     proficiency : "Beginner",
 //     price : "25"
@@ -292,7 +300,7 @@ const malfoy = new Student({
     studentSubjects: [
         {
             subjectName:"Magic",
-            proficiency:"novice",
+            proficiency:"Novice",
             tutoredBy:"a01cc6db-1c34-4552-b7ca-610f8cfb5abd"//this is the tutorPairId
         }
     ]
@@ -304,7 +312,7 @@ studentArray.push(malfoy)
 
 for(t in studentArray){
     studentArray[t].save().then(() => {
-        console.log(studentArray[t])//this seems to only output malfoy for me.
+        console.log(studentArray[t])
     }).catch((error) => {
         console.log('Error', error)
     })
@@ -337,13 +345,13 @@ const sybillMalfoy = new TutorPair({
     tutorId: "60625b69-1b3e-4743-b011-ac410723ebac",
     studentId: "c163eeff-3566-49c8-b63e-851da5b2de07",
     subject:"Magic",
-    proficiency:"novice"
+    proficiency:"Novice"
 })
 
 tutorPairArray.push(sybillMalfoy);
 for(t in tutorPairArray){
     tutorPairArray[t].save().then(() => {
-        console.log(tutorPairArray[t])//this seems to only output malfoy for me.
+        console.log(tutorPairArray[t])
     }).catch((error) => {
         console.log('Error', error)
     })
