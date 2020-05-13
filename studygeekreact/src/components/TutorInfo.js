@@ -7,14 +7,26 @@ import UserContext from './context/UserContext';
 const TutorInfo = (props) => {
     console.log(props.match.params.id)
     const {token, setToken} = useContext(UserContext);
+    const [tokenInfo, setTokenInfo] = useState("");
     const history = useHistory();
+
+    useEffect(() => {
+        !token && history.push('/login') 
+        token && decodeToken(token) && getTutor();
+    }, []);
+
+    const decodeToken = (token) => {
+        try{
+            setTokenInfo(jwt_decode(localStorage.getItem("token")));
+        }catch(e){
+            setToken("");
+        }      
+    }
     if (!token){
         console.log("no tokens");
         history.push('/login')
     }
     
-    const tokenInfo = jwt_decode(localStorage.getItem("token"));
-    console.log(tokenInfo)
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -22,17 +34,17 @@ const TutorInfo = (props) => {
     const [availability, setAvailability] = useState("");
     const [state, setState] = useState("");
     const [town, setTown] = useState("");
-    const [paired, setPaired] = useState("");
-    
+
     const requestTutor = async(e, index)=>{
         e.preventDefault();
         try{
-            const { data } = await axios.post('http://localhost:3003/students/tutorPair/',{
+            const reqInfo = {
                 tutorId: props.match.params.id,
                 studentId : tokenInfo.statusId,
                 subject: subjects[index].subjectName,
-                proficiency: subjects[index.proficiency]
-            })
+                proficiency: subjects[index].proficiency
+            }
+            const { data } = await axios.post('http://localhost:3003/students/tutorPair/', reqInfo)
         }catch(e){
             console.log(e);
         }
@@ -46,18 +58,15 @@ const TutorInfo = (props) => {
             setEmail(data.email);
             setState(data.state);
             setTown(data.town);
-            setSubjects(data.subjects)
+            setSubjects(data.tutorSubjects)
             setAvailability(data.availability)
-            console.log(data);
+            // console.log(data);
 
         }catch(e){
             console.log(e);
         }
     }
 
-    useEffect(() => {
-        getTutor();
-    }, []);
 
     return (
         <div className="container">
@@ -83,7 +92,7 @@ const TutorInfo = (props) => {
                         <div key={Math.random() * 100000}>
                             <p>{s.day}, {s.startH}:{s.startM} - {s.endH}:{s.endM}</p>
                         </div>
-                    ))}  
+                    ))}
                 </div>
 
                 <div className="col">

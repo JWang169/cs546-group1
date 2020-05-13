@@ -27,15 +27,18 @@ router.get("/:id", async (req, res) => {
 });
 
 // List the people this student can chat with
-router.get('/chatOptions', async (req, res) => {
+router.get('/chat', async (req, res) => {
+  const people = req.body;
+
   try {
-    const student = await studentData.getStudent(req.params.id);
-    const pairs = await pairData.getPairsWithStudent(req.params.id);
-    console.log(pairs);
-    res.render('mainChatStudents', {pairs: pairs})
+    const student = await studentData.getStudent(people.studentId);
+    const tutor = await tutorData.getTutor(people.tutorId);
+    const pair = await pairData.getPairFromIds(tutor, student);
+    console.log(pair);
+    res.render('chat.ejs', {roomId: pair._id});
   } catch (e) {
     console.log(e);
-    res.status(404).json({ message: "Student not found!" });
+    res.status(404).json({error: e});
   }
 });
 
@@ -55,7 +58,7 @@ router.post("/login", async (req, res) => {
 
 router.post('/tutorPair',async(req, res) =>{
   const reqPair = req.body;
-
+  console.log(reqPair)
   try{
     if (!reqPair)throw "needs a request";
     if(!reqPair.tutorId)throw"needs a tutorId";
@@ -69,7 +72,7 @@ router.post('/tutorPair',async(req, res) =>{
     const newPair= await studentData.createPair(reqPair.tutorId, reqPair.studentId, reqPair.subject, reqPair.proficiency);
     res.status(200).json(newPair);
   }catch(e){
-    res.status(503).json({error:e});
+    res.status(404).json({error:e});
   }
 })
 
@@ -150,6 +153,57 @@ router.post("/:id/availability", async (req, res) => {//for form POST submission
   }
 });
 
+router.put('/:id', async (req, res) => {
+  const reqStudent = req.body;
+  if(!reqStudent){
+    res.status(404).json({error:"no request body found"});
+    return;
+  }
+  if(!reqStudent.firstName){
+    res.status(404).json({error:"no first name found"});
+    return;
+  }
+  if(!reqStudent.lastName){
+    res.status(404).json({error:"no last name found"});
+    return;
+  }
+  if(!reqStudent.town){
+    res.status(404).json({error:"no town found"});
+    return;
+  }
+  if(!reqStudent.state){
+    res.status(404).json({error:"no state found"});
+    return;
+  }/*
+  if(!reqStudent.email){
+    res.status(404).json({error:"no email found"});
+    return;
+  }
+  if(!reqStudent.password){
+    res.status(404).json({error:"no password found"});
+    return;
+  }*/
+
+  try{
+ // const oldStudent = await studentData.getStudent(req.params.id);
+  const updatedStudent = {
+    firstName: reqStudent.firstName,
+    lastName: reqStudent.lastName,
+    state: reqStudent.state,
+    town: reqStudent.town,
+    //password: reqStudent.password,
+    //email: reqStudent.email,
+    /*availability: oldStudent.availability,//these two don't change in the PUT
+    studentSubjects: oldStudent.studentSubjects*/
+  }
+  const theStudent = await studentData.updateStudent(req.params.id, updatedStudent);
+  res.status(200).json(theStudent);//returns a json of the newly updated student
+  }catch(e){
+    res.status(503).json({error:e})
+  }
+
+})
+
 router.delete("/tutorPair/:id", async (req, res) =>{
   try{
     const oldPair = await studentData.getPair(req.params.id);
@@ -160,10 +214,29 @@ router.delete("/tutorPair/:id", async (req, res) =>{
   }
 })
 
+router.post('/:id/availability/delete', async (req,res) => {//id here represents the studentId
+  //I sure do hope that I can have req.body passed into a delete function.
+  const reqAvailable = req.body;
+  console.log(reqAvailable)
+  try{
+    if(!reqAvailable)throw"No request body passed into delete function";
+    if(!reqAvailable.start)throw"No start time passed into delete availability";
+    if(!reqAvailable.end)throw"No end time passed into delete availability";
+  }catch(e){
+    res.status(404).json({error: e});
+    return;
+  }
+  try{
+    const deletedAvailability = await studentData.removeAvailability(req.params.id, reqAvailable.start, reqAvailable.end);
+    res.status(200).json(deletedAvailability);//sends back the deletedArray if you want it.
+  }catch(e){
+    res.status(503).json({error:e});
+  }
+})
+
 router.delete("/:id", async (req, res) =>{
-  //NOTE 1: Needs authentification and confirmation to be done before hand (but not here)
   //NOTE 2: TutorPairs will need to be deleted, and all the corresponding entries that that would entail as well
-  //NOTE 3: Cookie for this student should be deleted, as well as Chat History
+  //NOTE 3: Cookie for this student should be deleted, and maybe the chat history, I dunno how that works
   //NOTE 4: Reviews do not need to be deleted
   try{
     await studentData.getStudent(req.params.id);

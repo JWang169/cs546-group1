@@ -9,6 +9,12 @@ async function getAllPairs(){
     return pairList;
 }
 
+async function getPairFromIds(tutorId, studentId){
+    const pairCollection = await pairs();
+    const pair = await pairCollection.findOne({"tutorId": tutorId, "studentId": studentId});
+    return pair;
+}
+
 async function getPairsWithTutor(tutorId){
     const tutorCollection = await tutors();
     if (typeof tutorId !== "string") throw "The id must be of type String";
@@ -22,9 +28,9 @@ async function getPairsWithStudent(studentId){
     const studentCollection = await students();
     if (typeof studentId !== "string" )throw "The id must be of type String";
 
-    const pairs = await studentCollection.findOne({"studentId": studentId});
+    const pairs = await studentCollection.find({"studentId": studentId});
 
     return pairs;
 }
 
-module.exports = {getAllPairs, getPairsWithTutor, getPairsWithStudent};
+module.exports = {getAllPairs, getPairFromIds, getPairsWithTutor, getPairsWithStudent};

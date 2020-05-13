@@ -65,12 +65,35 @@ async function createStudent(email, firstName, lastName, password, town, state){
 
 const dayOfWeek= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+async function removeAvailability(id, start, end){
+    const studentCollection=await students();
+    //const startDate = new Date(start);
+    //const endDate = new Date(end);
+    const foundAvailability = await studentCollection.findOne({_id:id,
+        "availability.start":start,
+        "availability.end":end
+    });
+    if(foundAvailability===null)throw "availability not found";
+    const deleteAvailability =await studentCollection.updateOne({_id:id},
+        {$pull:
+            { availability:
+                {
+                    start: start,
+                    end:end
+                }
+            }
+        });
+    if(!deleteAvailability.matchedCount && !deleteAvailability.modifiedCount)throw "failed to delete availability";
+    return foundAvailability;
+}
+
 async function addAvailability(id, start, end){
     //this code was written assuming that the HTML date input type='datetime-local'
 
     const studentCollection = await students();
 
     const newStart = new Date(start);//creates item of milliseconds since Jan 1st 1970 began
+    console.log(newStart);
     const newEnd = new Date(end);
     const newDay= newStart.getDay();
     if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
@@ -87,11 +110,31 @@ async function addAvailability(id, start, end){
     var i;
     for(i=0;i<availableArray.length;i++){
         if(availableArray[i].dayNum==newDay){
-            if(availableArray[i].start>=newStartTime){
-                if(availableArray[i].start<newEndTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+            if(availableArray[i].startH>newStartHours){
+                if(availableArray[i].startH<newEndHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                if(availableArray[i].startH==newEndHours){//if end and start in same hour, check the minutes
+                    if(availableArray[i].startM<newEndMinutes)throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                }
             }
-            if(availableArray[i].start<=newStartTime){
-                if(availableArray[i].end>newStartTime) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+            if(availableArray[i].startH<newStartHours){
+                if(availableArray[i].endH>newStartHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                if(availableArray[i].endH==newStartHours){//if end and start in same hour, check the minutes
+                    if(availableArray[i].endM>newStartMinutes)throw `The avaialable time range cannot overlap with the pre-existing avaialbility, ${availableArray[i]}`;
+                }
+            }
+            if(availableArray[i].startH==newStartHours){//if both start in same hour, check minutes (mostly the same checks as above)
+                if(availableArray[i].startM>newStartMinutes){
+                    if(availableArray[i].startH<newEndHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                    if(availableArray[i].startH==newEndHours){//if end and start in same hour, check the minutes
+                        if(availableArray[i].startM<newEndMinutes)throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                    }
+                }
+                if(availableArray[i].startM<newStartMinutes){
+                    if(availableArray[i].endH>newStartHours) throw `The available time range cannot overlap with the pre-existing availability, ${availableArray[i]}`;
+                    if(availableArray[i].endH==newStartHours){//if end and start in same hour, check the minutes
+                        if(availableArray[i].endM>newStartMinutes)throw `The avaialable time range cannot overlap with the pre-existing avaialbility, ${availableArray[i]}`;
+                    }
+                }
             }
         }
     }
@@ -128,6 +171,7 @@ async function getPair(id){
 }
 
 async function createPair(tutorId,studentId,subject, proficiency){
+    console.log(tutorId,studentId,subject, proficiency)
     const pairCollection= await tutorPairs();
     const studentCollection = await students();
     if(!tutorId) throw "tutor must be provided";
@@ -258,41 +302,50 @@ async function login(email,password){
         throw `Password doesn't match.`
     }
 }
-/*
+
 async function updateStudent(id, updatedStudent){
     const student = await this.getStudent(id);
-    if (typeof updatedStudent.email != 'string') throw 'Email must be a string';
+    /*if (typeof updatedStudent.email != 'string') throw 'Email must be a string';
     const emailDup= updatedStudent.email;//converts email to lowercase
-    const emailLow = emailDup.toLowerCase();
+    const emailLow = emailDup.toLowerCase();*/
     if (typeof updatedStudent.firstName != 'string') throw 'You must provide a first name of type string';
     if (typeof updatedStudent.lastName != 'string') throw 'You must provide a last name of type string';
     if (typeof updatedStudent.town != 'string') throw 'You must provide a string of the town you reside in';
     if (typeof updatedStudent.state != 'string') throw 'You must provide a string of the state you reside in';
-    //if (typeof updatedStudent.password !='string') throw 'you must provide a valid password of type string';
-
+    /*if (typeof updatedStudent.password !='string') throw 'you must provide a valid password of type string';
+    const unhashedPassword = updatedStudent.password;
     //NOTE: neither the availability nor the StudentSubjects arrays will  be updated here. Those will need their own functions.
-    //However, the tutor pairs database will need to be updated, if the student's name changes
+    
     //I think thatthe chat history should remain the same, regardless of name change because your past name will not be changed
-    //ALSO, password will not be changed here
-    //As it stands, the availability object in the student database does not matter here, and is currently altered in different functions.
-    //let me know if u want this function to change that.
+    const hashedPassword= await bcrypt.hash(unhashedPassword, saltRounds);*/
 
     let studentUpdateInfo = {
         firstName: updatedStudent.firstName,
         lastName: updatedStudent.lastName,
-        email: emailLow,
+        email: student.email,
         town: updatedStudent.town,
         state: updatedStudent.state,
         hashedPassword: student.hashedPassword,
-        availability: student.availability, //change this if I need to update
-    }
+        availability: student.availability, //this will not update
+        studentSubjects: student.studentSubjects
+    };
 
-}*/
+    const studentCollection = await students();
+    const updateInfo = await studentCollection.updateOne({_id:id}, {$set: studentUpdateInfo});
+    if(!updateInfo.matchedCount || !updateInfo.modifiedCount) throw 'student update failed';
+    return studentUpdateInfo;
+
+}
 
 async function removeStudent(id){
     const studentCollection = await students();
     //let student = null;//Unecessary, but allows return to contain the info
-    //student = await this.getStudent(id);//of the deleted Student
+    const theStudent = await this.getStudent(id);//of the deleted Student
+    const tutorPairArray = theStudent.studentSubjects;
+    for( i in tutorPairArray){
+        const foundPair = await this.getPair(tutorPairArray[i].tutoredBy);
+        await this.removePair(foundPair); 
+    }
     const deletedInfo = studentCollection.removeOne({_id: id});
     if (deletedInfo.deletedCount === 0)throw `deletion of student: (${id}) failed`;
     return {deleted: true};
@@ -302,4 +355,4 @@ async function removeStudent(id){
 some form of remove availability function, but first need html delete specification info
 */
 
-module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent, login, createPair, getPair, removePair}
+module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent, login, createPair, getPair, removePair, removeAvailability, updateStudent}

@@ -11,6 +11,7 @@ const EditInfo =() => {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [availability, setAvailability] = useState("");
+    const [errorMsg, setErrorMsg] = useState(false);
     const history = useHistory();
 
 
@@ -19,9 +20,9 @@ const EditInfo =() => {
         const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}`;
         try{
             const { data } = await axios.get(urlString);
-            setAvailability(data.availability)
+            setAvailability(data.availability);
         }catch(e){
-            console.log(e)
+            console.log(e);
         }
     };
 
@@ -30,14 +31,17 @@ const EditInfo =() => {
         event.preventDefault();
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
         const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}/availability`;
+        console.log(urlString);
         try{
             const { data } = await axios.post(urlString, {
                 startTime: startTime,
                 endTime: endTime
             });
-            history.push('/myaccount')
+            setErrorMsg(false);
+            history.push('/myaccount');
         }catch(e){
-            console.log(e)
+            console.log(e);
+            setErrorMsg(true);
         }
  
     }
@@ -52,16 +56,14 @@ const EditInfo =() => {
         event.preventDefault();
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
         const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}/availability/delete`;
-        console.log( {
-            startTime: availability[index].start,
-            endTime: availability[index].end
-        })
         try{
-            const {data} = await axios.post(urlString, {
-                startTime: availability[index].start,
-                endTime: availability[index].end
-            });
-            history.push('/myaccount')
+            const delInfo = {
+                start: availability[index].start,
+                end: availability[index].end
+            }
+            console.log(delInfo);
+            const {data} = await axios.post(urlString, delInfo);
+            history.push('/myaccount');
         }catch(e){
             console.log(e)
         }   
@@ -89,15 +91,23 @@ const EditInfo =() => {
                 <div className='field'>
                 <h3>Availability</h3>
                     {availability && availability.map((s, index) => (
-                        <div key={s.start}>
-                            <h4>From: {s.start}  To: {s.end} 
+                        <div key={Math.random() * 100000}>
+                            <h4>{s.day}, {s.startH}:{s.startM} - {s.endH}:{s.endM}
                             <button className="button" onClick={(e) =>deleteAvailability(e, index)} style={{position: 'absolute', right: 550}}>Delete</button></h4>                           
                         </div>
                     ))}  
                 </div>
                 <div className='field'>
                 <h3>Add availability</h3>
-                <div className="field">
+                <div className="field">                    
+                    { errorMsg && <div
+                        className="ui pointing below prompt label"
+                        id="form-input-control-error-email-error-message"
+                        role="alert"
+                        aria-atomic="true"
+                    >
+                        Couldn't add that availability.
+                    </div>} 
                     <label>Start time</label>
                     <input
                     type="datetime-local"
@@ -115,7 +125,7 @@ const EditInfo =() => {
                     required
                     />
                     </div>
-                    
+                   
                     <button className="ui positive button" onClick={addAvailability}> Add Availability </button>
                     <button className="ui button" onClick={onClickBack} style={{position: 'absolute', right: 50}}>Back to My Page</button>
 

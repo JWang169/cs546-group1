@@ -13,14 +13,14 @@ const StudentCard = ({student}) => (
             <Card.Header>{student.firstName}</Card.Header>
             <Card.Meta>{student.town}</Card.Meta>
             <Card.Description>
-                {/* {student.studentSubjects && student.studentSubjects.map(sub => (
-                    <li key={Math.random() * 100000}>{sub}</li>
-                ))} */}
+                {student.studentSubjects && student.studentSubjects.map(sub => (
+                    <li key={Math.random() * 100000}>{sub.subjectName}</li>
+                ))}
             </Card.Description>
         </Card.Content>   
         <Card.Content>
             <div className='ui two buttons'>
-            <Button basic color='green' >Contact</Button>
+            {/* <Button basic color='green' >Contact</Button> */}
             <Button basic color='blue' href = {`/students/${student._id}`} >Details</Button>                    
             </div>
         </Card.Content>

@@ -5,13 +5,12 @@ import jwt_decode from "jwt-decode";
 import { useHistory } from 'react-router-dom';
 
 // this shows the user its personal account 
-
 const MyAccount =() => {
     const {token, setToken} = useContext(UserContext);
     const history = useHistory();
     if (!token){
         // console.log("no tokens");
-        history.push('/login')
+        history.push('/')
     }
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -62,8 +61,8 @@ const MyAccount =() => {
         // if (token === null){
         //     history.push('/login')
         // }
-        getAccount()
-    },[]);
+        token != null && getAccount()
+    },[token]);
 
     return (
         <div className="container">
@@ -75,7 +74,7 @@ const MyAccount =() => {
                     <h2>My Subjects: </h2>
                     {subjects && subjects.map(s => (
                         <div key={Math.random() * 100000}>
-                            <p>{s.subjectName}</p>
+                            <p>{s.subjectName} - {s.proficiency}</p>
                         </div>
                     ))}               
                 </div>

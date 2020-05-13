@@ -40,14 +40,16 @@ const EditSub =() => {
         event.preventDefault();
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
         const urlString = `http://localhost:3003/${tokenInfo.status}/createSubject`;
+        const newInfo = {
+            _id:tokenInfo.statusId,
+            subjectName: newSubjectName,
+            proficiency: proficiency,
+            price: newPrice
+        }
+        console.log(newInfo)
         console.log(urlString);
         try{
-            const {data} = await axios.post(urlString, {
-                _id:tokenInfo.statusId,
-                subjectName: newSubjectName,
-                proficiency: proficiency,
-                price: newPrice
-            })
+            const {data} = await axios.post(urlString, newInfo)
             history.push('/myaccount');
         }catch(e){
             console.log(e);
@@ -60,12 +62,18 @@ const EditSub =() => {
         history.push('/myaccount');
     }
 
-
-    const deleteSubject = (event) => {
+// delete subject connections from stud/tutor
+    const deleteSubject = async(event, index) => {
         event.preventDefault();
-        const {id} = event.target.parentElement;
-        subjects.splice(id, 1)
-        setSubjects([...subjects])
+        const pairId = subjects[index].tutoredBy;
+        console.log(pairId)
+        const delUrl = `http://localhost:3003/students/tutorPair/${pairId}`;
+        try{
+            const {data} = await axios.delete(delUrl)
+            history.push('/myaccount');
+        }catch(e){
+            console.log(e);
+        }
     }
 
     useEffect(() => {
@@ -82,10 +90,10 @@ const EditSub =() => {
             <div className="field">
                 <div className='field'>
                 <label>Subjects</label>
-                    {subjects && subjects.map(s => (
+                    {subjects && subjects.map((s, index) => (
                         <div key={Math.random() * 100000}>
-                            <p>{s.subjectName} / {s.proficiency} / {s.price}
-                            <button color='red' onClick={deleteSubject}>Delete</button>
+                            <p>{s.subjectName } - {s.proficiency} / {s.price}
+                            { !isTutor && <button color='red' onClick={(e) =>deleteSubject(e, index)}>Delete</button>}
                             </p>
                         </div>
                     ))}  
