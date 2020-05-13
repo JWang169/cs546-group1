@@ -301,7 +301,7 @@ async function login(email,password){
         throw `Password doesn't match.`
     }
 }
-/*
+
 async function updateStudent(id, updatedStudent){
     const student = await this.getStudent(id);
     if (typeof updatedStudent.email != 'string') throw 'Email must be a string';
@@ -311,14 +311,12 @@ async function updateStudent(id, updatedStudent){
     if (typeof updatedStudent.lastName != 'string') throw 'You must provide a last name of type string';
     if (typeof updatedStudent.town != 'string') throw 'You must provide a string of the town you reside in';
     if (typeof updatedStudent.state != 'string') throw 'You must provide a string of the state you reside in';
-    //if (typeof updatedStudent.password !='string') throw 'you must provide a valid password of type string';
-
+    if (typeof updatedStudent.password !='string') throw 'you must provide a valid password of type string';
+    const unhashedPassword = updatedStudent.password;
     //NOTE: neither the availability nor the StudentSubjects arrays will  be updated here. Those will need their own functions.
-    //However, the tutor pairs database will need to be updated, if the student's name changes
+    
     //I think thatthe chat history should remain the same, regardless of name change because your past name will not be changed
-    //ALSO, password will not be changed here
-    //As it stands, the availability object in the student database does not matter here, and is currently altered in different functions.
-    //let me know if u want this function to change that.
+    const hashedPassword= await bcrypt.hash(unhashedPassword, saltRounds);
 
     let studentUpdateInfo = {
         firstName: updatedStudent.firstName,
@@ -326,11 +324,17 @@ async function updateStudent(id, updatedStudent){
         email: emailLow,
         town: updatedStudent.town,
         state: updatedStudent.state,
-        hashedPassword: student.hashedPassword,
-        availability: student.availability, //change this if I need to update
-    }
+        hashedPassword: hashedPassword,
+        availability: student.availability, //this will not update
+        studentSubjects: student.studentSubjects
+    };
 
-}*/
+    const studentCollection = await students();
+    const updateInfo = await studentCollection.updateOne({_id:id}, {$set: studentUpdateInfo});
+    if(!updateInfo.matchedCount || !updateInfo.modifiedCount) throw 'student update failed';
+    return studentUpdateInfo;
+
+}
 
 async function removeStudent(id){
     const studentCollection = await students();
@@ -350,4 +354,4 @@ async function removeStudent(id){
 some form of remove availability function, but first need html delete specification info
 */
 
-module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent, login, createPair, getPair, removePair, removeAvailability}
+module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent, login, createPair, getPair, removePair, removeAvailability, updateStudent}

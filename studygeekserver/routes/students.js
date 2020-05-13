@@ -150,6 +150,57 @@ router.post("/:id/availability", async (req, res) => {//for form POST submission
   }
 }); 
 
+router.put('/:id', async (req, res) => {
+  const reqStudent = req.body;
+  if(!reqStudent){
+    res.status(404).json({error:"no request body found"});
+    return;
+  }
+  if(!reqStudent.firstName){
+    res.status(404).json({error:"no first name found"});
+    return;
+  }
+  if(!reqStudent.lastName){
+    res.status(404).json({error:"no last name found"});
+    return;
+  }
+  if(!reqStudent.town){
+    res.status(404).json({error:"no town found"});
+    return;
+  }
+  if(!reqStudent.state){
+    res.status(404).json({error:"no state found"});
+    return;
+  }
+  if(!reqStudent.email){
+    res.status(404).json({error:"no email found"});
+    return;
+  }
+  if(!reqStudent.password){
+    res.status(404).json({error:"no password found"});
+    return;
+  }
+
+  try{
+ // const oldStudent = await studentData.getStudent(req.params.id);
+  const updatedStudent = {
+    firstName: reqStudent.firstName,
+    lastName: reqStudent.lastName,
+    state: reqStudent.state,
+    town: reqStudent.town,
+    password: reqStudent.password,
+    email: reqStudent.email/*,
+    availability: oldStudent.availability,//these two don't change in the PUT
+    studentSubjects: oldStudent.studentSubjects*/
+  }
+  const theStudent = await studentData.updateStudent(req.params.id, updatedStudent);
+  res.status(200).json(theStudent);//returns a json of the newly updated student
+  }catch(e){
+    res.status(503).json({error:e})
+  }
+
+})
+
 router.delete("/tutorPair/:id", async (req, res) =>{
   try{
     const oldPair = await studentData.getPair(req.params.id);
