@@ -67,19 +67,19 @@ const dayOfWeek= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 
 async function removeAvailability(id, start, end){
     const studentCollection=await students();
-    const startDate = new Date(start);
-    const endDate = new Date(end);
+    //const startDate = new Date(start);
+    //const endDate = new Date(end);
     const foundAvailability = await studentCollection.findOne({_id:id,
-        "availability.startExtended":startDate,
-        "availability.endExtended":endDate
+        "availability.start":start,
+        "availability.end":end
     });
     if(foundAvailability===null)throw "availability not found";
     const deleteAvailability =await studentCollection.updateOne({_id:id},
         {$pull:
             { availability:
                 {
-                    startExtended: startDate,
-                    endExtended:endDate
+                    start: start,
+                    end:end
                 }
             }
         });
