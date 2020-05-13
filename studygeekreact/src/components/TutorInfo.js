@@ -50,7 +50,7 @@ const TutorInfo = (props) => {
             setEmail(data.email);
             setState(data.state);
             setTown(data.town);
-            setSubjects(data.subjects)
+            setSubjects(data.tutorSubjects)
             setAvailability(data.availability)
             console.log(data);
 
