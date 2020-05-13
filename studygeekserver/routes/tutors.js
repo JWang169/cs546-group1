@@ -106,21 +106,45 @@ router.post('/createSubject', async (req, res) => {
   }
 });
 
-// router.get('/search', async (req, res) => {
-//   const theTutor = req.body;
-//   if (!tutor.subject){
-//     res.status(400).json({error:"No Subject was provided"});
-//   }
-//   if (!tutor.)
-//   const startTime = req.body['startTime'];
-//   const endTime = req.body['endTime'];
-//   try {
-//     let tutor = await tutorData.getTutorByRatingLowToHigh();
-//     res.json(tutor);
-//   } catch (e) {
-//     res.status(404).json({ error: 'Tutor not found' });
-//   }
-// });
+router.delete('/removeSubject', async (req, res) => {
+  const tutorId = req.body['_id'];
+  const subjectName =req.body ['subjectName'];
+  try {
+    let tutor = await tutorData.removeSubject(tutorId, subjectName);
+    res.json(tutor);
+  } catch (e) {
+    res.status(404).json({ error: 'Tutor not found' });
+  }
+});
+
+router.put('/updateSubject', async (req, res) => {
+  const tutorId = req.body['_id'];
+  const subjectName =req.body ['subjectName'];
+  const proficiency = req.body['proficiency'];
+  const price = req.body['price'];
+  try{
+    let tutor = await tutorData.updateSubject(tutorId, subjectName, proficiency, price);
+    res.json(tutor);
+  } catch (e) {
+    res.status(404).json({ error: 'Tutor not found' });
+  }
+});
+
+router.get('/search', async (req, res) => {
+  //const theTutor = req.body;
+  // if (!theTutor.subject){
+  //   res.status(400).json({error:"No Subject was provided"});
+  // }
+  // if (!tutor.)
+  // const startTime = req.body['startTime'];
+  // const endTime = req.body['endTime'];
+  try {
+    let theTutor = await tutorData.search("Maths","Advanced","price");//req.body.subject,req.body.proficiency,req.body.sort);
+    res.json(theTutor);
+  } catch (e) {
+    res.status(404).json({ error: 'Tutor not found' });
+  }
+});
 
 router.post('/review', async (req, res) => {
   try{

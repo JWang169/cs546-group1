@@ -60,7 +60,7 @@ const TutorInfo = (props) => {
     }
 
     useEffect(() => {
-        getTutor();
+        token != null && getTutor();
     }, []);
 
     return (
