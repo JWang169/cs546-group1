@@ -41,7 +41,7 @@ const Tutor = mongoose.model('Tutor', {
         "default": []
     },
     avgRatings:{
-      type:Array,
+      type:Number,
       "default": 0
     }
 })
@@ -57,12 +57,24 @@ const Snape = new Tutor({
     town: "Hoboken",
     state: "NJ",
     tutorSubjects:[{
-      _id :uuid(),
       subjectName : "Maths",
       proficiency : "Advanced",
       price : "30",
       teaches : [],
-    }]
+    }],
+    availability:[{
+        day: "Thursday",
+        dayNum: 4,
+        start: 1496320200000,//milliseconds since the  Jan 1st, 1970, 00:00:00, retrieved from html type ='datetime-local' and converted in JS
+        startH: 8,
+        startM: 30,
+        startExtended: new Date(1496320200000),
+        end: 1496320200000,
+        endH: 9,
+        endM: 30,
+        endExtended: new Date(1496323800000)
+    }],
+    avgRatings : 4
 })
 tutorArray.push(Snape)
 
@@ -76,12 +88,12 @@ const Moody = new Tutor({
     town: "Dublin",
     state: "CA",
     tutorSubjects:[{
-      _id :uuid(),
       subjectName : "Science",
       proficiency : "Advanced",
       price : "25",
       teaches : [],
-    }]
+    }],
+    avgRatings : 3
 })
 tutorArray.push(Moody)
 
@@ -95,7 +107,6 @@ const Lupin = new Tutor({
     town: "Dallas",
     state: "TX",
     tutorSubjects:[{
-      _id :uuid(),
       subjectName : "Computer Science",
       proficiency : "Intermediate",
       price : "100",
@@ -114,7 +125,6 @@ const Minerva = new Tutor({
     town: "Seattle",
     state: "Washington",
     tutorSubjects:[{
-      _id :uuid(),
       subjectName : "Statistics",
       proficiency : "Beginner",
       price : "50",
@@ -134,7 +144,6 @@ const Sybill = new Tutor({
     state: "Maryland",
 
     tutorSubjects:[{
-      _id :uuid(),
       subjectName : "Maths",
       proficiency : "Intermediate",
       price : "10",
@@ -153,12 +162,13 @@ const Rolanda = new Tutor({
     town: "Miami",
     state: "Florida",
     tutorSubjects:[{
-      _id :uuid(),
       subjectName : "Computer Science",
       proficiency : "Advanced",
       price : "150",
       teaches : [],
-    }]})
+    }],
+    avgRatings : 2
+  })
 tutorArray.push(Rolanda)
 
 
@@ -376,6 +386,43 @@ tutorPairArray.push(sybillMalfoy);
 for(t in tutorPairArray){
     tutorPairArray[t].save().then(() => {
         console.log(tutorPairArray[t])
+    }).catch((error) => {
+        console.log('Error', error)
+    })
+}
+
+const Review = mongoose.model('Review', {
+    _id: {
+        type: String
+    },
+    tutorId:{
+        type:String
+    },
+    studentId: {
+        type:String
+    },
+    content:{
+        type:String
+    },
+    rating: {//subject's difficulty level
+        type:Number
+    }
+})
+
+
+let reviewArray = [];
+const reviewFirst = new Review({
+    _id: "a01cc6db-1c34-4552-b7ca-610f8cfb5abd",
+    tutorId: "60625b69-1b3e-4743-b011-ac410723ebac",
+    studentId: "c163eeff-3566-49c8-b63e-851da5b2de07",
+    content:"Nice Course",
+    rating:5
+})
+
+reviewArray.push(reviewFirst);
+for(r in reviewArray){
+    reviewArray[r].save().then(() => {
+        console.log(reviewArray[r])
     }).catch((error) => {
         console.log('Error', error)
     })

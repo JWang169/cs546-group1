@@ -115,6 +115,7 @@ async function search(subject, proficiency, startTime, endTime, sorts){
   else if (sorts === "rate"){
     const theTutor = await tutorCollection.find({'tutorSubjects.subject':subject},{'tutorSubjects.proficiency':proficiency}).sort({avgRatings:1}).toArray();
   }
+  return thetutor;
 }
 
 async function login(email,password){
