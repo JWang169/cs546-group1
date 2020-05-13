@@ -74,10 +74,14 @@ const Moody = new Tutor({
     firstName: "Alastor",
     lastName: "Moody",
     town: "Dublin",
-    state: "CA"
-//     subject: "Defence Against the Dark Arts",
-//     proficiency : "Intermediate",
-//     price : "25"
+    state: "CA",
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Science",
+      proficiency : "Advanced",
+      price : "25",
+      teaches : [],
+    }]
 })
 tutorArray.push(Moody)
 
@@ -90,9 +94,13 @@ const Lupin = new Tutor({
     lastName: "JohnLupin",
     town: "Dallas",
     state: "TX",
-//     subject: "Defence Against the Dark Arts",
-//     proficiency : "Advanced",
-//     price : "50"
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Computer Science",
+      proficiency : "Intermediate",
+      price : "100",
+      teaches : [],
+    }]
 })
 tutorArray.push(Lupin)
 
@@ -104,10 +112,14 @@ const Minerva = new Tutor({
     firstName: "Minerva",
     lastName: "McGonagall",
     town: "Seattle",
-    state: "Washington"
-//     subject: "Transfiguration",
-//     proficiency : "Beginner",
-//     price : "15"
+    state: "Washington",
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Statistics",
+      proficiency : "Beginner",
+      price : "50",
+      teaches : [],
+    }]
 })
 tutorArray.push(Minerva)
 
@@ -120,17 +132,14 @@ const Sybill = new Tutor({
     lastName: "Trelawney",
     town: "Baltimore",
     state: "Maryland",
-    tutorSubjects:[
-    {
-        
-        subjectName:"Magic",
-        proficiency: "Novice",
-        price:"20",
-        teaches:["c163eeff-3566-49c8-b63e-851da5b2de07"]
+
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Maths",
+      proficiency : "Intermediate",
+      price : "10",
+      teaches : ["c163eeff-3566-49c8-b63e-851da5b2de07"],
     }]
-//     subject: "Divination",
-//     proficiency : "Beginner",
-//     price : "25"
 })
 tutorArray.push(Sybill)
 
@@ -142,11 +151,14 @@ const Rolanda = new Tutor({
     firstName: "Rolanda",
     lastName: "Hooch",
     town: "Miami",
-    state: "Florida"
-//     subject: "Flying",
-//     proficiency : "Advanced",
-//     price : "100"
-})
+    state: "Florida",
+    tutorSubjects:[{
+      _id :uuid(),
+      subjectName : "Computer Science",
+      proficiency : "Advanced",
+      price : "150",
+      teaches : [],
+    }]})
 tutorArray.push(Rolanda)
 
 
@@ -226,7 +238,7 @@ studentArray.push(harry)
 
 const hermoine = new Student({
     _id:"8c3d8329-3a83-4112-9782-3a255fa7fc09",
-    //_id:uuid(), 
+    //_id:uuid(),
     firstName: "Hermoine",
     lastName: "Granger",
     town: "Hogsmeade",
@@ -299,8 +311,8 @@ const malfoy = new Student({
     ],
     studentSubjects: [
         {
-            subjectName:"Magic",
-            proficiency:"Novice",
+            subjectName:"Maths",
+            proficiency:"Intermediate",
             tutoredBy:"a01cc6db-1c34-4552-b7ca-610f8cfb5abd"//this is the tutorPairId
         }
     ]
@@ -344,8 +356,8 @@ const sybillMalfoy = new TutorPair({
     _id: "a01cc6db-1c34-4552-b7ca-610f8cfb5abd",
     tutorId: "60625b69-1b3e-4743-b011-ac410723ebac",
     studentId: "c163eeff-3566-49c8-b63e-851da5b2de07",
-    subject:"Magic",
-    proficiency:"Novice"
+    subject:"Maths",
+    proficiency:"Intermediate"
 })
 
 tutorPairArray.push(sybillMalfoy);

@@ -11,7 +11,7 @@ const PersonInfo = (props) => {
     const [availability, setAvailability] = useState("");
     const [state, setState] = useState("");
     const [town, setTown] = useState("");
-
+    
     const getStudent = async() => {
         try{
             const { data } = await axios.get('http://localhost:3003/students/' + props.match.params.id);
