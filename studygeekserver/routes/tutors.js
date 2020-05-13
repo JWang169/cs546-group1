@@ -97,6 +97,7 @@ router.post('/createSubject', async (req, res) => {
   try {
     let tutor = await tutorData.createSubject(tutorID, subjectName, proficiency, price);
     res.json(tutor);
+    return;
   } catch (e) {
     res.status(404).json({ error: 'Tutor not found' });
   }
@@ -276,22 +277,14 @@ router.put('/:id', async (req, res) => {
     res.status(404).json({error:"no state found"});
     return;
   }
-  if(!req.body.email){
-    res.status(404).json({error:"no email found"});
-    return;
-  }
-  if(!req.body.password){
-    res.status(404).json({error:"no password found"});
-    return;
-  }
   try{
-  const theTutor = await tutorData.updateTutor(req.params.id, req.body.email, req.body.firstName,req.body.lastName,req.body.password, req.body.state, req.body.town,);
+  const theTutor = await tutorData.updateTutor(req.params.id, req.body.firstName,req.body.lastName, req.body.state, req.body.town,);
   res.status(200).json(theTutor);
   }catch(e){
     res.status(503).json({error:e})
   }
 
-})
+});
 
 router.delete("/:id", async (req, res) =>{
   try{
