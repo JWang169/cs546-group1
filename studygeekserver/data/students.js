@@ -65,6 +65,28 @@ async function createStudent(email, firstName, lastName, password, town, state){
 
 const dayOfWeek= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+async function removeAvailability(id, start, end){
+    const studentCollection=await students();
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const foundAvailability = await studentCollection.findOne({_id:id,
+        "availability.startExtended":startDate,
+        "availability.endExtended":endDate
+    });
+    if(foundAvailability===null)throw "availability not found";
+    const deleteAvailability =await studentCollection.updateOne({_id:id},
+        {$pull:
+            { availability:
+                {
+                    startExtended: startDate,
+                    endExtended:endDate
+                }
+            }
+        });
+    if(!deleteAvailability.matchedCount && !deleteAvailability.modifiedCount)throw "failed to delete availability";
+    return foundAvailability;
+}
+
 async function addAvailability(id, start, end){
     //this code was written assuming that the HTML date input type='datetime-local'
 
@@ -323,4 +345,4 @@ async function removeStudent(id){
 some form of remove availability function, but first need html delete specification info
 */
 
-module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent, login, createPair, getPair, removePair}
+module.exports = {getAllstudents, getStudent, createStudent, addAvailability, removeStudent, login, createPair, getPair, removePair, removeAvailability}
