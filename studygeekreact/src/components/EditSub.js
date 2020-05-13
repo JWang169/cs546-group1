@@ -95,6 +95,14 @@ const EditSub =() => {
         // }
     }
 
+    // start a chat
+    const chatSub = async(event, index) => {
+        event.preventDefault();
+        const pairId = subjects[index].tutoredBy;
+        
+    }
+
+
     useEffect(() => {
         getAccount()
     }, []);
@@ -109,7 +117,7 @@ const EditSub =() => {
                     {subjects && subjects.map((s, index) => (
                         <div key={Math.random() * 100000}>
                             <h2>{s.subjectName } - {s.proficiency} {isTutor && s.price} 
-                            { !isTutor && <button className="ui negative button"onClick={(e) =>deleteSubject(e, index)}>Delete Subject</button>}</h2>
+                            { !isTutor && <button className="ui primary button"onClick={(e) =>chatSub(e, index)}>Start a Chat</button>}{ !isTutor && <button className="ui negative button"onClick={(e) =>deleteSubject(e, index)}>Delete Subject</button>}</h2>
                             
                             { !isTutor && 
                             <form className="ui form">
