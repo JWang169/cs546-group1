@@ -28,7 +28,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Find tutor from a pairId
-router.get('/findPair', async (req, res) => {
+router.get('/findPair/:id', async (req, res) => {
   try {
     const pair = await pairData.getPair(req.params.id);
     res.status(200).send(pair);
