@@ -76,7 +76,7 @@ const EditSub =() => {
 
     return (
         <div className="container">
-            <h1>Edit My Account.</h1>
+            <h1>Edit My Subjects.</h1>
             <br/>
             <hr/>
             

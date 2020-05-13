@@ -36,10 +36,16 @@ const EditInfo =() => {
                 startTime: startTime,
                 endTime: endTime
             });
+            history.push('/myaccount')
         }catch(e){
             console.log(e)
         }
  
+    }
+
+    const onClickBack = (event) => {
+        event.preventDefault();
+        history.push('/myaccount');
     }
 
     const deleteAvailability= (event) => {
@@ -60,7 +66,7 @@ const EditInfo =() => {
 
     return (
         <div className="container">
-            <h1>Edit My Account.</h1>
+            <h1>Edit My Availability.</h1>
             <br/>
             <hr/>
             
@@ -70,7 +76,7 @@ const EditInfo =() => {
                 <h3>Availability</h3>
                     {availability && availability.map(s => (
                         <div key={s.start}>
-                            <p>From: {s.start}  To: {s.end} <button color='red' onClick={deleteAvailability}>Delete</button></p>                           
+                            <h4>From: {s.start}  To: {s.end} <button className="button" onClick={deleteAvailability} style={{position: 'absolute', right: 550}}>Delete</button></h4>                           
                         </div>
                     ))}  
                 </div>
@@ -94,9 +100,10 @@ const EditInfo =() => {
                     required
                     />
                     </div>
+                    
+                    <button className="ui positive button" onClick={addAvailability}> Add Availability </button>
+                    <button className="ui button" onClick={onClickBack} style={{position: 'absolute', right: 50}}>Back to My Page</button>
 
-
-                <button onClick={addAvailability}>Add Availability</button>   
                 </div>
             </div>    
             </form>

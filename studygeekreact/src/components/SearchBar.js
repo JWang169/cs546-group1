@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import TutorList from "./TutorList";
 
 const SearchBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -7,6 +8,7 @@ const SearchBar = () => {
     const [endTime, setEndTime] = useState('');
     const [proficiency, setProficiency] = useState('');
     const [sort, setSort] = useState('');
+    const [matched, setMatched] = useState(null);
     const handleChange = (e) => {
         setSearchTerm(e.target.value);
     };
@@ -14,13 +16,16 @@ const SearchBar = () => {
         event.preventDefault();
         try{
             const urlString = `http://localhost:3003/tutors/searchTutor`;
-            const tutorlList = await axios.get(urlString, {
+            const result = await axios.get(urlString, {
                 'startTime': startTime,
                 'endTime': endTime,
                 'subject': searchTerm,
                 'proficiency': proficiency,
                 'sort': sort
-            })   
+            })
+            setMatched(result)
+            console.log(result);
+            return <TutorList matchedTutors = {matched} />   
         }catch(e){
             console.log(e);
         }
