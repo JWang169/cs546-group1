@@ -110,12 +110,22 @@ async function search(subject, proficiency, sorts){ //starttime and end time
   if (typeof sorts !== "string") throw "Sorting should be a string of Price/ Rating";
   const tutorCollection = await tutors();
   if (sorts === "price"){
-    const theTutor = await tutorCollection.find({'tutorSubjects.subject':subject,'tutorSubjects.proficiency':proficiency}).sort({price:-1}).toArray();
+    const theTutor = await tutorCollection.find().sort({price:-1}).toArray();
   }
-  else if (sorts === "rate"){
-    const theTutor = await tutorCollection.find({'tutorSubjects.subject':subject,'tutorSubjects.proficiency':proficiency}).sort({avgRatings:1}).toArray();
+  if (sorts === "rate"){
+    const theTutor = await tutorCollection.find().sort({avgRatings:-1}).toArray();
+  }
+  if (proficiency ==="Advanced"){
+    const theTutor = await tutorCollection.find({'tutorSubjects.proficiency':"Advanced"}).toArray();
+  }
+  if (proficiency ==="Intermediate"){
+    const theTutor = await tutorCollection.find({'tutorSubjects.proficiency':"Intermediate"}).toArray();
+  }
+  if (proficiency ==="Begineer"){
+    const theTutor = await tutorCollection.find({'tutorSubjects.proficiency':"Beginner"}).toArray();
   }
   return thetutor;
+
 }
 
 async function login(email,password){
