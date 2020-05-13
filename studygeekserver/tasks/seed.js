@@ -225,8 +225,12 @@ const harry = new Student({
         day: "Thursday",
         dayNum: 4,
         start: 1496320200000,//milliseconds since the  Jan 1st, 1970, 00:00:00, retrieved from html type ='datetime-local' and converted in JS
+        startH: 8,
+        startM: 30,
         startExtended: new Date(1496320200000),
-        end: 1496323800000,
+        end: 1496320200000,
+        endH: 9,
+        endM: 30,
         endExtended: new Date(1496323800000)
     }]
 
@@ -296,16 +300,24 @@ const malfoy = new Student({
             day: "Thursday",
             dayNum: 4,
             start: 1496320200000,
+            startH: 8,
+            startM: 30,
             startExtended: new Date(1496320200000),
             end: 1496323800000,
+            endH: 9,
+            endM: 30,
             endExtended: new Date(1496323800000)
         },
         {
             day: "Friday",
             dayNum: 5,
             start: 1496413800000,
+            startH: 10,
+            startM: 30,
             startExtended: new Date(1496413800000),
             end: 1496460600000,
+            endH: 23,
+            endM: 30,
             endExtended: new Date(1496460600000)
         }
     ],
