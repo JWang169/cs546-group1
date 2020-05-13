@@ -191,7 +191,7 @@ const TutorAccount =() => {
                 <div className='field'>
                 <label>Subjects</label>
                     {subjects && subjects.map(s => (
-                        <div key={subjects.value}>
+                        <div key={Math.random() * 100000}>
                             <p>{s}
                             <button color='red' onClick={deleteSubject}>Delete</button>
                             </p>
