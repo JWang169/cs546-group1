@@ -27,7 +27,7 @@ async function getAlltutors(){
 //checked
 async function getTutor(id){
     if (!id) throw "The id must be provided"
-    if (typeof(id) !== "string" ) throw "The id must be a string";
+    if (typeof id !== "string" ) throw "The id must be a string";
     const tutorCollection = await tutors();
     const theTutor = await tutorCollection.findOne({ "_id": id });
     if (!theTutor) throw 'No tutor with that id';
@@ -109,7 +109,7 @@ async function search(subject, proficiency, sorts){ //starttime and end time
   // if (typeof endTime !== "object") throw "End Time must be a object";
   if (typeof sorts !== "string") throw "Sorting should be a string of Price/ Rating";
   const tutorCollection = await tutors();
-  if (sorts === "price"){
+  if (sorts === "price"){//needs updating to work as string!!
     const theTutor = await tutorCollection.find().sort({price:-1}).toArray();
   }
   if (sorts === "rate"){
@@ -174,7 +174,7 @@ async function createTutor(email, firstName, lastName,password , town, state)
   const hashedPassword = await bcrypt.hash(password,saltRounds);
   let newTutor = {
         _id : uuid(),
-        'email': email,
+        'email': emailLow,
         'firstName': firstName,
         'lastName': lastName,
         'state': state,
@@ -195,7 +195,7 @@ async function createSubject(tutorID, subjectName, proficiency, price){
   if (typeof tutorID !== "string") throw "Id must be a string";
   if (typeof subjectName !== "string") throw "Subject Name must be a string";
   if (typeof proficiency !== "string") throw "proficiency must be a string";
-  if (typeof price !== "number") throw "Price must be a number";
+  if (typeof price !== "string") throw "Price must be a string";
   const tutorCollection = await tutors();
   const tutorInfo = await this.getTutor(tutorID);
   if (!tutorInfo) throw "Tutor not available";
@@ -231,7 +231,7 @@ async function updateSubject(tutorId, subjectName, proficiency, price){
   if (typeof tutorId !== "string") throw "Id must be a string";
   if (typeof subjectName !== "string") throw "Subject Name must be a string";
   if (typeof proficiency !== "string") throw "proficiency must be a string";
-  if (typeof price !== "number") throw "Price must be a number";
+  if (typeof price !== "string") throw "Price must be a string";
   const tutorCollection = await tutors();
   const tutorInfo = await this.getTutor(tutorId);
   if (!tutorInfo) throw "Tutor not available";
@@ -497,7 +497,7 @@ getTutorByEmail,
 // getTutorByPriceHighToLow,
 // getTutorByPriceLowToHigh,
 removeSubject,
-updateSubject,
+//updateSubject,
 updateTutorRating,
 createReviews,
 removeReview,
