@@ -132,6 +132,7 @@ router.post('/review', async (req, res) => {
   res.status(200).json(newReview);
 }catch(e){
   res.status(503).json({error:e});
+}
 });
 
 router.post('/signup', async (req, res) => {

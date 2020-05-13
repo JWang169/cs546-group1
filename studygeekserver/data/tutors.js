@@ -262,7 +262,7 @@ async function removeReview(tutorId, studentId, reviewId){
   const tutorCollection = await tutors();
   const theTutor = await this.getTutor(tutorId);
   if (!theTutor) throw "The tutor is not found";
-  const updateTutor = await tutorCollection.updateOne({_id:tuorId}{pull:{reviews:reviewId});
+  const updateTutor = await tutorCollection.updateOne({_id:tuorId},{pull:{reviews:reviewId}});
   if (!updateTutor.matchedCount && !updateTutor.modifiedCount) throw 'Review to Tutor was not deleted';
   const removeReview = await reviewCollection.removeOne({_id:reviewId});
   if(removedReview.deletedCount===0)throw "failed to delete review";
@@ -350,14 +350,14 @@ async function removeTutor(tutorId){
 module.exports = {getAlltutors,
 getTutor,
 createTutor,
-getTutorByEmail,
-getTutorBySubject,
-getTutorByTownState,
-getTutorByRatingLowToHigh,
-getTutorByRatingHighToLow,
-getTutorByProficiency,
-getTutorByPriceHighToLow,
-getTutorByPriceLowToHigh,
+// getTutorByEmail,
+// getTutorBySubject,
+// getTutorByTownState,
+// getTutorByRatingLowToHigh,
+// getTutorByRatingHighToLow,
+// getTutorByProficiency,
+// getTutorByPriceHighToLow,
+// getTutorByPriceLowToHigh,
 login,
 addAvailability,
 createSubject
