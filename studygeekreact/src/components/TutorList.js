@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import TutorCard from './TutorCard';
 import { Card } from 'semantic-ui-react';
 
-const TutorList =() => {
+const TutorList =({matchedTutors}) => {
     const [tutors, setTutors] = useState(undefined);
     const getTutors = async() => {
         try {
@@ -22,7 +22,10 @@ const TutorList =() => {
     return (
         <div className='App-body'>
         <Card.Group>
-            {tutors && tutors.map((tutor) => (
+            { matchedTutors && matchedTutors.map((tutor) => (
+                <TutorCard tutor={tutor} key={tutor._id}  />
+                ))}
+            {!matchedTutors && tutors && tutors.map((tutor) => (
                 <TutorCard tutor={tutor} key={tutor._id}  />
                 ))}
         </Card.Group>

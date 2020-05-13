@@ -13,9 +13,9 @@ const StudentCard = ({student}) => (
             <Card.Header>{student.firstName}</Card.Header>
             <Card.Meta>{student.town}</Card.Meta>
             <Card.Description>
-                {student.studentSubjects && student.studentSubjects.map(sub => (
+                {/* {student.studentSubjects && student.studentSubjects.map(sub => (
                     <li key={Math.random() * 100000}>{sub}</li>
-                ))}
+                ))} */}
             </Card.Description>
         </Card.Content>   
         <Card.Content>

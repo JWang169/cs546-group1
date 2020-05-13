@@ -9,10 +9,12 @@ import { useHistory } from 'react-router-dom';
 
 const EditSub =() => {
     const [subjects, setSubjects] = useState([]);
-    const [newSubject, setNewSubject] = useState(undefined);
     const [newSubjectName, setNewSubjectName] = useState("");
     const [proficiency, setProficiency] = useState('');
+    const [newPrice, setNewPrice] = useState('');
+    const [isTutor, setIsTutor] = useState(false);
     const history = useHistory();
+
 
     const getAccount = async() =>{
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
@@ -24,44 +26,40 @@ const EditSub =() => {
             if(tokenInfo.status === 'students'){
                 setSubjects(data.studentSubjects)
             }else{
-                setSubjects(data.tutorSubjects)
+                setSubjects(data.tutorSubjects);
+                setIsTutor(true);
             }
-            console.log(data.studentSubjects);
-
         }catch(e){
             console.log(e)
         }
     };
 
-    const submitInfo = async(event) => {
+
+
+    const addSubject = async(event) => {
         event.preventDefault();
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
-        const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}`;
+        const urlString = `http://localhost:3003/${tokenInfo.status}/createSubject`;
+        console.log(urlString);
         try{
-            const { data } = await axios.put(urlString, subjects);
+            const {data} = await axios.post(urlString, {
+                _id:tokenInfo.statusId,
+                subjectName: newSubjectName,
+                proficiency: proficiency,
+                price: newPrice
+            })
             history.push('/myaccount');
         }catch(e){
-            console.log(e)
+            console.log(e);
         }
     }
 
-    const addSubject = (event) => {
-        event.preventDefault();
-        let newSub = {
-            'subjectName': newSubjectName,
-            'proficiency': proficiency
-        };
-        console.log(newSub);
-        setNewSubject(newSub);
-
-        console.log(newSubject);
-        setSubjects([...subjects, newSubject]);
-    }
 
     const onClickNoChange = (event) => {
         event.preventDefault();
         history.push('/myaccount');
     }
+
 
     const deleteSubject = (event) => {
         event.preventDefault();
@@ -76,22 +74,23 @@ const EditSub =() => {
 
     return (
         <div className="container">
-            <h1>Edit My Account.</h1>
+            <h1>Edit My Subjects.</h1>
             <br/>
             <hr/>
             
-            <form className="ui form" onSubmit={submitInfo}>
+            <form className="ui form">
             <div className="field">
                 <div className='field'>
                 <label>Subjects</label>
                     {subjects && subjects.map(s => (
                         <div key={Math.random() * 100000}>
-                            <p>{s.subjectName} / {s.proficiency}
+                            <p>{s.subjectName} / {s.proficiency} / {s.price}
                             <button color='red' onClick={deleteSubject}>Delete</button>
                             </p>
                         </div>
                     ))}  
                 </div>
+
                 <div className='field'>
                 <label>Add a subject</label>
                     <input
@@ -100,42 +99,51 @@ const EditSub =() => {
                     value={newSubjectName}
                     onChange={(e) => setNewSubjectName(e.target.value)}
                     />
-                   <div className="field">
-            <label>Your Proficiency</label>
-            <div className="form-check">
-                    <label className="form-check-label">
-                    <input 
-                    type="radio" 
-                    className="form-check-input" 
-                    name="prof" 
-                    onChange={(e) => setProficiency("Beginner")}
-                    /> Beginner
-                    </label>
-            </div> 
-            <div className="form-check">
-                <label className="form-check-label">
-                <input type="radio" 
-                className="form-check-input" 
-                name="prof"
-                onChange={(e) => setProficiency("Intermediate")}
-                /> Intermediate
-                </label>
-            </div> 
-            <div className="form-check">
-                <label className="form-check-label">
-                <input type="radio" 
-                className="form-check-input" 
-                name="prof"
-                onChange={(e) => setProficiency("Advanced")}
-                /> Advanced
-                </label>
-            </div>   
-            </div>  
-                <button onClick={addSubject}>Add Subject</button>   
+                </div>
+                {isTutor &&<div className='field'>
+                <label>Add Price</label>
+                    <input
+                    type="text"
+                    name="price"
+                    value={newPrice}
+                    onChange={(e) => setNewPrice(e.target.value)}
+                    />
+                </div>}
+
+                <div className="field">
+                    <label>Your Proficiency</label>
+                    <div className="form-check">
+                        <label className="form-check-label">
+                        <input 
+                        type="radio" 
+                        className="form-check-input" 
+                        name="prof" 
+                        onChange={(e) => setProficiency("Beginner")}
+                        /> Beginner
+                        </label>
+                    </div> 
+                    <div className="form-check">
+                        <label className="form-check-label">
+                        <input type="radio" 
+                        className="form-check-input" 
+                        name="prof"
+                        onChange={(e) => setProficiency("Intermediate")}
+                        /> Intermediate
+                        </label>
+                    </div> 
+                    <div className="form-check">
+                        <label className="form-check-label">
+                        <input type="radio" 
+                        className="form-check-input" 
+                        name="prof"
+                        onChange={(e) => setProficiency("Advanced")}
+                        /> Advanced
+                        </label>
+                    </div>  
                 </div>
             </div>    
-            <button className="ui negative button" onClick={onClickNoChange}>Discard Change</button>
-            <button className="ui positive button" type='submit' style={{position: 'absolute', right: 50}}>Save Change </button>
+            <button className="ui positive button" onClick={addSubject}>Add Subject</button>   
+            <button className="ui negative button" onClick={onClickNoChange} style={{position: 'absolute', right: 50}}>Discard Change</button>
             </form>
             <br/>
 

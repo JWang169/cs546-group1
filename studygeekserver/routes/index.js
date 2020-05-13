@@ -7,7 +7,6 @@ const constructorMethod = (app) => {
 	app.use('/students', studentRoutes);
 	// app.use('/', userRoutes);
 
-
 	app.use('*', (req, res) => {
 		res.sendStatus(404);
 	});

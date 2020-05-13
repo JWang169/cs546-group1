@@ -19,7 +19,9 @@
     "mongo": "^0.1.0",
     "mongodb": "^3.5.6",
     "mongoose": "^5.9.9",
-    "uuid": "^7.0.2"
+    "uuid": "^7.0.2",
+    "ejs": "^3.1.2",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {},
   "description": ""

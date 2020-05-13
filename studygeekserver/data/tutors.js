@@ -126,6 +126,7 @@ async function login(email,password){
   matched = await bcrypt.compare(password, theTutor.hashedPassword);
   if(matched){
       const token = jwt.sign({
+                statusId: theTutor._id,
                 email: theTutor.email,
                 status: "tutors"
             },
@@ -207,7 +208,7 @@ async function createSubject(tutorID, subjectName, proficiency, price){
 //   const tutorInfo = await this.getTutor(tutorID);
 //   if (!tutorInfo) throw "Tutor not available";
 //   const tutor = {
-//     _id : tutorInfo.tutorSubjects._id
+//     _id : tutorInfo.tutorSubjects._id,
 //     'subjectName': subjectName
 //   }
 // }
@@ -246,7 +247,11 @@ async function addAvailability(id, start, end){
   const newDay= newStart.getDay();
   if(newDay!= newEnd.getDay()) throw "The new available time range must start and end on the same day";
   const newStartTime = newStart.getTime();
+  const newStartHours = newStart.getHours();
+  const newStartMinutes = newStart.getMinutes();
   const newEndTime = newEnd.getTime();
+  const newEndHours = newEnd.getHours();
+  const newEndMinutes = newEnd.getMinutes();
   if(newStartTime>=newEndTime)throw "The available time range must end after it begins";
   const tutorCollection = await tutors();
   const currentTutor = await this.getTutor(id);
@@ -266,8 +271,12 @@ async function addAvailability(id, start, end){
         day: dayOfWeek[newDay],
         dayNum: newDay,
         start: newStartTime,
+        startH: newStartHours,
+        startM: newStartMinutes,
         startExtended: newStart,
         end: newEndTime,
+        endH: newEndHours,
+        endM: newEndMinutes,
         endExtended: newEnd
     };
     const updateInfo = await tutorCollection.updateOne(

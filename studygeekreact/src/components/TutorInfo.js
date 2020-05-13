@@ -6,7 +6,6 @@ import UserContext from './context/UserContext';
 
 const TutorInfo = (props) => {
     console.log(props.match.params.id)
-    const [student, setStudent] = useState(undefined);
     const {token, setToken} = useContext(UserContext);
     const history = useHistory();
     if (!token){
@@ -25,20 +24,21 @@ const TutorInfo = (props) => {
     const [town, setTown] = useState("");
     const [paired, setPaired] = useState("");
     
-    const requestTutor = async()=>{
+    const requestTutor = async(e, index)=>{
+        e.preventDefault();
         try{
-            const { data } = await axios.post('http://localhost:3003/tutorPair/',{
-                'tutorId': props.match.params.id,
-                'studentId' : tokenInfo.statusId
+            const { data } = await axios.post('http://localhost:3003/students/tutorPair/',{
+                tutorId: props.match.params.id,
+                studentId : tokenInfo.statusId,
+                subject: subjects[index].subjectName,
+                proficiency: subjects[index.proficiency]
             })
-
-
         }catch(e){
             console.log(e);
         }
     }
 
-    const getStudent = async() => {
+    const getTutor = async() => {
         try{
             const { data } = await axios.get('http://localhost:3003/tutors/' + props.match.params.id);
             setLastName(data.lastName);
@@ -46,8 +46,9 @@ const TutorInfo = (props) => {
             setEmail(data.email);
             setState(data.state);
             setTown(data.town);
-            setSubjects(data.studentSubjects)
+            setSubjects(data.subjects)
             setAvailability(data.availability)
+            console.log(data);
 
         }catch(e){
             console.log(e);
@@ -55,24 +56,8 @@ const TutorInfo = (props) => {
     }
 
     useEffect(() => {
-        getStudent();
+        getTutor();
     }, []);
-
-    // useEffect(() => {
-    //     async function fetchData(){
-    //         try{
-    //             const {data} = await axios.get('http://localhost:3003/students/' + props.match.params.id);
-    //             setStudent(data);
-    //         }catch(e){
-    //             console.log(e);
-    //         }
-    //     }
-    //     fetchData();
-    // },
-    // [ props.match.params.id ]
-   
-    // );
-
 
     return (
         <div className="container">
@@ -82,9 +67,12 @@ const TutorInfo = (props) => {
             <div className="row">
                 <div className="col">
                     <h2>Subjects: </h2>
-                    {subjects && subjects.map(s => (
+                    {subjects && subjects.map((s, index) => (
                         <div key={Math.random() * 100000}>
-                            <p>{s.subjectName}</p>
+                                <h4>Subject: {s.subjectName}</h4>
+                                <h4>Proficiency: {s.proficiency}</h4>
+                                <h4>Price: {s.price}</h4>
+                                <div>{ tokenInfo.status === 'students' && <button className='ui positive button' onClick={(e) =>requestTutor(e, index)}>Request Tutor</button>}</div>                        
                         </div>
                     ))}               
                 </div>
@@ -93,7 +81,7 @@ const TutorInfo = (props) => {
                     <h2>Availability: </h2>
                     {availability && availability.map(s => (
                         <div key={Math.random() * 100000}>
-                            <p>{s}</p>
+                            <p>{s.day}, {s.startH}:{s.startM} - {s.endH}:{s.endM}</p>
                         </div>
                     ))}  
                 </div>
@@ -109,7 +97,6 @@ const TutorInfo = (props) => {
                 
             </div>    
             <br/>
-            { tokenInfo.status === 'students' && <button className='ui positive button' onClick={requestTutor}>Request Tutor.</button>}  
         </div>
     )
 
