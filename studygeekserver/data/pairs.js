@@ -36,13 +36,14 @@ async function getPairsWithStudent(studentId){
     return pairs;
 }
 
-async function getTutorFromPair(pairId){
+async function getPair(pairId){
     const pairCollection = await pairs();
     if (typeof pairId !== "string") throw "The id must be of type String";
 
     const pair = await pairCollection.findOne({_id: pairId});
 
-    return pair.tutorId;
+    if (pair == null) throw `Pair with id ${pairId} could not be found`;
+    return pair;
 }
 
-module.exports = {getAllPairs, getPairFromIds, getPairsWithTutor, getPairsWithStudent, getTutorFromPair};
+module.exports = {getAllPairs, getPairFromIds, getPairsWithTutor, getPairsWithStudent, getPair};

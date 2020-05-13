@@ -27,6 +27,18 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Find tutor from a pairId
+router.get('/findPair', async (req, res) => {
+  try {
+    const pair = await pairData.getPair(req.params.id);
+    res.status(200).send(pair);
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({error: e});
+  }
+});
+
+
 // List the people this student can chat with
 router.get('/chat', async (req, res) => {
   const people = req.body;
