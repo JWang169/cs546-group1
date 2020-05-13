@@ -171,6 +171,7 @@ async function getPair(id){
 }
 
 async function createPair(tutorId,studentId,subject, proficiency){
+    console.log(tutorId,studentId,subject, proficiency)
     const pairCollection= await tutorPairs();
     const studentCollection = await students();
     if(!tutorId) throw "tutor must be provided";

@@ -50,9 +50,9 @@ const TutorInfo = (props) => {
             setEmail(data.email);
             setState(data.state);
             setTown(data.town);
-            setSubjects(data.subjects)
+            setSubjects(data.tutorSubjects)
             setAvailability(data.availability)
-            console.log(data);
+            // console.log(data);
 
         }catch(e){
             console.log(e);
@@ -87,7 +87,7 @@ const TutorInfo = (props) => {
                         <div key={Math.random() * 100000}>
                             <p>{s.day}, {s.startH}:{s.startM} - {s.endH}:{s.endM}</p>
                         </div>
-                    ))}  
+                    ))}
                 </div>
 
                 <div className="col">
