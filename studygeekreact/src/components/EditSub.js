@@ -77,6 +77,20 @@ const EditSub =() => {
         }
     }
 
+    const deleteTutorSubject = async(event, index) => {
+        event.preventDefault();
+        const pairId = subjects[index].tutoredBy;
+        console.log(pairId)
+        const delUrl = `http://localhost:3003/students/tutorPair/${pairId}`;
+        try{
+            const {data} = await axios.delete(delUrl)
+            history.push('/myaccount');
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+
     // rate tutor 
     const rateTutor = async(event, index) => {
         event.preventDefault();
@@ -114,9 +128,9 @@ const EditSub =() => {
         }catch(e){
             console.log(e);
         }
-
-
     }
+
+
 
 
     useEffect(() => {
@@ -132,8 +146,11 @@ const EditSub =() => {
                 <h3>My Subjects</h3>
                     {subjects && subjects.map((s, index) => (
                         <div key={Math.random() * 100000}>
-                            <h2>{s.subjectName } - {s.proficiency} {isTutor && s.price} 
-                            { !isTutor && <button className="ui primary button"onClick={(e) =>chatSub(e, index)}>Start a Chat</button>}{ !isTutor && <button className="ui negative button"onClick={(e) =>deleteSubject(e, index)}>Delete Subject</button>}</h2>
+                            <h2>{s.proficiency + " " + s.subjectName } {isTutor && "$" + s.price} 
+                            <button className="ui primary button"onClick={(e) =>chatSub(e, index)}>Start a Chat</button>
+                            { isTutor && <button className="ui negative button"onClick={(e) =>deleteTutorSubject(e, index)}>Delete Subject</button>}
+                            { !isTutor && <button className="ui negative button"onClick={(e) =>deleteSubject(e, index)}>Delete Subject</button>}
+                            </h2>
                             
                             { !isTutor && 
                             <form className="ui form">
