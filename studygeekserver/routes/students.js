@@ -55,7 +55,7 @@ router.post("/login", async (req, res) => {
 
 router.post('/tutorPair',async(req, res) =>{
   const reqPair = req.body;
-
+  console.log(reqPair)
   try{
     if (!reqPair)throw "needs a request";
     if(!reqPair.tutorId)throw"needs a tutorId";

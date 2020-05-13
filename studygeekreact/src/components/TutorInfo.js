@@ -27,12 +27,16 @@ const TutorInfo = (props) => {
     const requestTutor = async(e, index)=>{
         e.preventDefault();
         try{
-            const { data } = await axios.post('http://localhost:3003/students/tutorPair/',{
+            console.log('http://localhost:3003/students/tutorPair/')
+            const reqInfo = {
                 tutorId: props.match.params.id,
                 studentId : tokenInfo.statusId,
                 subject: subjects[index].subjectName,
-                proficiency: subjects[index.proficiency]
-            })
+                proficiency: subjects[index].proficiency
+            }
+            console.log(reqInfo)
+            const { data } = await axios.post('http://localhost:3003/students/tutorPair/', reqInfo)
+            console.log(data)
         }catch(e){
             console.log(e);
         }

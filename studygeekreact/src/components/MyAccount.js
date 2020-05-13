@@ -3,6 +3,7 @@ import UserContext from './context/UserContext';
 import React, { useState, useContext, useEffect } from 'react'
 import jwt_decode from "jwt-decode";
 import { useHistory } from 'react-router-dom';
+import Login from "./Login";
 
 // this shows the user its personal account 
 
@@ -63,7 +64,7 @@ const MyAccount =() => {
         //     history.push('/login')
         // }
         getAccount()
-    },[]);
+    },[token]);
 
     return (
         <div className="container">

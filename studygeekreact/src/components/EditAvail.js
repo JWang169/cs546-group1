@@ -30,6 +30,7 @@ const EditInfo =() => {
         event.preventDefault();
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
         const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}/availability`;
+        console.log(urlString)
         try{
             const { data } = await axios.post(urlString, {
                 startTime: startTime,
@@ -51,13 +52,13 @@ const EditInfo =() => {
     const deleteAvailability= async(event, index) => {
         event.preventDefault();
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
-        const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}/availability/delete`;
+        const urlString = `http://localhost:3003/${tokenInfo.status}/${tokenInfo.statusId}/availability`;
         console.log( {
             startTime: availability[index].start,
             endTime: availability[index].end
         })
         try{
-            const {data} = await axios.post(urlString, {
+            const {data} = await axios.delete(urlString, {
                 startTime: availability[index].start,
                 endTime: availability[index].end
             });
