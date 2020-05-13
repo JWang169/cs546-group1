@@ -12,6 +12,8 @@ const EditSub =() => {
     const [newSubjectName, setNewSubjectName] = useState("");
     const [proficiency, setProficiency] = useState('');
     const [newPrice, setNewPrice] = useState('');
+    const [reviewContent, setReviewContent] = useState('');
+    const [score, setScore] = useState(undefined);
     const [pair, setPair] = useState(null);
     const [isTutor, setIsTutor] = useState(false);
     const [editRate, setEditRate] = useState(false);
@@ -35,7 +37,6 @@ const EditSub =() => {
             console.log(e)
         }
     };
-
 
 
     const addSubject = async(event) => {
@@ -64,6 +65,10 @@ const EditSub =() => {
         history.push('/myaccount');
     }
 
+    const onClickEdit = (event) => {
+        event.preventDefault();
+        setEditRate(!editRate);
+    }
 
     // delete subject connections from student account
     const deleteSubject = async(event, index) => {
@@ -102,23 +107,26 @@ const EditSub =() => {
     // rate tutor 
     const rateTutor = async(event, index) => {
         event.preventDefault();
-        // const pairId = subjects[index].tutoredBy;
-        // const rateData = {
-        //     tutorId: ,
-        //     studentId: ,
-        //     content: ,
-        //     rating: 
-        // }
-        // const rateUrl = `http://localhost:3003/tutors/review}`;
-        // try{
-        //     const {data} = await axios.post(rateUrl, rateData)
-        //     history.push('/myaccount');
-        // }catch(e){
-        //     console.log(e);
-        // }
+        try{
+            const pairId = subjects[index].tutoredBy;
+            console.log(pairId)
+            const {data} = await axios.get('http://localhost:3003/students/findPair/' + pairId);
+            const rateData = {
+                tutorId: data.tutorId,
+                studentId: data.studentSubjects,
+                // content: ,
+                // rating: 
+            }
+            const rateUrl = `http://localhost:3003/tutors/review`;
+            await axios.post(rateUrl, rateData)
+            history.push('/myaccount');
+        }catch(e){
+            console.log(e)
+        }
+
     }
 
-    // start a chat
+    // start a chat from student account
     const chatSub = async(event, index) => {
         event.preventDefault();
         const pairId = subjects[index].tutoredBy;
@@ -139,6 +147,27 @@ const EditSub =() => {
     }
 
 
+    // start a chat from tutor account
+    // const chatFromTutor = async(event, index) => {
+    //     event.preventDefault();
+    //     const pairId = subjects[index].tutoredBy;
+    //     try{
+    //         const {data} = await axios.get('http://localhost:3003/students/findPair/' + pairId);
+    //         setPair(data);
+    //         console.log(data)
+    //         const tId = data.tutorId;
+    //         const sId = data.studentId;
+    //         const {chatRes} = await axios.get('http://localhost:3003/students/chat', {
+    //             tutorId: tId,
+    //             studentId: sId
+    //         })
+
+    //     }catch(e){
+    //         console.log(e);
+    //     }
+    // }
+
+
 
 
     useEffect(() => {
@@ -156,7 +185,8 @@ const EditSub =() => {
                         <div key={Math.random() * 100000}>
                             <h2>{s.proficiency + " " + s.subjectName } {isTutor && "$" + s.price} 
                             <button className="ui primary button"onClick={(e) =>chatSub(e, index)}>Start a Chat</button>
-                            {/* { !isTutor && <button className="ui positive button" onClick={setEditRate(true)}>Rate My Professor</button>} */}
+                            { !isTutor && !editRate && <button className="ui positive button" onClick={onClickEdit}>Rate My Professor</button>}
+                            { !isTutor && editRate && <button className="ui button" onClick={onClickEdit}>Ignore Change</button>}
                             { isTutor && <button className="ui negative button" onClick={(e) =>deleteTutorSubject(e, index)}>Delete Subject</button>}
                             { !isTutor && <button className="ui negative button" onClick={(e) =>deleteSubject(e, index)}>Delete Subject</button>}
                             </h2>
@@ -164,9 +194,21 @@ const EditSub =() => {
                             { !isTutor && editRate && 
                             <form className="ui form">
                                 <div className="default text" role="alert" aria-live="polite" aria-atomic="true">Leave a comment</div>
-                                <textarea placeholder="How was your class?" rows="3"></textarea>
-                                <div className="default text" role="alert" aria-live="polite" aria-atomic="true">Rate Your Tutor</div>
-                                <div className="ui input"><input type="number" placeholder="5" /></div>
+                                <textarea 
+                                placeholder="How was your class?" 
+                                rows="3"                                     
+                                value={reviewContent}
+                                onChange={(e) => setReviewContent(e.target.value)}
+                                required/>
+                                <div className="default text">Rate Your Tutor</div>
+                                <div className="ui input">
+                                    <input type="number" 
+                                    placeholder="5" 
+                                    value={score}
+                                    onChange={(e) => setScore(e.target.value)}
+                                    required
+                                    />
+                                </div>
                                 <button className="ui positive button" onClick={(e) =>rateTutor(e, index)}>Submit Rating</button>  
                             </form>
                             }
