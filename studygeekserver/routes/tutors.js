@@ -84,9 +84,8 @@ router.get('/chat', async (req, res) => {
   try {
     const tutor = await tutorData.getTutor(people.tutorId);
     const student = await studentData.getStudent(people.studentId);
-    const pair = await pairData.getPairFromIds(tutor, student);
-    console.log(pair);
-    res.render('chat.ejs');
+    const pair = await pairData.getPairFromIds(people.tutorId, people.studentId);
+    res.render('chat.ejs', {roomId: pair._id});
   } catch (e) {
     console.log(e);
     res.status(404).json({error: e});

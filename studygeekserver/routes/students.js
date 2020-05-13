@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const studentData = data.students;
+const tutorData = data.tutors;
 const pairData = data.pairs;
 
 router.get("/", async (req, res) => {
@@ -33,9 +34,8 @@ router.get('/chat', async (req, res) => {
   try {
     const student = await studentData.getStudent(people.studentId);
     const tutor = await tutorData.getTutor(people.tutorId);
-    const pair = await pairData.getPairFromIds(tutor, student);
-    console.log(pair);
-    res.render('chat.ejs');
+    const pair = await pairData.getPairFromIds(people.tutorId, people.studentId);
+    res.render('chat.ejs', {roomId: pair._id});
   } catch (e) {
     console.log(e);
     res.status(404).json({error: e});
