@@ -20,13 +20,13 @@
     <body onload="setup()">
         <ul id="messages"></ul>
         <form action="/" method="POST" id="chatForm">
-            <input id="txt" autocomplete="off" autofocus="on" oninput="isTyping()" placeholder="type your message here..." />
+            <input id="txt" autocomplete="off" autofocus="on" placeholder="type your message here..." />
             <button>Send</button>
         </form>
         <script>
             function setup(){
                 var socket = io.connect('http://localhost:3000');
-                // submit text message without reload/refresh the page
+                // submit text message without reloading/refreshing the page
                 $('form').submit(function(e){
                     e.preventDefault(); // prevents page reloading
                     socket.emit('chat_message', $('#txt').val());
@@ -41,7 +41,7 @@
                 socket.on('is_online', function(username) {
                     $('#messages').append($('<li>').html(username));
                 });
-                // create a room
+                // log on to the room
                 var username = prompt('What would you like your chat nickname to be?');
                 socket.emit('connect', username);
             }
