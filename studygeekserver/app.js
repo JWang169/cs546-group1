@@ -35,15 +35,15 @@ configRoutes(app);
 io.sockets.on('connection', function(socket) {
     socket.on('connect', function(username) {
         socket.username = username;
-        io.emit('is_online', '🔵 <i>' + socket.username + ' joined the chat. Happy learning!</i>');
+        io.emit('is_online', '🔵 '  + socket.username + ' joined the chat. Happy learning!');
     });
 
     socket.on('disconnect', function(username) {
-        io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat.</i>');
+        io.emit('is_online', '🔴 ' + socket.username + ' left the chat.');
     })
 
     socket.on('chat_message', function(message) {
-        io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
+        io.emit('chat_message', ' ' + socket.username + ': ' + message);
     });
 
 });
