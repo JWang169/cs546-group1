@@ -36,6 +36,8 @@ const TutorInfo = (props) => {
     const [availability, setAvailability] = useState("");
     const [state, setState] = useState("");
     const [town, setTown] = useState("");
+    const [reviews, setReviews] = useState([]);
+    const [score, setScore] = useState("");
 
     const requestTutor = async(e, index)=>{
         e.preventDefault();
@@ -64,6 +66,9 @@ const TutorInfo = (props) => {
             setTown(data.town);
             setSubjects(data.tutorSubjects)
             setAvailability(data.availability)
+            setScore(data.avgRating);
+            const {r}  = await axios.get('http://localhost:3003/tutors/review' + props.match.params.id); 
+            setReviews(r);
             // console.log(data);
 
         }catch(e){
@@ -89,7 +94,15 @@ const TutorInfo = (props) => {
                         </div>
                     ))}               
                 </div>
-
+                <div className="col">
+                    <h2>Reviews: </h2>
+                    <h4>Average Rating: {score}</h4>
+                    {reviews && reviews.map(s => (
+                        <div key={Math.random() * 100000}>
+                            <p>{s.content}</p>
+                        </div>
+                    ))}               
+                </div>
                 <div className="col">
                     <h2>Availability: </h2>
                     {availability && availability.map(s => (
