@@ -98,15 +98,8 @@ router.post("/signup", async (req, res) => {
     res.status(400).json({error: "You must provide student profile data"});//this should be replaced by an error page redirect in the future
     return;
   }
-  /*let time;
-  if(reqStudent.time){
-    time= reqStudent.time;
-  }else{
-    time = 0;//some empty value for when the item isnt there
-  }*/
 
-
-  if(!reqStudent.firstName){//type checking is done in data file
+  if(!reqStudent.firstName){
     res.status(400).json({error: "You must provide a first name"});
 		return;
   }
@@ -267,11 +260,5 @@ router.delete("/:id", async (req, res) =>{
     res.status(500).json({error: e});
   }
 });
-
-/* To implement here:
-  delete availability (need to know how the html form will select array item to delete)
-  delete Student
-  post/delete studentSubjects (need for the tutorPairs database to be created first)
-*/
 
 module.exports = router;
