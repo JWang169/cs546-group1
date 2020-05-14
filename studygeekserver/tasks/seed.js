@@ -52,8 +52,8 @@ const Tutor = mongoose.model('Tutor', {
 
 let tutorArray = [];
 const Snape = new Tutor({
-    //_id:uuid(),
     _id:"e01b7e23-b68c-4631-859b-ee148cde5c1d",
+    //_id:uuid(),
     email: "severus@snape.com",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Severus",
@@ -83,8 +83,8 @@ const Snape = new Tutor({
 tutorArray.push(Snape)
 
 const Moody = new Tutor({
-    //_id:uuid(),
     _id: "e9247437-33a6-4d9f-8bc1-f269506dc774",
+    //_id:uuid(),
     email: "alastor@moody.com",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Alastor",
@@ -128,12 +128,14 @@ const Minerva = new Tutor({
     lastName: "McGonagall",
     town: "Seattle",
     state: "Washington",
+    reviews: ["59275435-393d-431a-b248-7cd247f66b82"],
     tutorSubjects:[{
       subjectName : "Statistics",
       proficiency : "Beginner",
       price : "50",
-      teaches : [],
-    }]
+      teaches : ["263253c7-29e9-436d-95fa-645abd9aaa15"],
+    }],
+    avgRatings: 3
 })
 tutorArray.push(Minerva)
 
@@ -158,13 +160,14 @@ const Sybill = new Tutor({
       proficiency : "Advanced",
       price : "12",
       teaches : []
-    }]
+    }],
+    avgRatings: 5
 })
 tutorArray.push(Sybill)
 
 const Rolanda = new Tutor({
     _id: "855506ea-07cd-4081-8bde-5dfdb8ea9275",
-    // _id:uuid(),
+    //_id:uuid(),
     email: "rolanda@hooch.com",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     firstName: "Rolanda",
@@ -252,11 +255,17 @@ const harry = new Student({
         endH: 9,
         endM: 30,
         endExtended: new Date(1496323800000)
-    }]
-
-    //info: "The boy who lived",
-    //education: "Junior",
-   // subjects: ["Flying", "Defence Against the Dark Arts", "Potions"]
+    }],
+    studentSubjects: [
+        {
+            subjectName:"Statistics",
+            proficiency:"Beginner",
+            tutoredBy:"59275435-393d-431a-b248-7cd247f66b82"//this is the Minerva-Harry pair
+        }
+    ]
+    /*  info: "The boy who lived",
+    education: "Junior",
+    subjects: ["Flying", "Defence Against the Dark Arts", "Potions"] */
 })
 studentArray.push(harry)
 
@@ -269,10 +278,9 @@ const hermoine = new Student({
     state: "Britain",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     email: "bestwitch@gmail.com"
-
-    //info: "One of the most talented witch.",
-    //education: "Ph.D",
-    //subjects: ["Defence Against the Dark Arts", "Potions", "Transfiguration", "Divination"]
+    /*  info: "One of the most talented witches.",
+    education: "Ph.D",
+    subjects: ["Defence Against the Dark Arts", "Potions", "Transfiguration", "Divination"]*/
 })
 studentArray.push(hermoine)
 
@@ -285,8 +293,8 @@ const ron = new Student({
     state: "Devon",
     hashedPassword: "$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     email: "hermoineHusband@gmail.com"
-    /*info: "Hermoine's future husband. ",
-    education: "Fresh",
+    /*  info: "Hermoine's future husband.",
+    education: "Freshman",
     subjects: ["Flying"]*/
 })
 studentArray.push(ron)
@@ -300,8 +308,8 @@ const luna = new Student({
     state: "New Jersey",
     hashedPassword:"$2a$16$4o0WWtrq.ZefEmEbijNCGukCezqWTqz1VWlPm/xnaLM8d3WlS5pnK",
     email: "nargles@gmail.com"
-  /*  education: "Senior",
-    info: "A true, delight Ravenclaw with a sing-song voice.",
+    /*  info: "A true, delightful Ravenclaw with a sing-song voice.",
+    education: "Senior",
     subjects: ["Defence Against the Dark Arts", "Divination"]*/
 })
 studentArray.push(luna)
@@ -345,11 +353,11 @@ const malfoy = new Student({
         {
             subjectName:"Maths",
             proficiency:"Intermediate",
-            tutoredBy:"a01cc6db-1c34-4552-b7ca-610f8cfb5abd"//this is the tutorPairId
+            tutoredBy:"a01cc6db-1c34-4552-b7ca-610f8cfb5abd"//this is the Sybill-Lucius pair
         }
     ]
-  /* info: "A charming boy who is a little bit lost",
-    education: "Jonior",
+    /* info: "A charming boy who is a little bit lost",
+    education: "Junior",
     subjects: ["Flying", "Potions", "Divination"]*/
 })
 studentArray.push(malfoy)
@@ -382,7 +390,6 @@ const TutorPair = mongoose.model('TutorPair', {
     }
 })
 
-
 let tutorPairArray = [];
 const sybillMalfoy = new TutorPair({
     _id: "a01cc6db-1c34-4552-b7ca-610f8cfb5abd",
@@ -391,8 +398,17 @@ const sybillMalfoy = new TutorPair({
     subject:"Maths",
     proficiency:"Intermediate"
 })
+const minervaHarry = new TutorPair({
+    _id: "59275435-393d-431a-b248-7cd247f66b82",
+    tutorId: "4adec776-2d17-4a8d-a792-1792cb4f06b4",
+    studentId: "263253c7-29e9-436d-95fa-645abd9aaa15",
+    subject: "Statistics",
+    proficiency: "Beginner"
+})
 
 tutorPairArray.push(sybillMalfoy);
+tutorPairArray.push(minervaHarry);
+
 for(t in tutorPairArray){
     tutorPairArray[t].save().then(() => {
         console.log(tutorPairArray[t])
@@ -400,6 +416,7 @@ for(t in tutorPairArray){
         console.log('Error', error)
     })
 }
+
 
 const Review = mongoose.model('Review', {
     _id: {
@@ -414,22 +431,30 @@ const Review = mongoose.model('Review', {
     content:{
         type:String
     },
-    rating: {//subject's difficulty level
+    rating: {
         type:Number
     }
 })
-
 
 let reviewArray = [];
 const reviewFirst = new Review({
     _id: "a01cc6db-1c34-4552-b7ca-610f8cfb5abd",
     tutorId: "60625b69-1b3e-4743-b011-ac410723ebac",
     studentId: "c163eeff-3566-49c8-b63e-851da5b2de07",
-    content:"Nice Course",
-    rating:5
+    content:"Nice course",
+    rating: "5"
+})
+const reviewSecond = new Review({
+    _id: "59275435-393d-431a-b248-7cd247f66b82",
+    tutorId: "4adec776-2d17-4a8d-a792-1792cb4f06b4",
+    studentId: "263253c7-29e9-436d-95fa-645abd9aaa15",
+    content: "Good, but kept turning into a cat",
+    rating: "3"
 })
 
 reviewArray.push(reviewFirst);
+reviewArray.push(reviewSecond);
+
 for(r in reviewArray){
     reviewArray[r].save().then(() => {
         console.log(reviewArray[r])
@@ -437,4 +462,3 @@ for(r in reviewArray){
         console.log('Error', error)
     })
 }
-    //_id: uuid(),
