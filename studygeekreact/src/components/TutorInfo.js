@@ -67,7 +67,7 @@ const TutorInfo = (props) => {
             setSubjects(data.tutorSubjects)
             setAvailability(data.availability)
             setScore(data.avgRating);
-            const {r}  = await axios.get('http://localhost:3003/tutors/review' + props.match.params.id); 
+            const {r}  = await axios.get('http://localhost:3003/tutors/review/' + props.match.params.id); 
             setReviews(r);
             // console.log(data);
 

@@ -70,6 +70,19 @@ const EditSub =() => {
         setEditRate(!editRate);
     }
 
+
+    // update content
+    const handleReviewContent = (key, value) => {
+        setReviewContent()
+    }
+
+
+    //update score
+    const handleScore = (key, value) => {
+        
+    }
+
+
     // delete subject connections from student account
     const deleteSubject = async(event, index) => {
         event.preventDefault();
@@ -194,16 +207,18 @@ const EditSub =() => {
                                 <div className="default text" role="alert" aria-live="polite" aria-atomic="true">Leave a comment</div>
                                 <textarea 
                                 placeholder="How was your class?" 
-                                rows="3"                                     
+                                rows="3"         
+                                name={`comment-${index}`}                            
                                 value={reviewContent}
-                                onChange={(e) => setReviewContent(e.target.value)}
+                                onChange={(e) => handleReviewContent(e.target.name, e.target.value)}
                                 required/>
                                 <div className="default text">Rate Your Tutor</div>
                                 <div className="ui input">
                                     <input type="number" 
-                                    placeholder="5" 
+                                    placeholder="5"
+                                    name={`score-${index}`}     
                                     value={score}
-                                    onChange={(e) => setScore(e.target.value)}
+                                    onChange={(e) => handleScore(e.target.name, e.target.value)}
                                     required
                                     />
                                 </div>
@@ -214,29 +229,7 @@ const EditSub =() => {
                             { isTutor && <button className="ui negative button" onClick={(e) =>deleteTutorSubject(e, index)}>Delete Subject</button>}
                             { !isTutor && <button className="ui negative button" onClick={(e) =>deleteSubject(e, index)}>Delete Subject</button>}
                             </h2>
-                            
-                            { !isTutor && editRate && 
-                            <form className="ui form">
-                                <div className="default text" role="alert" aria-live="polite" aria-atomic="true">Leave a comment</div>
-                                <textarea 
-                                placeholder="How was your class?" 
-                                rows="3"                                     
-                                value={reviewContent}
-                                onChange={(e) => setReviewContent(e.target.value)}
-                                required/>
-                                <div className="default text">Rate Your Tutor</div>
-                                <div className="ui input">
-                                    <input type="number" 
-                                    placeholder="5" 
-                                    value={score}
-                                    onChange={(e) => setScore(e.target.value)}
-                                    required
-                                    />
-                                </div>
-                                <button className="ui positive button" onClick={(e) =>rateTutor(e, index)}>Submit Rating</button>  
-                            </form>
-                            }
-                 
+                                             
                         </div>
                     ))}  
             </div>
