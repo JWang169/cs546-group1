@@ -14,6 +14,18 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/searchTutor', async (req, res) => {
+  try {
+    if (!req.body.subject) throw "Subject must be provided";
+    if (!req.body.proficiency) throw "Proficiency must be provided";
+    if (!req.body.sort) throw "price/rating must be provided"
+    let theTutor = await tutorData.search(req.body.subject,req.body.proficiency,req.body.sort);
+    return res.json(theTutor);
+  } catch (e) {
+    res.status(404).json({ error: 'Tutor not found' });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     let tutor = await tutorData.getTutor(req.params.id);
@@ -136,22 +148,6 @@ router.put('/updateSubject', async (req, res) => {
   const price = req.body['price'];
   let tutor = await tutorData.updateSubject(tutorId, subjectName, proficiency, price);
   res.json(tutor);
-  } catch (e) {
-    res.status(404).json({ error: 'Tutor not found' });
-  }
-});
-
-router.get('/search', async (req, res) => {
-  //const theTutor = req.body;
-  // if (!theTutor.subject){
-  //   res.status(400).json({error:"No Subject was provided"});
-  // }
-  // if (!tutor.)
-  // const startTime = req.body['startTime'];
-  // const endTime = req.body['endTime'];
-  try {
-    let theTutor = await tutorData.search("Maths","Advanced","price");//req.body.subject,req.body.proficiency,req.body.sort);
-    res.json(theTutor);
   } catch (e) {
     res.status(404).json({ error: 'Tutor not found' });
   }

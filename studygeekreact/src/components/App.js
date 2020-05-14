@@ -38,7 +38,7 @@ function App() {
   })
 
   return (
-    
+
     <Router>
       <UserContext.Provider value={{ token, setToken }}>
         <Container>
@@ -60,7 +60,7 @@ function App() {
         </Container>
       </UserContext.Provider>
     </Router>
-    
+
   );
 }
 

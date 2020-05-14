@@ -102,30 +102,19 @@ async function getTutorByEmail(email){
 //   return theTutor;
 // }
 
-async function search(subject, proficiency, sorts, startTime, endTime){ //starttime and end time
+async function search(subject, proficiency, sorts){ //starttime and end time
   if (typeof subject !== "string") throw "Subject must be string";
   if (typeof proficiency !== "string") throw "Proficiency must be a string";
-  // if (typeof startTime !== "object") throw "Start Time must be a object";
-  // if (typeof endTime !== "object") throw "End Time must be a object";
   if (typeof sorts !== "string") throw "Sorting should be a string of Price/ Rating";
   const tutorCollection = await tutors();
-  if (sorts === "price"){
-    const theTutor = await tutorCollection.find().sort({price:-1}).toArray();
-  }
+  let theTutor;
   if (sorts === "rate"){
-    const theTutor = await tutorCollection.find().sort({avgRatings:-1}).toArray();
+    theTutor = await tutorCollection.find({'tutorSubjects.subjectName':subject,'tutorSubjects.proficiency':proficiency}).sort({avgRatings:-1}).toArray();
   }
-  if (proficiency ==="Advanced"){
-    const theTutor = await tutorCollection.find({'tutorSubjects.proficiency':"Advanced"}).toArray();
+  else if (sorts === "price"){
+     theTutor = await tutorCollection.find({'tutorSubjects.subjectName':subject,'tutorSubjects.proficiency':proficiency}).sort({'tutorSubjects.price':-1}).toArray();
   }
-  if (proficiency ==="Intermediate"){
-    const theTutor = await tutorCollection.find({'tutorSubjects.proficiency':"Intermediate"}).toArray();
-  }
-  if (proficiency ==="Begineer"){
-    const theTutor = await tutorCollection.find({'tutorSubjects.proficiency':"Beginner"}).toArray();
-  }
-  return thetutor;
-
+  return theTutor;
 }
 
 async function login(email,password){
@@ -222,7 +211,7 @@ async function removeSubject(tutorId, subjectName){
   const findSubject = await tutorCollection.findOne({_id:tutorId,'tutorSubjects.subjectName':subjectName});
   if (!findSubject) throw "Subject Not Found";
   const removeSubject = await tutorCollection.updateOne({_id:tutorId},{$unset:{'tutorSubjects.subjectName':subjectName}});
-  
+
   //if (!removeSubject.matchedCount && !removeSubject.modifiedCount) throw 'could not update subject successfully';
   return this.getTutor(tutorId);
 }
@@ -508,4 +497,5 @@ removeTutor,
 login,
 addAvailability,
 createSubject,
-getReview};
+getReview,
+search};

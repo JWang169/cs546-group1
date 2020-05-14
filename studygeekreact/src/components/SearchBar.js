@@ -25,7 +25,7 @@ const SearchBar = () => {
             })
             setMatched(result)
             console.log(result);
-            return <TutorList matchedTutors = {matched} />   
+            return <TutorList matchedTutors = {matched} />
         }catch(e){
             console.log(e);
         }
@@ -67,54 +67,54 @@ const SearchBar = () => {
             <label>Your Proficiency</label>
             <div className="form-check">
                     <label className="form-check-label">
-                    <input 
-                    type="radio" 
-                    className="form-check-input" 
-                    name="prof" 
+                    <input
+                    type="radio"
+                    className="form-check-input"
+                    name="prof"
                     onChange={(e) => setProficiency("Beginner")}
                     /> Beginner
                     </label>
-            </div> 
+            </div>
             <div className="form-check">
                 <label className="form-check-label">
-                <input type="radio" 
-                className="form-check-input" 
+                <input type="radio"
+                className="form-check-input"
                 name="prof"
                 onChange={(e) => setProficiency("Intermediate")}
                 /> Intermediate
                 </label>
-            </div> 
+            </div>
             <div className="form-check">
                 <label className="form-check-label">
-                <input type="radio" 
-                className="form-check-input" 
+                <input type="radio"
+                className="form-check-input"
                 name="prof"
                 onChange={(e) => setProficiency("Advanced")}
                 /> Advanced
                 </label>
-            </div>   
-            </div>  
-                
+            </div>
+            </div>
+
             <div className="form-check">
                 <label>Sort By</label>
                 <div className="form-check">
                 <label className="form-check-label">
-                <input type="radio" 
-                className="form-check-input" 
+                <input type="radio"
+                className="form-check-input"
                 name="optradio"
                 onChange={(e) => setSort("price")}
                 /> Price
                 </label>
-                </div> 
+                </div>
                 <div className="form-check">
                 <label className="form-check-label">
-                <input type="radio" 
-                className="form-check-input" 
+                <input type="radio"
+                className="form-check-input"
                 name="optradio"
                 onChange={(e) => setSort("rate")}
                 /> Rating
                 </label>
-                </div> 
+                </div>
                 </div>
             <br/>
             <button className="ui primary button" type='submit'>Search</button>
