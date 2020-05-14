@@ -93,6 +93,7 @@ const EditSub =() => {
         const delUrl = 'http://localhost:3003/tutors/remove';
         try{
             const {data} = await axios.delete(delUrl, {
+                tutorId: s.tutorId,
                 subjectName: s.subjectName,
                 proficiency: s.proficiency,
                 price: s.price
