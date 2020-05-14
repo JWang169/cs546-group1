@@ -321,7 +321,7 @@ async function createReview(tutorId, studentId, content ,rating){
   if (typeof tutorId !== "string") throw "Id must be a string";
   if (typeof studentId !== "string") throw "Id must be a string";
   if (typeof content !== "string") throw "Content must be a string";
-  if (typeof rating !== "number") throw "Rating must be a number";
+  if (typeof rating !== "string") throw "Rating must be a string";
   const reviewCollection = await reviews();
   const reviewExists = await reviewCollection.findOne({tutorId:tutorId,studentId:studentId})
   if (reviewExists) throw "The student has already reviewd the tutor";
@@ -367,8 +367,10 @@ async function calcRating(tutorId){
   const tutorReview = await reviewCollection.find({tutorId:tutorId}).toArray();
   let rating = 0;
   let count = 0;
+  let cont= 0;
   for (i in tutorReview){
-    rating = rating + tutorReview[i].rating;
+    cont = parseInt(tutorReview[i]);
+    rating = rating + cont;
     count = count + 1;
   }
   return rating/count;
