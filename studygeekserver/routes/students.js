@@ -5,6 +5,25 @@ const studentData = data.students;
 const tutorData = data.tutors;
 const pairData = data.pairs;
 
+
+// List the people this student can chat with
+router.get('/chat', async (req, res) => {
+  const people = req.body;
+  console.log(req.body)
+  console.log(people.studentId)
+  console.log(typeof(people.studentId))
+  try {
+    // const student = await studentData.getStudent(JSON.stringify(people.studentId));
+    // const tutor = await tutorData.getTutor(JSON.stringify(people.tutorId));
+    // const pair = await pairData.getPairFromIds(JSON.stringify(people.tutorId), JSON.stringify(people.studentId));
+    
+    res.render('../views/chat.ejs');
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({error: e});
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const studentList = await studentData.getAllstudents();
@@ -14,7 +33,6 @@ router.get("/", async (req, res) => {
     res.status(500).send();
   }
 });
-
 
 //GET /students/{id}
 router.get("/:id", async (req, res) => {
@@ -28,26 +46,10 @@ router.get("/:id", async (req, res) => {
 });
 
 // Find tutor from a pairId
-router.get('/findPair', async (req, res) => {
+router.get('/findPair/:id', async (req, res) => {
   try {
     const pair = await pairData.getPair(req.params.id);
     res.status(200).send(pair);
-  } catch (e) {
-    console.log(e);
-    res.status(404).json({error: e});
-  }
-});
-
-
-// List the people this student can chat with
-router.get('/chat', async (req, res) => {
-  const people = req.body;
-
-  try {
-    const student = await studentData.getStudent(people.studentId);
-    const tutor = await tutorData.getTutor(people.tutorId);
-    const pair = await pairData.getPairFromIds(people.tutorId, people.studentId);
-    res.render('chat.ejs', {roomId: pair._id});
   } catch (e) {
     console.log(e);
     res.status(404).json({error: e});

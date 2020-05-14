@@ -41,7 +41,8 @@
                 $('#messages').append($('<li>').html(username));
             });
             // create a room
-            socket.emit('create_room', {roomId: roomId});
+            var username = prompt('What would you like your chat nickname to be?');
+            socket.emit('connect', username);
         </script>
     </body>
 </html>
