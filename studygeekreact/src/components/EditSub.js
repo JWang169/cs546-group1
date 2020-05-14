@@ -90,9 +90,9 @@ const EditSub =() => {
         event.preventDefault();
         const s = subjects[index];
         console.log(s)
-        const delUrl = 'http://localhost:3003/tutors/remove';
+        const delUrl = 'http://localhost:3003/tutors/removeSubject';
         try{
-            const {data} = await axios.delete(delUrl, {
+            const {data} = await axios.post(delUrl, {
                 tutorId: s.tutorId,
                 subjectName: s.subjectName,
                 proficiency: s.proficiency,

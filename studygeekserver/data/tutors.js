@@ -309,13 +309,21 @@ async function getReviewById(id){
     return theReview;
 }
 
-async function createReviews(tutorId, studentId, content ,rating){
+async function getReviews(tutorId){
+  if(typeof tutorId !== "string")throw"tutorId must be a string";
+  const reviewCollection= await reviews();
+  const allReview = await reviewCollection.find({'tutorId':tutorId}).toArray();
+  if(!allReview) throw"no reviews found";
+  return allReview;
+}
+
+async function createReview(tutorId, studentId, content ,rating){
   if (typeof tutorId !== "string") throw "Id must be a string";
   if (typeof studentId !== "string") throw "Id must be a string";
   if (typeof content !== "string") throw "Content must be a string";
   if (typeof rating !== "number") throw "Rating must be a number";
   const reviewCollection = await reviews();
-  const reviewExists = await reviewCollection.findOne({tutorId:tutorId,subjectId:subjectId,content:content,rating:rating})
+  const reviewExists = await reviewCollection.findOne({tutorId:tutorId,studentId:studentId})
   if (reviewExists) throw "The student has already reviewd the tutor";
   let newReview ={
     _id :uuid(),
@@ -538,7 +546,8 @@ getTutorByEmail,
 removeSubject,
 //updateSubject,
 updateTutorRating,
-createReviews,
+createReview,
+getReviews,
 removeReview,
 removeAvailability,
 updateTutor,

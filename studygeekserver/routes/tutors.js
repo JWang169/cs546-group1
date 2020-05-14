@@ -157,23 +157,34 @@ router.get('/search', async (req, res) => {
   }
 });
 
+router.get('/review/:id', async (req, res) =>{
+  try{
+    const tutorId = req.params.id;
+    if(!tutorId) throw "needs tutor ID";
+    const retTutor = await tutorData.getReviews(tutorId);
+    res.status(200).json(retTutor);
+  }catch(e){
+    res.status(404).json({error:e});
+  }
+});
+
 router.post('/review', async (req, res) => {
   try{
     if(!req.body.tutorId) throw "Tutor Id must be given";
-    if(!req.body.studentId) throw "Tutor Id must be given";
-    if(!req.body.content) throw "Tutor Id must be given";
-    if(!req.body.rating) throw "Tutor Id must be given";
+    if(!req.body.studentId) throw "student Id must be given";
+    if(!req.body.content) throw "content must be given";
+    if(!req.body.rating) throw "rating must be given";
   }catch(e){
   res.status(404).json({error: e});
   }
   try{
-  const newReview= await tutorsData.createReview(req.body.tutorId, req.body.studentId, req.body.content, req.tutor.rating);
-  res.status(200).json(newReview);
+  const newReview= await tutorData.createReview(req.body.tutorId, req.body.studentId, req.body.content, req.body.rating);
+  res.json(newReview);
 }catch(e){
   res.status(503).json({error:e});
 }
 });
-
+/*
 router.post('/review/:id', async (req, res) => {
   try{
   const review = await tutorData.getReview(req.params.id);
@@ -182,7 +193,7 @@ router.post('/review/:id', async (req, res) => {
   }catch(e){
     res.status(503).json({error: e});
   }
-});
+});*/
 
 router.post('/signup', async (req, res) => {
   const tutor = req.body;
