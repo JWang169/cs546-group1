@@ -93,6 +93,7 @@ const EditSub =() => {
         const delUrl = 'http://localhost:3003/tutors/remove';
         try{
             const {data} = await axios.delete(delUrl, {
+                tutorId: s.tutorId,
                 subjectName: s.subjectName,
                 proficiency: s.proficiency,
                 price: s.price
@@ -185,8 +186,29 @@ const EditSub =() => {
                         <div key={Math.random() * 100000}>
                             <h2>{s.proficiency + " " + s.subjectName } {isTutor && "$" + s.price} 
                             <button className="ui primary button"onClick={(e) =>chatSub(e, index)}>Start a Chat</button>
-                            { !isTutor && !editRate && <button className="ui positive button" onClick={onClickEdit}>Rate My Professor</button>}
-                            { !isTutor && editRate && <button className="ui button" onClick={onClickEdit}>Ignore Change</button>}
+                            {/* { !isTutor && !editRate && <button className="ui positive button" onClick={onClickEdit}>Rate My Professor</button>} */}
+                            { !isTutor && 
+                            <form className="ui form">
+                                <div className="default text" role="alert" aria-live="polite" aria-atomic="true">Leave a comment</div>
+                                <textarea 
+                                placeholder="How was your class?" 
+                                rows="3"                                     
+                                value={reviewContent}
+                                onChange={(e) => setReviewContent(e.target.value)}
+                                required/>
+                                <div className="default text">Rate Your Tutor</div>
+                                <div className="ui input">
+                                    <input type="number" 
+                                    placeholder="5" 
+                                    value={score}
+                                    onChange={(e) => setScore(e.target.value)}
+                                    required
+                                    />
+                                </div>
+                                <button className="ui positive button" onClick={(e) =>rateTutor(e, index)}>Submit Rating</button>  
+                            </form>
+                            }
+                            {/* { !isTutor && editRate && <button className="ui button" onClick={onClickEdit}>Ignore Change</button>} */}
                             { isTutor && <button className="ui negative button" onClick={(e) =>deleteTutorSubject(e, index)}>Delete Subject</button>}
                             { !isTutor && <button className="ui negative button" onClick={(e) =>deleteSubject(e, index)}>Delete Subject</button>}
                             </h2>
