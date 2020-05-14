@@ -134,7 +134,6 @@ const EditSub =() => {
         }catch(e){
             console.log(e)
         }
-
     }
 
     // start a chat from student account
