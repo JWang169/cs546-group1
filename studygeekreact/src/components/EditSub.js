@@ -91,9 +91,10 @@ const EditSub =() => {
         const tokenInfo = jwt_decode(localStorage.getItem("token"));
         const s = subjects[index];
         console.log(s)
-        const delUrl = 'http://localhost:3003/tutors/remove';
+        const delUrl = 'http://localhost:3003/tutors/removeSubject';
+        console.log(tokenInfo.statusId)
         try{
-            const {data} = await axios.delete(delUrl, {
+            const {data} = await axios.post(delUrl, {
                 tutorId: tokenInfo.statusId,
                 subjectName: s.subjectName,
                 proficiency: s.proficiency,
