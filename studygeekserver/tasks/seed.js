@@ -147,7 +147,13 @@ const Sybill = new Tutor({
       subjectName : "Maths",
       proficiency : "Intermediate",
       price : "10",
-      teaches : ["c163eeff-3566-49c8-b63e-851da5b2de07"],
+      teaches : ["c163eeff-3566-49c8-b63e-851da5b2de07"]
+    },
+    {
+      subjectName : "Magic",
+      proficiency : "Advanced",
+      price : "12",
+      teaches : []
     }]
 })
 tutorArray.push(Sybill)

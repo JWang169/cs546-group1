@@ -211,19 +211,58 @@ async function createSubject(tutorID, subjectName, proficiency, price){
 }
 
 //checked but doesn't work
-async function removeSubject(tutorId, subjectName){
+async function removeSubject(tutorId, subjectName, proficiency, price){
   if (typeof tutorId !== "string") throw "Id must be a string";
   if (typeof subjectName !== "string") throw "Subject Name must be a string";
-  // if (typeof proficiency !== "string") throw "proficiency must be a string";
-  // if (typeof price !== "number") throw "Price must be a number";
+  if (typeof proficiency !== "string") throw "proficiency must be a string";
+  if (typeof price !== "string") throw "Price must be a string";
+  console.log(tutorId,subjectName,proficiency,price);
   const tutorCollection = await tutors();
   const tutorInfo = await this.getTutor(tutorId);
-  if (!tutorInfo) throw "Tutor not available";
-  const findSubject = await tutorCollection.findOne({_id:tutorId,'tutorSubjects.subjectName':subjectName});
-  if (!findSubject) throw "Subject Not Found";
-  const removeSubject = await tutorCollection.updateOne({_id:tutorId},{$unset:{'tutorSubjects.subjectName':subjectName}});
+  if (!tutorInfo) throw "Tutor not found";
+  const findSubject = await tutorCollection.findOne({_id: tutorId},
+    {tutorSubjects:{ $elemMatch: {
+      'subjectName':subjectName,
+      'proficiency':proficiency, 
+      'price':price}}});
+  if (!findSubject) throw "tutorSubject Not Found";
+  /*const pairData= require("./pairs");
+  const tutorPairs = await pairData.getPairsWithTutor(tutorId);
+  if(tutorPairs){
+    const matchingIds = await tutorPairs.
+  const findArray = await tutorPairs.findOne({
+    _id: tu},
+    {tutorSubjects:{ $elemMatch: {
+      subjectName:subjectName,
+      proficiency:proficiency, 
+      price:price}}});*/
+      console.log(findSubject);
+    const subjectArray= findSubject.tutorSubjects;
+    console.log(subjectArray);
+   // if(subjectArray.length===1){
+  //    const theSubject = subjectArray[0];
+      if(subjectArray.teaches){
+        const studentIdArray=theSubject.teaches;
+        const studentData= require("./students");
+        const pairData = require("./pairs");
+        for(i in studentIdArray){
+          try{
+            const thePair = await pairData.getPairFromIds(tutorId, studentIdArray[i]);
+            await studentData.removePair(thePair);
+          }catch(e){
+            throw e
+          }
+        }
+      }
+    //}
+  const removeSubject = await tutorCollection.updateOne({_id:tutorId},{$pull:
+    {tutorSubjects:{
+      subjectName:subjectName,
+      proficiency:proficiency,
+      price:price
+    }}});
   //if (!removeSubject.matchedCount && !removeSubject.modifiedCount) throw 'could not update subject successfully';
-  return this.getTutor(tutorId);
+  return tutorInfo;
 }
 
 //checked works

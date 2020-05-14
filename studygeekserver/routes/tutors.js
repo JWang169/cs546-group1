@@ -108,13 +108,23 @@ router.post('/createSubject', async (req, res) => {
 });
 
 router.post('/removeSubject', async (req, res) => {
-  const tutorId = req.body['_id'];
-  const subjectName =req.body ['subjectName'];
+  const reqSubject =req.body;
+  try{
+    if(!reqSubject)throw "need a request body";
+    if(!reqSubject.tutorId)throw"need a tutorId";
+    if(!reqSubject.subjectName)throw"need a subjectName";
+    if(!reqSubject.proficiency)throw"need a proficiency";
+    if(!reqSubject.price)throw "need a price";
+  }catch(e){
+    res.status(404).json({error:e});
+    return;
+  }
+  
   try {
-    let tutor = await tutorData.removeSubject(tutorId, subjectName);
-    res.json(tutor);
+    let tutor = await tutorData.removeSubject(reqSubject.tutorId, reqSubject.subjectName,reqSubject.proficiency, reqSubject.price);
+    res.status(200).json(tutor);
   } catch (e) {
-    res.status(404).json({ error: 'Tutor not found' });
+    res.status(404).json({ error: e });
   }
 });
 
