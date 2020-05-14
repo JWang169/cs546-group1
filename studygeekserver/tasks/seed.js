@@ -43,6 +43,10 @@ const Tutor = mongoose.model('Tutor', {
     avgRatings:{
       type:Number,
       "default": 0
+    },
+    reviews:{
+        type:Array,
+        "default":[]
     }
 })
 
