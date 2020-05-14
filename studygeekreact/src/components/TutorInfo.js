@@ -81,18 +81,15 @@ const TutorInfo = (props) => {
     const rateTutor = async(event, index) => {
         event.preventDefault();
         try{
-            const pairId = subjects[index].tutoredBy;
-            console.log(pairId)
-            const {data} = await axios.get('http://localhost:3003/students/findPair/' + pairId);
             const rateData = {
-                tutorId: data.tutorId,
-                studentId: data.studentSubjects,
+                tutorId: props.match.params.id,
+                studentId: tokenInfo.statusId,
                 content: reviewContent,
                 rating: score 
             }
             const rateUrl = `http://localhost:3003/tutors/review`;
             await axios.post(rateUrl, rateData)
-            history.push('/myaccount');
+            history.push('/searchtutors');
         }catch(e){
             console.log(e)
         }
