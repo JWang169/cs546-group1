@@ -211,15 +211,15 @@ const EditSub =() => {
             <div className='field'>
             <form className="ui form">
             <div className="field">
-                <div className='field'>
-                <label>Add a subject</label>
+            {isTutor && <div className='field'>
+            <label>Add a subject</label>
                     <input
                     type="text"
                     name="subject"
                     value={newSubjectName}
                     onChange={(e) => setNewSubjectName(e.target.value)}
                     />
-                </div>
+                </div>}
                 {isTutor &&<div className='field'>
                 <label>Add Price</label>
                     <input
@@ -230,7 +230,7 @@ const EditSub =() => {
                     />
                 </div>}
 
-                <div className="field">
+                {isTutor &&<div className="field">
                     <label>Your Proficiency</label>
                     <div className="form-check">
                         <label className="form-check-label">
@@ -260,11 +260,11 @@ const EditSub =() => {
                         /> Advanced
                         </label>
                     </div>  
-                </div>
+                </div>}
             </div>    
 
-            <button className="ui positive button" onClick={addSubject}>Add Subject</button>   
-            <button className="ui button" onClick={onClickNoChange} style={{position: 'absolute', right: 50}}>Discard Change</button>
+                    {isTutor && <button className="ui positive button" onClick={addSubject}>Add Subject</button>   }
+                    {isTutor &&<button className="ui button" onClick={onClickNoChange} style={{position: 'absolute', right: 50}}>Discard Change</button>}
             </form>
             <br/>
             </div>

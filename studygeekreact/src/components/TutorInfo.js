@@ -78,15 +78,16 @@ const TutorInfo = (props) => {
         }
     }
     // rate tutor 
-    const rateTutor = async(event, index) => {
+    const rateTutor = async(event) => {
         event.preventDefault();
         try{
             const rateData = {
                 tutorId: props.match.params.id,
                 studentId: tokenInfo.statusId,
                 content: reviewContent,
-                rating: score 
+                rating: newScore 
             }
+            console.log(rateData)
             const rateUrl = `http://localhost:3003/tutors/review`;
             await axios.post(rateUrl, rateData)
             history.push('/searchtutors');
